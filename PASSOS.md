@@ -26,7 +26,7 @@
 - [x] Criar `DOCUMENTACAO.md` contendo todos os requisitos e especificações de arquitetura
 - [x] Criar `PASSOS.md` detalhando as 27 etapas ordenadas por prioridade
 - [x] Criar `CONTEXTO.md` registrando o estado inicial, decisões técnicas e pendências
-- [ ] Apresentar resumo da arquitetura e aguardar aprovação explícita do usuário
+- [x] Apresentar resumo da arquitetura e aguardar aprovação explícita do usuário
 
 **Arquivos envolvidos:**
 - `DOCUMENTACAO.md`
