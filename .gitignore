@@ -98,3 +98,5 @@ docker_data/
 postgres_data/
 minio_data/
 redis_data/
+backups/
+*.sql
