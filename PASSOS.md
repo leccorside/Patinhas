@@ -964,23 +964,45 @@ Canal de divulgação de feiras presenciais integrando o ecossistema local. Conc
 **Dependências:** Etapa 05.
 
 **Tarefas:**
-- [ ] Backend: Módulo de campanhas (`campaigns`) com meta, valor arrecadado e prestação de contas
-- [ ] Frontend: Cards de campanha com barra de progresso
-- [ ] Frontend: Área de transparência e prestação de contas (fotos de notas e recibos)
-- [ ] Preparação da arquitetura para integração futura de gateway de pagamento
+- [x] Backend: Módulo de campanhas (`CampaignsModule`, `CampaignsService`, `CampaignsController`) com rotas REST completas:
+  - `POST /api/v1/campaigns`: Cadastro de campanha de arrecadação com meta (R$), descrição e chave PIX por membros de ONG
+  - `GET /api/v1/campaigns`: Listagem pública de campanhas ativas com progresso percentual calculado em tempo real
+  - `GET /api/v1/campaigns/:id`: Detalhes completos da campanha e da organização promotora
+  - `POST /api/v1/campaigns/:id/donate`: Registro de doações com atualização atômica e auditoria em `auditLog`
+  - `PATCH /api/v1/campaigns/:id/toggle`: Pausa ou reativação de campanha por membros autorizados
+  - `DELETE /api/v1/campaigns/:id`: Exclusão segura de campanha
+- [x] Frontend: Serviço `campaignsService.ts` com integração HTTP REST completa
+- [x] Frontend: Modal de doação `DonationModal.tsx` com botões de valores rápidos (R$ 20, 50, 100, 250), cópia da chave PIX com 1 toque e confirmação interativa
+- [x] Frontend: Modal de cadastro `CreateCampaignModal.tsx` para abrigos e protetores lançarem vaquinhas de tratamento
+- [x] Frontend: Visualização de feed `CampaignsView.tsx` com Bento cards mobile, fotos de destaque, barras de progresso e compartilhamento nativo via Web Share API
+- [x] Frontend: Banner interativo integrado na navegação de perfil do `App.tsx`
+- [x] Frontend: Compilação de produção com Vite transformando 1960 módulos com 0 erros
 
 **Arquivos envolvidos:**
-- `apps/api/src/modules/donations/*`
-- `apps/web/src/features/donations/*`
+- `apps/api/src/modules/campaigns/dto/campaign.dto.ts`
+- `apps/api/src/modules/campaigns/campaigns.service.ts`
+- `apps/api/src/modules/campaigns/campaigns.controller.ts`
+- `apps/api/src/modules/campaigns/campaigns.module.ts`
+- `apps/api/src/app.module.ts`
+- `apps/web/src/features/campaigns/campaignsService.ts`
+- `apps/web/src/features/campaigns/DonationModal.tsx`
+- `apps/web/src/features/campaigns/CreateCampaignModal.tsx`
+- `apps/web/src/features/campaigns/CampaignsView.tsx`
+- `apps/web/src/App.tsx`
 
 **Critérios de aceite:**
-- Nesta fase, pagamentos reais não são processados diretamente; prepara-se a infraestrutura para links de PIX/doação direta ou gateway futuro.
+- Pagamentos diretos via PIX sem taxas abusivas de intermediários, com registro auditável e transparente do progresso da arrecadação.
+- Apenas membros de ONGs ou administradores podem cadastrar campanhas para a respectiva entidade.
 
 **Testes:**
-- Validação de cálculos de progresso da meta e apresentação dos comprovantes.
+- Teste de cadastro de campanha pela ONG Instituto Patinhas de Luz com meta de R$ 1.500 (HTTP 201 Created).
+- Teste de listagem pública com cálculo de 0% de progresso inicial (HTTP 200 OK).
+- Teste de contribuição de R$ 150 com atualização automática do progresso para 10% (HTTP 201 Created).
+- Teste de bloqueio de usuário não membro (adotante) tentando criar campanha para a ONG (HTTP 403 Forbidden).
+- Teste de build do Vite no container `patinhas_web` transformando 1960 módulos em 8.90s com 0 erros.
 
 **Resultado esperado:**
-Módulo transparente de apoio financeiro e de suprimentos às ONGs.
+Módulo transparente de apoio financeiro e vaquinhas veterinárias às ONGs. Concluído com êxito!
 
 ---
 

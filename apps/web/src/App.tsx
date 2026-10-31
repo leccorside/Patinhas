@@ -57,6 +57,7 @@ import { FosterView } from './features/foster/FosterView';
 import { FosterVolunteerModal } from './features/foster/FosterVolunteerModal';
 import { EventsView } from './features/events/EventsView';
 import { CreateEventModal } from './features/events/CreateEventModal';
+import { CampaignsView } from './features/campaigns/CampaignsView';
 import { Building2 } from 'lucide-react';
 
 export function App() {
@@ -126,6 +127,9 @@ export function App() {
   // Eventos e Feiras de Adoção (Etapa 19)
   const [isEventsOpen, setIsEventsOpen] = useState(false);
   const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
+
+  // Campanhas de Doação e Apoio (Etapa 20)
+  const [isCampaignsOpen, setIsCampaignsOpen] = useState(false);
 
   // Toast
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -518,6 +522,8 @@ export function App() {
                   showToast={showToast}
                 />
               )
+            ) : isCampaignsOpen ? (
+              <CampaignsView onBack={() => setIsCampaignsOpen(false)} />
             ) : isEventsOpen ? (
               <EventsView
                 onBack={() => setIsEventsOpen(false)}
@@ -757,6 +763,32 @@ export function App() {
                     </div>
                   </div>
                   <ChevronRight size={18} className="text-[#FF7043] group-hover:translate-x-0.5 transition-transform" />
+                </button>
+
+                {/* Banner de Campanhas e Vaquinhas (Etapa 20) */}
+                <button
+                  onClick={() => setIsCampaignsOpen(true)}
+                  className="flex w-full items-center justify-between p-4 bg-gradient-to-r from-orange-50 via-amber-50 to-rose-100/40 rounded-3xl border border-orange-200/70 shadow-sm text-left hover:border-orange-300 transition-all group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-500 to-rose-500 text-white flex items-center justify-center text-xl font-bold shadow-md shadow-amber-500/30 group-hover:scale-105 transition-transform">
+                      ❤️
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-extrabold text-sm text-[#263238] block">
+                          Campanhas & Vaquinhas
+                        </span>
+                        <span className="text-[10px] bg-rose-500 text-white font-bold px-1.5 py-0.5 rounded-full">
+                          Doação Direta
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#78909C]">
+                        Apoie tratamentos, cirurgias e ração via PIX transparente
+                      </span>
+                    </div>
+                  </div>
+                  <ChevronRight size={18} className="text-rose-600 group-hover:translate-x-0.5 transition-transform" />
                 </button>
 
                 {/* Banner de Painel da ONG e Protetor (Etapa 14) */}

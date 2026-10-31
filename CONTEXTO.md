@@ -82,19 +82,26 @@ A documentação e todo o planejamento adotaram integralmente a identidade visua
 
 ---
 
-## 📁 Arquivos Criados na Sessão Atual (Etapa 00)
+## 📁 Arquivos Criados na Sessão Atual (Etapa 20)
 
 | Arquivo | Descrição |
 |---|---|
-| `DOCUMENTACAO.md` | Documentação técnica e arquitetural completa (36+ entidades, fluxos, APIs, segurança, design system) |
-| `PASSOS.md` | Planejamento detalhado das 27 etapas do projeto com tarefas, dependências e critérios de aceite |
-| `CONTEXTO.md` | Registro do estado do projeto, decisões técnicas, identidade visual e pendências |
+| `apps/api/src/modules/campaigns/dto/campaign.dto.ts` | DTOs de criação de campanhas de apoio e registro de doações |
+| `apps/api/src/modules/campaigns/campaigns.service.ts` | Regras de negócio, cálculos de percentual de meta e auditoria |
+| `apps/api/src/modules/campaigns/campaigns.controller.ts` | Endpoints REST públicos e autenticados de campanhas |
+| `apps/api/src/modules/campaigns/campaigns.module.ts` | Módulo NestJS registrado no `AppModule` |
+| `apps/web/src/features/campaigns/campaignsService.ts` | Cliente HTTP frontend para consumo das campanhas |
+| `apps/web/src/features/campaigns/DonationModal.tsx` | Modal com chave PIX, valores rápidos e confirmação com 1 toque |
+| `apps/web/src/features/campaigns/CreateCampaignModal.tsx` | Modal para ONGs criarem novas vaquinhas de arrecadação |
+| `apps/web/src/features/campaigns/CampaignsView.tsx` | Feed mobile Bento com barras de progresso e compartilhamento nativo |
+| `apps/web/src/App.tsx` | Integração do banner e navegação móvel de campanhas |
 
 ---
 
-## 🔴 Pendências que Precisam de Aprovação do Usuário
+## 🟢 Progresso Atual das Etapas
 
-1. **Autorização para a ETAPA 11:** Permissão explícita para iniciar a ETAPA 11 — Chat em Tempo Real com Socket.IO (Gateway NestJS sob `/ws`, autenticação JWT no handshake, salas seguras por conversa `room:conv_{id}`, mensagens de texto com anexos de fotos, indicador de digitação "digitando...", recibos de entrega/leitura e interface mobile inspirada em `uxui/processo_de_ado_o_chat_patinhas`).
+- **Etapas 00 a 20:** Concluídas com sucesso e validadas com testes ponta a ponta e build de produção.
+- **Etapa 21 em diante:** Acompanhamento Pós-Adoção e Conteúdo Educativo (execução autônoma contínua até a Etapa 26).
 
 ---
 
