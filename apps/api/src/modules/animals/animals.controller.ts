@@ -32,6 +32,12 @@ export class AnimalsController {
     return this.animalsService.findAll(filter);
   }
 
+  @Get('success-stories')
+  @ApiOperation({ summary: 'Obter histórias de finais felizes de animais adotados' })
+  getSuccessStories() {
+    return this.animalsService.getSuccessStories();
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Obter perfil completo de um animal pelo ID' })
   findOne(

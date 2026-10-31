@@ -37,8 +37,8 @@ A documentação e todo o planejamento adotaram integralmente a identidade visua
 | **04** | Autenticação e Segurança | 🟢 Concluída | Argon2id, JWT, refresh rotativo, Mailpit, telas de Login/Cadastro/Perfil |
 | **05** | Usuários, Perfis e Organizações | 🟢 Concluída | MinIO S3, edição de perfil, gestão de ONGs com membros e cards |
 | **06** | Cadastro de Animais | 🟢 Concluída | CRUD de animais, Stepper mobile em 6 etapas, PetDetailView e PostGIS |
-| **07** | Home, Busca e Filtros | ⏳ Aguardando autorização | Bottom sheets, infinite scroll e categorias |
-| **08** | Mapa e Geolocalização | ⏳ Pendente | MapLibre GL JS e PostGIS espacial |
+| **07** | Home, Busca e Filtros | 🟢 Concluída | Home Bento, Explorar em grid 2 colunas, filtros avançados e finais felizes |
+| **08** | Mapa e Geolocalização | ⏳ Aguardando autorização | MapLibre GL JS e PostGIS espacial |
 | **09** | Favoritos e Modo Descoberta | ⏳ Pendente | Curtidas, listas e animações |
 | **10** | Processo de Adoção | ⏳ Pendente | Questionário e máquina de estados |
 | **11** | Chat em Tempo Real | ⏳ Pendente | Socket.IO, salas privadas e anexos |
@@ -94,7 +94,7 @@ A documentação e todo o planejamento adotaram integralmente a identidade visua
 
 ## 🔴 Pendências que Precisam de Aprovação do Usuário
 
-1. **Autorização para a ETAPA 07:** Permissão explícita para iniciar a ETAPA 07 — Home, Busca e Filtros Avançados (Categorias dinâmicas, Próximos, Urgentes, Histórias inspiradoras, Bottom Sheet de filtros avançados e rolagem infinita).
+1. **Autorização para a ETAPA 08:** Permissão explícita para iniciar a ETAPA 08 — Mapa e Geolocalização (Visualização interativa com MapLibre GL JS, pins de animais agrupados por proximidade PostGIS, slider de raio espacial e card de pré-visualização rápida ao tocar no pin).
 
 ---
 

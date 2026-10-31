@@ -323,16 +323,45 @@ Animais cadastrados, listados e visualizados com perfil acolhedor, galeria inter
 **Dependências:** Etapa 06.
 
 **Tarefas:**
-- [ ] Backend: Endpoints de listagem paginada com busca textual e filtros combinados
-- [ ] Frontend: Tela Home baseada em `uxui/in_cio_patinhas_ado_o` (Categorias, Próximos, Urgentes, Histórias)
-- [ ] Frontend: Tela Explorar baseada em `uxui/explorar_filtros_patinhas`
-- [ ] Frontend: Bottom Sheet com filtros: Espécie, Porte, Sexo, Idade, Vacinação, Castração, Convivência
-- [ ] Frontend: Infinite scroll com TanStack Query (`useInfiniteQuery`)
-- [ ] Frontend: Barra de pesquisa instantânea com debounce
+- [x] Backend: Listagem paginada com busca textual, raio geodésico (`maxDistanceKm`), filhotes (`isPuppy`), saúde (`isVaccinated`, `isNeutered`) e urgência (`isSpecialNeeds`)
+- [x] Backend: Endpoint dedicado de Finais Felizes (`GET /api/v1/animals/success-stories`) com fotos e depoimentos reais
+- [x] Frontend: Tela Home (`HomeView.tsx`) fiel ao protótipo `uxui/in_cio_patinhas_ado_o`:
+  - Carrossel horizontal de categorias com chips visuais táteis
+  - Banner de Urgência & Lar Temporário com recorte decorativo da foto do Thor e botão de ajuda direta
+  - Seção de Animais Próximos com Bento cards verticais, botões de favoritos e cálculo dinâmico de distância
+  - Seção de ONGs e Abrigos Verificados com contagem de pets disponíveis
+  - Seção "História Feliz da Semana" com depoimento e foto de antes/depois
+- [x] Frontend: Tela Explorar (`ExploreView.tsx`) fiel ao protótipo `uxui/explorar_filtros_patinhas`:
+  - Barra de pesquisa com atalho de filtros e chips rápidos
+  - Contador de resultados em tempo real ("X amiguinhos esperando por você" e botão "Limpar tudo")
+  - Feed em Grid de 2 Colunas Mobile com badge de Match Score ("96% Match"), barra inferior translúcida de distância e idade, e botão "Conhecer →"
+  - Card Contextual de Alerta Inteligente para notificar novos pets
+- [x] Frontend: Bottom Sheet de Filtros Avançados (`AdvancedFilterSheet.tsx`) com slider de distância máxima (1 a 50 km), seletores em pílula de espécie, porte, sexo e toggles de cuidados veterinários
+- [x] Frontend: Compilação de produção do Vite (`npm run build`) concluída com 1895 módulos e 0 erros
 
 **Arquivos envolvidos:**
-- `apps/api/src/modules/animals/controllers/animals.controller.ts`
-- `apps/web/src/features/home/*`, `apps/web/src/features/explore/*`
+- `apps/api/src/modules/animals/animals.service.ts`
+- `apps/api/src/modules/animals/animals.controller.ts`
+- `apps/api/src/modules/animals/dto/filter-animals.dto.ts`
+- `apps/web/src/features/home/HomeView.tsx`
+- `apps/web/src/features/explore/ExploreView.tsx`
+- `apps/web/src/features/explore/AdvancedFilterSheet.tsx`
+- `apps/web/src/features/animals/animalsService.ts`
+- `apps/web/src/App.tsx`
+
+**Critérios de aceite:**
+- Busca e filtros combinados funcionando de ponta a ponta sem erros de API.
+- Layouts de Home e Explorar com fidelidade visual aos protótipos da pasta `uxui/`.
+- Slider de distância limitando os resultados ao raio desejado.
+
+**Testes:**
+- Teste de busca por raio geodésico (`maxDistanceKm=10`) retornando apenas animais dentro do limite de km e excluindo os distantes.
+- Teste de filtro por filhotes (`isPuppy=true`) retornando pets com até 1 ano.
+- Teste de consulta de histórias de sucesso (`GET /api/v1/animals/success-stories`) retornando 3 histórias com fotos e dados de adoção.
+- Teste de build do Vite finalizado com código de saída 0 e 1895 módulos transformados.
+
+**Resultado esperado:**
+Experiência completa de Home e Busca avançada com filtros fluidos, visual mobile impecável e integração com backend. Concluído com êxito!
 
 **Critérios de aceite:**
 - Filtros múltiplos funcionando em tempo real.

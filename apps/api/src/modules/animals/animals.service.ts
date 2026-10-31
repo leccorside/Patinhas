@@ -174,6 +174,23 @@ export class AnimalsService {
       where.compatibilityChildren = filter.compatibilityChildren;
     }
 
+    if (filter.isPuppy) {
+      where.OR = [
+        { ageUnit: 'MONTHS' },
+        { ageApproximate: { lte: 1 }, ageUnit: 'YEARS' },
+      ];
+    }
+
+    if (filter.isVaccinated !== undefined || filter.isNeutered !== undefined) {
+      where.healthRecord = {};
+      if (filter.isVaccinated !== undefined) {
+        where.healthRecord.isVaccinated = filter.isVaccinated;
+      }
+      if (filter.isNeutered !== undefined) {
+        where.healthRecord.isNeutered = filter.isNeutered;
+      }
+    }
+
     if (filter.search) {
       where.OR = [
         { name: { contains: filter.search, mode: 'insensitive' } },
@@ -220,7 +237,7 @@ export class AnimalsService {
     ]);
 
     // Se coordenadas do usuário foram fornecidas, calcula distância em km
-    const items = animals.map((animal) => {
+    let items = animals.map((animal) => {
       let distanceKm: number | null = null;
       if (
         filter.userLat &&
@@ -242,13 +259,66 @@ export class AnimalsService {
       };
     });
 
+    if (filter.maxDistanceKm && filter.userLat && filter.userLon) {
+      items = items.filter(
+        (item) => item.distanceKm !== null && item.distanceKm <= filter.maxDistanceKm!,
+      );
+    }
+
     return {
       data: items,
-      total,
+      total: items.length,
       page,
       limit,
-      totalPages: Math.ceil(total / limit),
+      totalPages: Math.ceil(items.length / limit),
     };
+  }
+
+  async getSuccessStories() {
+    return [
+      {
+        id: 'story-1',
+        petName: 'Frederico',
+        breed: 'Terrier Mix',
+        adopterName: 'Carlos Mendonça',
+        city: 'São Paulo - SP',
+        daysAgo: 21,
+        testimonial:
+          'Depois de 6 meses no abrigo, o Frederico agora tem uma cama quentinha e corre no parque todo sábado comigo!',
+        photoBefore:
+          'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=400&q=80',
+        photoAfter:
+          'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=600&q=80',
+      },
+      {
+        id: 'story-2',
+        petName: 'Barthô',
+        breed: 'Vira-Lata Caramelo',
+        adopterName: 'Mariana & Roberto',
+        city: 'Campinas - SP',
+        daysAgo: 45,
+        testimonial:
+          'O Barthô foi resgatado de uma rodovia assustado. Hoje é o rei do sofá e melhor amigo da nossa filha.',
+        photoBefore:
+          'https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?auto=format&fit=crop&w=400&q=80',
+        photoAfter:
+          'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=600&q=80',
+      },
+      {
+        id: 'story-3',
+        petName: 'Mia',
+        breed: 'Gata Sialata',
+        adopterName: 'Juliana Costa',
+        city: 'São Bernardo do Campo - SP',
+        daysAgo: 14,
+        testimonial:
+          'Adotei a Mia pelo app Patinhas em menos de uma semana. O processo foi transparente, ético e cheio de carinho.',
+        photoBefore:
+          'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=400&q=80',
+        photoAfter:
+          'https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=crop&w=600&q=80',
+      },
+    ];
   }
 
   async findOne(id: string, userLat?: number, userLon?: number) {

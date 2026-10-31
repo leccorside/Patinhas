@@ -83,10 +83,27 @@ export interface FilterAnimalsParams {
   city?: string;
   state?: string;
   isSpecialNeeds?: boolean;
+  isVaccinated?: boolean;
+  isNeutered?: boolean;
+  isUrgent?: boolean;
+  isPuppy?: boolean;
+  maxDistanceKm?: number;
   userLat?: number;
   userLon?: number;
   page?: number;
   limit?: number;
+}
+
+export interface SuccessStory {
+  id: string;
+  petName: string;
+  breed: string;
+  adopterName: string;
+  city: string;
+  daysAgo: number;
+  testimonial: string;
+  photoBefore: string;
+  photoAfter: string;
 }
 
 const API_BASE = '/api/v1';
@@ -101,6 +118,11 @@ export const animalsService = {
     if (params.city) query.append('city', params.city);
     if (params.state) query.append('state', params.state);
     if (params.isSpecialNeeds !== undefined) query.append('isSpecialNeeds', String(params.isSpecialNeeds));
+    if (params.isVaccinated !== undefined) query.append('isVaccinated', String(params.isVaccinated));
+    if (params.isNeutered !== undefined) query.append('isNeutered', String(params.isNeutered));
+    if (params.isUrgent !== undefined) query.append('isUrgent', String(params.isUrgent));
+    if (params.isPuppy !== undefined) query.append('isPuppy', String(params.isPuppy));
+    if (params.maxDistanceKm !== undefined) query.append('maxDistanceKm', String(params.maxDistanceKm));
     if (params.userLat) query.append('userLat', String(params.userLat));
     if (params.userLon) query.append('userLon', String(params.userLon));
     if (params.page) query.append('page', String(params.page));
@@ -110,6 +132,12 @@ export const animalsService = {
       credentials: 'include',
     });
     if (!res.ok) throw new Error('Falha ao carregar animais.');
+    return res.json();
+  },
+
+  async getSuccessStories(): Promise<SuccessStory[]> {
+    const res = await fetch(`${API_BASE}/animals/success-stories`);
+    if (!res.ok) throw new Error('Falha ao carregar finais felizes.');
     return res.json();
   },
 

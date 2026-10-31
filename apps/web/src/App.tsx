@@ -1,36 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   MobileAppShell,
   FloatingBottomNav,
   AppHeader,
   PrimaryButton,
   SecondaryButton,
-  SearchInput,
-  SpecBadge,
-  Badge,
-  BottomSheet,
   Dialog,
   Toast,
-  PetCardSkeleton,
-  EmptyState,
-  Tabs,
-  PetCard,
   NavTabId,
-  PetCardData,
+  PetCard,
+  EmptyState,
 } from './components';
 import {
-  Sparkles,
-  Filter,
   LogOut,
-  CheckCircle2,
   Shield,
   User,
-  Heart,
   Edit3,
-  Building2,
-  FileText,
   HelpCircle,
-  PlusCircle,
 } from 'lucide-react';
 import { useAuthStore } from './store/authStore';
 import { LoginView } from './features/auth/LoginView';
@@ -38,32 +24,45 @@ import { RegisterView } from './features/auth/RegisterView';
 import { ForgotPasswordModal } from './features/auth/ForgotPasswordModal';
 import { EditProfileModal } from './features/profile/EditProfileModal';
 import { CreateOrganizationModal } from './features/organizations/CreateOrganizationModal';
-import { ShelterCard, ShelterData } from './features/organizations/ShelterCard';
+import { ShelterData } from './features/organizations/ShelterCard';
 import { PetDetailView } from './features/animals/PetDetailView';
 import { CreatePetStepperModal } from './features/animals/CreatePetStepperModal';
-import { animalsService, Animal } from './features/animals/animalsService';
+import { animalsService, Animal, SuccessStory } from './features/animals/animalsService';
+import { HomeView } from './features/home/HomeView';
+import { ExploreView } from './features/explore/ExploreView';
+import { FilterState, AdvancedFilterSheet } from './features/explore/AdvancedFilterSheet';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<NavTabId>('home');
-  const [pets, setPets] = useState<PetCardData[]>([]);
+  const [animals, setAnimals] = useState<Animal[]>([]);
   const [shelters, setShelters] = useState<ShelterData[]>([]);
+  const [successStories, setSuccessStories] = useState<SuccessStory[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Filtros Globais e Busca
   const [searchQuery, setSearchQuery] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState<'ALL' | 'DOG' | 'CAT' | 'PUPPY'>('ALL');
+  const [categoryFilter, setCategoryFilter] = useState('ALL');
+  const [filters, setFilters] = useState<FilterState>({
+    maxDistanceKm: 30,
+  });
+
+  // Favoritos
   const [favoritedIds, setFavoritedIds] = useState<Set<string>>(new Set());
 
-  // Visualização Detalhada do Pet (Etapa 06)
+  // Visualização Detalhada do Pet (Fidelidade UX/UI)
   const [detailedPet, setDetailedPet] = useState<Animal | null>(null);
-  const [isCreatePetOpen, setIsCreatePetOpen] = useState(false);
 
-  // Estados dos Modais e Bottom Sheets
+  // Modais
+  const [isCreatePetOpen, setIsCreatePetOpen] = useState(false);
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const [isAdoptDialogOpen, setIsAdoptDialogOpen] = useState(false);
   const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [isCreateOrgOpen, setIsCreateOrgOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
-  const [selectedPet, setSelectedPet] = useState<PetCardData | null>(null);
+  const [selectedPet, setSelectedPet] = useState<Animal | null>(null);
+
+  // Toast
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('success');
 
@@ -74,74 +73,62 @@ export function App() {
     checkAuth();
   }, [checkAuth]);
 
-  // Busca dados iniciais da API (Animais reais e ONGs)
-  const fetchData = async () => {
+  // Carrega animais reais da API com suporte a filtros combinados
+  const fetchAnimals = useCallback(async () => {
     setLoading(true);
     try {
-      const animalsResponse = await animalsService.getAnimals({
+      const params: any = {
         userLat: -23.5505,
         userLon: -46.6333,
-      });
+        search: searchQuery || undefined,
+        maxDistanceKm: filters.maxDistanceKm,
+        isVaccinated: filters.isVaccinated,
+        isNeutered: filters.isNeutered,
+        isSpecialNeeds: filters.isSpecialNeeds,
+        isPuppy: filters.isPuppy,
+        species: filters.species,
+        size: filters.size,
+        sex: filters.sex,
+      };
 
-      const mappedPets: PetCardData[] = animalsResponse.data.map((item) => ({
-        id: item.id,
-        name: item.name,
-        species: item.species,
-        breed: item.breed || (item.species === 'DOG' ? 'SRD Cão' : 'SRD Gato'),
-        ageApproximate: item.ageApproximate,
-        ageUnit: item.ageUnit,
-        sex: item.sex,
-        city: item.city,
-        state: item.state,
-        distanceKm: item.distanceKm ?? 3.5,
-        photoUrl:
-          item.photos?.[0]?.url ||
-          'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=800&q=80',
-        matchScore: item.name === 'Charlie' ? 98 : item.name === 'Luna' ? 94 : 88,
-        organizationName: item.organization?.name || 'Protetor Independente',
-        traits: item.traits?.map((t) => t.name) || [],
-        isSpecialNeeds: item.isSpecialNeeds,
-      }));
+      // Categoria rápida
+      if (categoryFilter === 'DOG') params.species = 'DOG';
+      if (categoryFilter === 'CAT') params.species = 'CAT';
+      if (categoryFilter === 'PUPPY') params.isPuppy = true;
+      if (categoryFilter === 'URGENT') params.isSpecialNeeds = true;
 
-      setPets(mappedPets);
+      const res = await animalsService.getAnimals(params);
+      setAnimals(res.data);
     } catch (err) {
-      console.error('Erro ao buscar animais:', err);
+      console.error('Erro ao carregar animais:', err);
     } finally {
       setLoading(false);
     }
+  }, [searchQuery, categoryFilter, filters]);
 
-    // Busca organizações cadastradas
+  // Carrega organizações e histórias felizes
+  const fetchAuxiliaryData = async () => {
     try {
-      const res = await fetch('http://localhost:3333/api/v1/organizations');
-      if (res.ok) {
-        const orgsData = await res.json();
-        setShelters(orgsData);
-      }
+      const [orgsRes, stories] = await Promise.all([
+        fetch('http://localhost:3333/api/v1/organizations').then((r) => r.json()),
+        animalsService.getSuccessStories().catch(() => []),
+      ]);
+      setShelters(orgsRes);
+      setSuccessStories(stories);
     } catch (err) {
-      console.error('Erro ao buscar ONGs:', err);
+      console.error('Erro ao carregar dados auxiliares:', err);
     }
   };
 
   useEffect(() => {
-    fetchData();
+    fetchAnimals();
+  }, [fetchAnimals]);
+
+  useEffect(() => {
+    fetchAuxiliaryData();
   }, []);
 
-  const handlePetCardClick = async (petCard: PetCardData) => {
-    try {
-      const fullAnimal = await animalsService.getAnimalById(
-        petCard.id,
-        -23.5505,
-        -46.6333
-      );
-      setDetailedPet(fullAnimal);
-    } catch (error) {
-      console.error('Erro ao carregar detalhes do pet:', error);
-      setSelectedPet(petCard);
-      setIsAdoptDialogOpen(true);
-    }
-  };
-
-  const handleFavoriteToggle = (id: string, e: React.MouseEvent) => {
+  const handleToggleFavorite = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
     setFavoritedIds((prev) => {
       const next = new Set(prev);
@@ -166,23 +153,14 @@ export function App() {
     showToast('Sessão encerrada com sucesso', 'info');
   };
 
-  // Filtragem de pets
-  const filteredPets = pets.filter((pet) => {
-    const matchesSearch =
-      pet.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (pet.breed && pet.breed.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      pet.city.toLowerCase().includes(searchQuery.toLowerCase());
+  const handleResetFilters = () => {
+    setSearchQuery('');
+    setCategoryFilter('ALL');
+    setFilters({ maxDistanceKm: 30 });
+    showToast('Filtros restaurados', 'info');
+  };
 
-    const matchesCategory =
-      categoryFilter === 'ALL' ||
-      (categoryFilter === 'DOG' && pet.species === 'DOG') ||
-      (categoryFilter === 'CAT' && pet.species === 'CAT') ||
-      (categoryFilter === 'PUPPY' && pet.ageApproximate <= 1 && pet.ageUnit === 'YEARS');
-
-    return matchesSearch && matchesCategory;
-  });
-
-  // Se o usuário estiver vendo os detalhes de um pet específico (Fidelidade UX/UI)
+  // Se o usuário estiver na tela de detalhes do pet
   if (detailedPet) {
     return (
       <MobileAppShell>
@@ -190,21 +168,7 @@ export function App() {
           animal={detailedPet}
           onBack={() => setDetailedPet(null)}
           onAdoptClick={(animal) => {
-            setSelectedPet({
-              id: animal.id,
-              name: animal.name,
-              species: animal.species,
-              breed: animal.breed || '',
-              ageApproximate: animal.ageApproximate,
-              ageUnit: animal.ageUnit,
-              sex: animal.sex,
-              city: animal.city,
-              state: animal.state,
-              distanceKm: animal.distanceKm || 3.8,
-              photoUrl: animal.photos[0]?.url || '',
-              organizationName: animal.organization?.name || 'Protetor',
-              traits: animal.traits.map((t) => t.name),
-            });
+            setSelectedPet(animal);
             setIsAdoptDialogOpen(true);
           }}
         />
@@ -213,32 +177,32 @@ export function App() {
         <Dialog
           isOpen={isAdoptDialogOpen}
           onClose={() => setIsAdoptDialogOpen(false)}
-          title={selectedPet ? `Adotar ${selectedPet.name}?` : 'Demonstração'}
+          title={selectedPet ? `Adotar ${selectedPet.name}?` : 'Adoção'}
           description="Você iniciará a primeira etapa do processo responsável de adoção."
         >
           {selectedPet && (
             <div className="space-y-4">
               <div className="flex items-center gap-3 rounded-2xl bg-surface-variant p-3">
                 <img
-                  src={selectedPet.photoUrl}
+                  src={selectedPet.photos[0]?.url || ''}
                   alt={selectedPet.name}
                   className="h-14 w-14 rounded-xl object-cover"
                 />
                 <div>
                   <h4 className="text-sm font-bold text-charcoal">{selectedPet.name}</h4>
                   <p className="text-xs text-charcoal-muted">
-                    {selectedPet.breed} • {selectedPet.city}
+                    {selectedPet.breed || 'SRD'} • {selectedPet.city}
                   </p>
                   <span className="text-[10px] font-semibold text-[#006A63]">
-                    {selectedPet.organizationName}
+                    {selectedPet.organization?.name || 'Protetor Responsável'}
                   </span>
                 </div>
               </div>
 
               <p className="text-xs text-charcoal-muted leading-relaxed">
                 {isAuthenticated
-                  ? 'Ao clicar em prosseguir, seu perfil será compartilhado com os responsáveis para análise do questionário de triagem.'
-                  : 'Você precisa estar conectado na sua conta para enviar a solicitação de adoção.'}
+                  ? 'Ao prosseguir, seu perfil será compartilhado com o abrigo para a triagem inicial e agendamento da visita.'
+                  : 'Você precisa estar conectado na sua conta para solicitar a adoção.'}
               </p>
 
               <div className="flex gap-2 pt-2">
@@ -291,193 +255,56 @@ export function App() {
       <main className="flex-1 px-5 pb-28 pt-1">
         {/* ABA: INÍCIO */}
         {activeTab === 'home' && (
-          <>
-            {/* Banner Hero do Warm Paws System */}
-            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#FF8A65] to-[#FF7043] p-5 text-white shadow-coral">
-              <div className="relative z-10">
-                <div className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-0.5 text-[11px] font-semibold backdrop-blur-sm">
-                  <Sparkles size={13} />
-                  Gestão & Cadastro de Pets Ativos
-                </div>
-                <h2 className="mt-2.5 text-xl font-extrabold leading-tight">
-                  Adote com amor, transforme uma vida
-                </h2>
-                <p className="mt-1 text-xs text-white/90">
-                  {isAuthenticated
-                    ? `Olá, ${user?.fullName}! Conecte-se com ONGs e cadastre pets para adoção.`
-                    : 'Cadastre-se ou entre na sua conta para acompanhar processos de adoção.'}
-                </p>
-
-                {isAuthenticated && (
-                  <div className="mt-4">
-                    <button
-                      onClick={() => setIsCreatePetOpen(true)}
-                      className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-bold text-primary shadow-md hover:bg-neutral-50 active:scale-95 transition-all"
-                    >
-                      <PlusCircle size={15} />
-                      Cadastrar Novo Pet
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Barra de Busca com Botão de Filtros */}
-            <div className="mt-4">
-              <SearchInput
-                value={searchQuery}
-                onChange={setSearchQuery}
-                onOpenFilters={() => setIsFilterSheetOpen(true)}
-                activeFiltersCount={categoryFilter !== 'ALL' ? 1 : 0}
-                placeholder="Buscar por raça, nome ou cidade..."
-              />
-            </div>
-
-            {/* Abas Horizontais de Categorias */}
-            <div className="mt-4">
-              <Tabs
-                activeId={categoryFilter}
-                onChange={(id) => setCategoryFilter(id as any)}
-                options={[
-                  { id: 'ALL', label: 'Todos os Pets', count: pets.length },
-                  { id: 'DOG', label: 'Cachorros', icon: <span>🐕</span> },
-                  { id: 'CAT', label: 'Gatos', icon: <span>🐈</span> },
-                  { id: 'PUPPY', label: 'Filhotes', icon: <span>🍼</span> },
-                ]}
-              />
-            </div>
-
-            {/* Seção de Animais Próximos */}
-            <div className="mt-5">
-              <div className="flex items-center justify-between mb-3">
-                <div>
-                  <h3 className="text-base font-extrabold text-charcoal">
-                    {categoryFilter === 'ALL' ? 'Disponíveis Próximos' : 'Animais Filtrados'}
-                  </h3>
-                  <p className="text-xs text-charcoal-muted">
-                    {filteredPets.length}{' '}
-                    {filteredPets.length === 1 ? 'amiguinho encontrado' : 'amiguinhos encontrados'}
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  {isAuthenticated && (
-                    <button
-                      onClick={() => setIsCreatePetOpen(true)}
-                      className="flex items-center gap-1 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary border border-primary/20 hover:bg-primary/20 transition-colors"
-                    >
-                      + Pet
-                    </button>
-                  )}
-                  <button
-                    onClick={() => setIsFilterSheetOpen(true)}
-                    className="flex items-center gap-1 rounded-full bg-tertiary px-3 py-1 text-xs font-bold text-primary border border-[#FFE0B2]"
-                  >
-                    <Filter size={12} />
-                    Filtros
-                  </button>
-                </div>
-              </div>
-
-              {/* Skeletons ou Cards */}
-              {loading ? (
-                <div className="space-y-4">
-                  <PetCardSkeleton />
-                  <PetCardSkeleton />
-                </div>
-              ) : filteredPets.length === 0 ? (
-                <EmptyState
-                  title="Nenhum pet encontrado"
-                  description="Tente ajustar os filtros de busca ou remover o termo pesquisado."
-                  actionText="Limpar Filtros"
-                  onAction={() => {
-                    setSearchQuery('');
-                    setCategoryFilter('ALL');
-                  }}
-                />
-              ) : (
-                <div className="space-y-4">
-                  {filteredPets.map((pet) => (
-                    <PetCard
-                      key={pet.id}
-                      pet={{
-                        ...pet,
-                        isFavorited: favoritedIds.has(pet.id),
-                      }}
-                      onFavoriteToggle={handleFavoriteToggle}
-                      onClick={() => handlePetCardClick(pet)}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Seção: ONGs e Abrigos Verificados */}
-            <div className="mt-8">
-              <div className="flex items-center justify-between mb-3">
-                <div>
-                  <h3 className="text-base font-extrabold text-charcoal">ONGs & Abrigos</h3>
-                  <p className="text-xs text-charcoal-muted">Organizações dedicadas à causa animal</p>
-                </div>
-
-                {isAuthenticated && (
-                  <button
-                    onClick={() => setIsCreateOrgOpen(true)}
-                    className="flex items-center gap-1 text-xs font-bold text-primary hover:underline"
-                  >
-                    + Criar ONG
-                  </button>
-                )}
-              </div>
-
-              <div className="space-y-3">
-                {shelters.map((shelter) => (
-                  <ShelterCard
-                    key={shelter.id}
-                    shelter={shelter}
-                    onContact={() =>
-                      showToast(`Abrindo perfil institucional de ${shelter.name}`, 'info')
-                    }
-                  />
-                ))}
-              </div>
-            </div>
-          </>
+          <HomeView
+            animals={animals}
+            shelters={shelters}
+            successStories={successStories}
+            loading={loading}
+            onSelectAnimal={setDetailedPet}
+            favoritedIds={favoritedIds}
+            onToggleFavorite={handleToggleFavorite}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            categoryFilter={categoryFilter}
+            onCategoryChange={setCategoryFilter}
+            onOpenFilters={() => setIsFilterSheetOpen(true)}
+            isAuthenticated={isAuthenticated}
+            userName={user?.fullName}
+            onCreatePetClick={() => setIsCreatePetOpen(true)}
+            onCreateOrgClick={() => setIsCreateOrgOpen(true)}
+            showToast={showToast}
+          />
         )}
 
         {/* ABA: EXPLORAR / BUSCA */}
         {activeTab === 'explore' && (
-          <div className="pt-2">
-            <h2 className="text-lg font-extrabold text-charcoal mb-3">Explorar Pets</h2>
-            <SearchInput
-              value={searchQuery}
-              onChange={setSearchQuery}
-              onOpenFilters={() => setIsFilterSheetOpen(true)}
-              placeholder="Digite raça, nome ou cidade..."
-            />
-            <div className="mt-4 space-y-3">
-              {filteredPets.map((pet) => (
-                <PetCard
-                  key={pet.id}
-                  pet={{ ...pet, isFavorited: favoritedIds.has(pet.id) }}
-                  onFavoriteToggle={handleFavoriteToggle}
-                  onClick={() => handlePetCardClick(pet)}
-                />
-              ))}
-            </div>
-          </div>
+          <ExploreView
+            animals={animals}
+            loading={loading}
+            onSelectAnimal={setDetailedPet}
+            favoritedIds={favoritedIds}
+            onToggleFavorite={handleToggleFavorite}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            filters={filters}
+            onChangeFilters={setFilters}
+            onResetFilters={handleResetFilters}
+            showToast={showToast}
+          />
         )}
 
         {/* ABA: MAPA */}
         {activeTab === 'map' && (
           <div className="pt-2">
             <h2 className="text-lg font-extrabold text-charcoal mb-1">Mapa de Adoção</h2>
-            <p className="text-xs text-charcoal-muted mb-4">Animais próximos com cálculo espacial PostGIS</p>
+            <p className="text-xs text-charcoal-muted mb-4">
+              Animais próximos com cálculo espacial PostGIS
+            </p>
             <EmptyState
               title="Mapa em Geolocalização Ativa"
-              description="Visualize animais próximos em um raio personalizado no mapa interativo."
-              actionText="Ver Lista Próxima"
-              onAction={() => setActiveTab('home')}
+              description="Visualize animais próximos em um raio personalizado no mapa interativo com MapLibre GL JS."
+              actionText="Explorar no Feed"
+              onAction={() => setActiveTab('explore')}
             />
           </div>
         )}
@@ -488,23 +315,42 @@ export function App() {
             <h2 className="text-lg font-extrabold text-charcoal mb-1">Meus Favoritos</h2>
             <p className="text-xs text-charcoal-muted mb-4">Pets que conquistaram seu coração</p>
 
-            {pets.filter((p) => favoritedIds.has(p.id)).length === 0 ? (
+            {animals.filter((p) => favoritedIds.has(p.id)).length === 0 ? (
               <EmptyState
                 title="Nenhum amiguinho favoritado"
                 description="Toque no ícone de coração nos cards dos pets para salvá-los aqui."
                 actionText="Explorar Pets"
-                onAction={() => setActiveTab('home')}
+                onAction={() => setActiveTab('explore')}
               />
             ) : (
               <div className="space-y-4">
-                {pets
+                {animals
                   .filter((p) => favoritedIds.has(p.id))
                   .map((pet) => (
                     <PetCard
                       key={pet.id}
-                      pet={{ ...pet, isFavorited: true }}
-                      onFavoriteToggle={handleFavoriteToggle}
-                      onClick={() => handlePetCardClick(pet)}
+                      pet={{
+                        id: pet.id,
+                        name: pet.name,
+                        species: pet.species,
+                        breed: pet.breed || 'SRD',
+                        ageApproximate: pet.ageApproximate,
+                        ageUnit: pet.ageUnit,
+                        sex: pet.sex,
+                        city: pet.city,
+                        state: pet.state,
+                        distanceKm: pet.distanceKm || 3.5,
+                        photoUrl:
+                          pet.photos[0]?.url ||
+                          'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=400&q=80',
+                        matchScore: 95,
+                        organizationName: pet.organization?.name || 'Protetor Independente',
+                        traits: pet.traits.map((t) => t.name),
+                        isSpecialNeeds: pet.isSpecialNeeds,
+                        isFavorited: true,
+                      }}
+                      onFavoriteToggle={handleToggleFavorite}
+                      onClick={() => setDetailedPet(pet)}
                     />
                   ))}
               </div>
@@ -667,98 +513,15 @@ export function App() {
         favoritesCount={favoritedIds.size}
       />
 
-      {/* Bottom Sheet de Filtros Mobile */}
-      <BottomSheet
+      {/* Bottom Sheet de Filtros Avançados Mobile */}
+      <AdvancedFilterSheet
         isOpen={isFilterSheetOpen}
         onClose={() => setIsFilterSheetOpen(false)}
-        title="Filtros de Adoção"
-      >
-        <div className="space-y-5 pb-6">
-          <div>
-            <label className="text-xs font-bold text-charcoal uppercase tracking-wider">
-              Espécie
-            </label>
-            <div className="mt-2 grid grid-cols-3 gap-2">
-              {(['ALL', 'DOG', 'CAT'] as const).map((sp) => (
-                <button
-                  key={sp}
-                  onClick={() => setCategoryFilter(sp as any)}
-                  className={`rounded-2xl p-3 text-xs font-bold border transition-all ${
-                    categoryFilter === sp
-                      ? 'bg-primary text-white border-primary shadow-coral'
-                      : 'bg-white text-charcoal border-gray-200'
-                  }`}
-                >
-                  {sp === 'ALL' ? 'Todos' : sp === 'DOG' ? 'Cães 🐕' : 'Gatos 🐈'}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <PrimaryButton
-            onClick={() => {
-              setIsFilterSheetOpen(false);
-              showToast('Filtros aplicados com sucesso!', 'success');
-            }}
-          >
-            Aplicar Filtros
-          </PrimaryButton>
-        </div>
-      </BottomSheet>
-
-      {/* Dialog Modal de Interesse no Pet */}
-      <Dialog
-        isOpen={isAdoptDialogOpen}
-        onClose={() => setIsAdoptDialogOpen(false)}
-        title={selectedPet ? `Adotar ${selectedPet.name}?` : 'Demonstração'}
-        description="Você iniciará a primeira etapa do processo responsável de adoção."
-      >
-        {selectedPet && (
-          <div className="space-y-4">
-            <div className="flex items-center gap-3 rounded-2xl bg-surface-variant p-3">
-              <img
-                src={selectedPet.photoUrl}
-                alt={selectedPet.name}
-                className="h-14 w-14 rounded-xl object-cover"
-              />
-              <div>
-                <h4 className="text-sm font-bold text-charcoal">{selectedPet.name}</h4>
-                <p className="text-xs text-charcoal-muted">
-                  {selectedPet.breed} • {selectedPet.city}
-                </p>
-                <span className="text-[10px] font-semibold text-[#006A63]">
-                  {selectedPet.organizationName}
-                </span>
-              </div>
-            </div>
-
-            <p className="text-xs text-charcoal-muted leading-relaxed">
-              {isAuthenticated
-                ? 'Ao clicar em prosseguir, seu perfil será compartilhado com os responsáveis para análise do questionário de triagem.'
-                : 'Você precisa estar conectado na sua conta para enviar a solicitação de adoção.'}
-            </p>
-
-            <div className="flex gap-2 pt-2">
-              <SecondaryButton variant="outline" onClick={() => setIsAdoptDialogOpen(false)}>
-                Voltar
-              </SecondaryButton>
-              <PrimaryButton
-                onClick={() => {
-                  setIsAdoptDialogOpen(false);
-                  if (!isAuthenticated) {
-                    setActiveTab('profile');
-                    showToast('Faça login para continuar a adoção', 'info');
-                  } else {
-                    showToast(`Interesse registrado para ${selectedPet.name}! 🐾`, 'success');
-                  }
-                }}
-              >
-                {isAuthenticated ? 'Prosseguir' : 'Fazer Login'}
-              </PrimaryButton>
-            </div>
-          </div>
-        )}
-      </Dialog>
+        filters={filters}
+        onChangeFilters={setFilters}
+        onReset={handleResetFilters}
+        totalResultsCount={animals.length}
+      />
 
       {/* Modal de Esqueci Minha Senha */}
       <ForgotPasswordModal
@@ -779,7 +542,7 @@ export function App() {
         isOpen={isCreateOrgOpen}
         onClose={() => setIsCreateOrgOpen(false)}
         showToast={showToast}
-        onSuccess={fetchData}
+        onSuccess={fetchAuxiliaryData}
       />
 
       {/* Modal Stepper de Cadastro de Pet (Etapa 06) */}
@@ -787,7 +550,7 @@ export function App() {
         isOpen={isCreatePetOpen}
         onClose={() => setIsCreatePetOpen(false)}
         onSuccess={() => {
-          fetchData();
+          fetchAnimals();
           showToast('Pet cadastrado com sucesso no Patinhas! 🐾', 'success');
         }}
         userOrganizations={shelters.map((s) => ({ id: s.id, name: s.name }))}

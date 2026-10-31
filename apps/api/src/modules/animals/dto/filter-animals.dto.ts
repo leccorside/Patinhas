@@ -96,5 +96,35 @@ export class FilterAnimalsDto {
   @Type(() => Number)
   @IsNumber()
   userLon?: number;
+
+  @ApiPropertyOptional({ description: 'Distância máxima em quilômetros' })
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  maxDistanceKm?: number;
+
+  @ApiPropertyOptional({ description: 'Apenas animais vacinados' })
+  @IsOptional()
+  @Transform(({ value }) => value === 'true' || value === true)
+  @IsBoolean()
+  isVaccinated?: boolean;
+
+  @ApiPropertyOptional({ description: 'Apenas animais castrados' })
+  @IsOptional()
+  @Transform(({ value }) => value === 'true' || value === true)
+  @IsBoolean()
+  isNeutered?: boolean;
+
+  @ApiPropertyOptional({ description: 'Apenas casos urgentes ou lar temporário' })
+  @IsOptional()
+  @Transform(({ value }) => value === 'true' || value === true)
+  @IsBoolean()
+  isUrgent?: boolean;
+
+  @ApiPropertyOptional({ description: 'Filtrar filhotes' })
+  @IsOptional()
+  @Transform(({ value }) => value === 'true' || value === true)
+  @IsBoolean()
+  isPuppy?: boolean;
 }
 
