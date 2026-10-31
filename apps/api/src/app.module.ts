@@ -7,6 +7,7 @@ import { StorageModule } from './modules/storage/storage.module';
 import { UsersModule } from './modules/users/users.module';
 import { OrganizationsModule } from './modules/organizations/organizations.module';
 import { AnimalsModule } from './modules/animals/animals.module';
+import { GeoModule } from './modules/geo/geo.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { AnimalsModule } from './modules/animals/animals.module';
     UsersModule,
     OrganizationsModule,
     AnimalsModule,
+    GeoModule,
   ],
   controllers: [AppController],
   providers: [],

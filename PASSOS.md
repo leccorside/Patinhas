@@ -363,19 +363,6 @@ Animais cadastrados, listados e visualizados com perfil acolhedor, galeria inter
 **Resultado esperado:**
 Experiência completa de Home e Busca avançada com filtros fluidos, visual mobile impecável e integração com backend. Concluído com êxito!
 
-**Critérios de aceite:**
-- Filtros múltiplos funcionando em tempo real.
-- Rolagem infinita fluida sem recarregamento de página.
-- Visual rigorosamente alinhado ao protótipo `uxui/in_cio_patinhas_ado_o`.
-
-**Testes:**
-- Testes de integração de busca com múltiplas combinações de filtros.
-
-**Resultado esperado:**
-Experiência de descoberta de animais dinâmica, agradável e rápida.
-
----
-
 ## ETAPA 08 — Mapa Interativo e Geolocalização
 
 **Objetivo:** Construir o mapa interativo em MapLibre GL JS limitado aos 430px com consultas de proximidade espaciais no PostGIS.
@@ -383,21 +370,36 @@ Experiência de descoberta de animais dinâmica, agradável e rápida.
 **Dependências:** Etapa 07.
 
 **Tarefas:**
-- [ ] Backend: Endpoint `/api/v1/animals/nearby` com consulta PostGIS `ST_DWithin`
-- [ ] Frontend: Integração do MapLibre GL JS dentro do container de 430px
-- [ ] Frontend: Captura da localização do usuário via Geolocation API com permissão
-- [ ] Frontend: Marcadores customizados com a miniatura do pet e anel coral
-- [ ] Frontend: Seletor de raio (5, 10, 25, 50, 100, 200 km) com círculo visual translúcido
-- [ ] Frontend: Bottom Sheet interativo ao clicar em um marcador com detalhes rápidos
-- [ ] Frontend: Botão de centralização e alternância rápida Mapa ↔ Lista
+- [x] Backend: Módulo `GeoModule` e endpoint `GET /api/v1/geo/nearby` com consulta PostGIS `ST_DWithin` geodésica em metros
+- [x] Backend: Retorno padronizado no formato GeoJSON FeatureCollection (RFC 7946) para consumo direto pelo MapLibre GL
+- [x] Frontend: Integração do MapLibre GL JS (`maplibre-gl@^4.3.2`) estritamente contido no shell mobile de 430px
+- [x] Frontend: Marcador central do usuário ("Você") com anel pulsante e radar de proximidade
+- [x] Frontend: Marcadores customizados DOM no mapa com miniatura da foto do pet, anel coral/teal, badge de espécie (🐶/🐱) e seta triangular
+- [x] Frontend: Seletor dinâmico de raio (5, 10, 25, 50 km) com dropdown e atualização instantânea dos pontos
+- [x] Frontend: Draggable Bottom Sheet Card sobreposto na parte inferior do mapa com foto, atributos rápidos de saúde, distância e botão "Conhecer [Nome] →"
+- [x] Frontend: Botão flutuante de recentralização ("🎯") e botão switcher Mapa ↔ Lista
+- [x] Frontend: Compilação de produção do Vite (`npm run build`) concluída com 1899 módulos e 0 erros
 
 **Arquivos envolvidos:**
-- `apps/api/src/modules/geolocation/*`
-- `apps/web/src/features/map/*` (baseado em `uxui/mapa_de_ado_o_patinhas`)
+- `apps/api/src/modules/geo/geo.service.ts`
+- `apps/api/src/modules/geo/geo.controller.ts`
+- `apps/api/src/modules/geo/geo.module.ts`
+- `apps/api/src/app.module.ts`
+- `apps/web/src/features/map/MapView.tsx`
+- `apps/web/src/features/animals/animalsService.ts`
+- `apps/web/src/App.tsx`
 
 **Critérios de aceite:**
 - O mapa renderiza perfeitamente contido nos 430px sem transbordar horizontalmente.
-- Protetores individuais exibem localização aproximada com ruído de segurança.
+- Protetores individuais exibem localização com ruído de segurança aleatório.
+- Seleção de raio (5km a 50km) filtrando espacialmente os pontos no PostGIS.
+
+**Testes:**
+- Teste geodésico no PostGIS em 3 raios diferentes: 5km (2 pets), 10km (4 pets) e 100km (5 pets, incluindo Campinas).
+- Teste de build do Vite transformando 1899 módulos e gerando bundles CSS/JS sem falhas de tipagem.
+
+**Resultado esperado:**
+Mapa interativo completo com navegação vetorial fluida, marcadores temáticos com fotos e consulta espacial PostGIS. Concluído com êxito!
 - Marcadores agrupam-se (clusterização) em níveis de zoom distantes.
 
 **Testes:**

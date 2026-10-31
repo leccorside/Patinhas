@@ -38,8 +38,8 @@ A documentação e todo o planejamento adotaram integralmente a identidade visua
 | **05** | Usuários, Perfis e Organizações | 🟢 Concluída | MinIO S3, edição de perfil, gestão de ONGs com membros e cards |
 | **06** | Cadastro de Animais | 🟢 Concluída | CRUD de animais, Stepper mobile em 6 etapas, PetDetailView e PostGIS |
 | **07** | Home, Busca e Filtros | 🟢 Concluída | Home Bento, Explorar em grid 2 colunas, filtros avançados e finais felizes |
-| **08** | Mapa e Geolocalização | ⏳ Aguardando autorização | MapLibre GL JS e PostGIS espacial |
-| **09** | Favoritos e Modo Descoberta | ⏳ Pendente | Curtidas, listas e animações |
+| **08** | Mapa e Geolocalização | 🟢 Concluída | MapLibre GL JS, GeoJSON PostGIS ST_DWithin, markers DOM e Bottom Sheet |
+| **09** | Favoritos e Modo Descoberta | ⏳ Aguardando autorização | Curtidas, listas e animações |
 | **10** | Processo de Adoção | ⏳ Pendente | Questionário e máquina de estados |
 | **11** | Chat em Tempo Real | ⏳ Pendente | Socket.IO, salas privadas e anexos |
 | **12** | Notificações Push | ⏳ Pendente | Web Push API, VAPID e BullMQ |
@@ -94,7 +94,7 @@ A documentação e todo o planejamento adotaram integralmente a identidade visua
 
 ## 🔴 Pendências que Precisam de Aprovação do Usuário
 
-1. **Autorização para a ETAPA 08:** Permissão explícita para iniciar a ETAPA 08 — Mapa e Geolocalização (Visualização interativa com MapLibre GL JS, pins de animais agrupados por proximidade PostGIS, slider de raio espacial e card de pré-visualização rápida ao tocar no pin).
+1. **Autorização para a ETAPA 09:** Permissão explícita para iniciar a ETAPA 09 — Favoritos e Modo Descoberta (Tinder-style swipe cards com Framer Motion, persistência de curtidas no banco de dados, feedback tátil/sonoro visual e lista de pets salvos).
 
 ---
 

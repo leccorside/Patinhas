@@ -31,6 +31,7 @@ import { animalsService, Animal, SuccessStory } from './features/animals/animals
 import { HomeView } from './features/home/HomeView';
 import { ExploreView } from './features/explore/ExploreView';
 import { FilterState, AdvancedFilterSheet } from './features/explore/AdvancedFilterSheet';
+import { MapView } from './features/map/MapView';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<NavTabId>('home');
@@ -295,16 +296,14 @@ export function App() {
 
         {/* ABA: MAPA */}
         {activeTab === 'map' && (
-          <div className="pt-2">
-            <h2 className="text-lg font-extrabold text-charcoal mb-1">Mapa de Adoção</h2>
-            <p className="text-xs text-charcoal-muted mb-4">
-              Animais próximos com cálculo espacial PostGIS
-            </p>
-            <EmptyState
-              title="Mapa em Geolocalização Ativa"
-              description="Visualize animais próximos em um raio personalizado no mapa interativo com MapLibre GL JS."
-              actionText="Explorar no Feed"
-              onAction={() => setActiveTab('explore')}
+          <div className="-mx-5 -mt-1">
+            <MapView
+              onSelectAnimal={setDetailedPet}
+              favoritedIds={favoritedIds}
+              onToggleFavorite={handleToggleFavorite}
+              onSwitchToList={() => setActiveTab('explore')}
+              userCity="São Paulo, SP"
+              showToast={showToast}
             />
           </div>
         )}

@@ -141,6 +141,19 @@ export const animalsService = {
     return res.json();
   },
 
+  async getNearbyGeo(lat: number, lon: number, radiusKm: number = 10, species?: string) {
+    const query = new URLSearchParams({
+      lat: String(lat),
+      lon: String(lon),
+      radiusKm: String(radiusKm),
+    });
+    if (species) query.append('species', species);
+
+    const res = await fetch(`${API_BASE}/geo/nearby?${query.toString()}`);
+    if (!res.ok) throw new Error('Falha ao carregar pontos do mapa.');
+    return res.json();
+  },
+
   async getAnimalById(id: string, userLat?: number, userLon?: number): Promise<Animal> {
     const query = new URLSearchParams();
     if (userLat) query.append('userLat', String(userLat));
