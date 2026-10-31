@@ -20,10 +20,12 @@ import { FosterModule } from './modules/foster/foster.module';
 import { EventsModule } from './modules/events/events.module';
 import { CampaignsModule } from './modules/campaigns/campaigns.module';
 import { EducationModule } from './modules/education/education.module';
+import { RedisCacheModule } from './common/cache/redis-cache.module';
 
 @Module({
   imports: [
     PrismaModule,
+    RedisCacheModule,
     MailModule,
     StorageModule,
     AuthModule,
