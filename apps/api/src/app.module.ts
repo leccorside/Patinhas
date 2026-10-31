@@ -15,6 +15,7 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
 import { MatchingModule } from './modules/matching/matching.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { ModerationModule } from './modules/moderation/moderation.module';
+import { LostFoundModule } from './modules/lost-found/lost-found.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { ModerationModule } from './modules/moderation/moderation.module';
     MatchingModule,
     AdminModule,
     ModerationModule,
+    LostFoundModule,
   ],
   controllers: [AppController],
   providers: [],

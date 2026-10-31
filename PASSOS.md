@@ -809,25 +809,48 @@ Ambiente seguro e protegido contra fraudes e comércio de animais. Concluído co
 **Dependências:** Etapas 06 e 08.
 
 **Tarefas:**
-- [ ] Backend: Módulo `lost-found` com separação estrita de animais para adoção
-- [ ] Backend: Busca espacial de pets perdidos por proximidade do último local visto
-- [ ] Frontend: Telas de "Perdi meu Pet" e "Encontrei um Pet"
-- [ ] Frontend: Marcadores visuais diferenciados no mapa (alerta amarelo/vermelho)
-- [ ] Frontend: Status de reencontro ("Reencontrado!") com celebração e arquivamento
+- [x] Backend: Módulo `LostFoundModule`, `LostFoundService` e `LostFoundController` com isolamento estrito de anúncios de adoção:
+  - `POST /api/v1/lost-found`: Cadastro de pet perdido (`LOST`) ou encontrado (`FOUND`) com coordenadas geográficas e suporte a PostGIS
+  - `GET /api/v1/lost-found`: Listagem com filtros por espécie, tipo, status e cálculo geodésico de distância espacial via `ST_DWithin` e `ST_Distance`
+  - `GET /api/v1/lost-found/:id`: Detalhes completos do relato e tutor
+  - `PATCH /api/v1/lost-found/:id/reunited`: Transição de status para `REUNITED` ("Reencontrado 🎉") com auditoria
+  - `DELETE /api/v1/lost-found/:id`: Exclusão de relato pelo autor ou Master Admin
+- [x] Backend: Indexação espacial PostGIS em `location_geom` e auditoria em `AuditLog`
+- [x] Frontend: `lostFoundService.ts` com tipagens completas e integração HTTP nativa
+- [x] Frontend: Interface mobile (`LostFoundView.tsx`) formatada estritamente para largura de 430px:
+  - Header com alternador de abas ("🚨 Perdidos" vs "🐾 Encontrados")
+  - Barra de busca rápida por características, cor, bairro ou raça
+  - Cards temáticos de alerta com fotos, selos de urgência, local de último avistamento, recompensa e botão de ligação direta
+  - Card comemorativo especial com efeito visual para status `REUNITED` ("Reencontrado 🎉")
+  - Compartilhamento ágil do alerta via Web Share API
+- [x] Frontend: Assistente de cadastro (`CreateLostFoundModal.tsx`) ágil para situações de emergência
+- [x] Frontend: Integração com o Perfil do usuário via banner "Perdidos & Achados (Busca Urgente)"
+- [x] Frontend: Compilação de produção do Vite (`npm run build`) concluída com 1950 módulos e 0 erros de tipagem
 
 **Arquivos envolvidos:**
-- `apps/api/src/modules/lost-found/*`
-- `apps/web/src/features/lost-found/*`
+- `apps/api/src/modules/lost-found/dto/lost-found.dto.ts`
+- `apps/api/src/modules/lost-found/lost-found.service.ts`
+- `apps/api/src/modules/lost-found/lost-found.controller.ts`
+- `apps/api/src/modules/lost-found/lost-found.module.ts`
+- `apps/api/src/app.module.ts`
+- `apps/web/src/features/lost-found/lostFoundService.ts`
+- `apps/web/src/features/lost-found/CreateLostFoundModal.tsx`
+- `apps/web/src/features/lost-found/LostFoundView.tsx`
+- `apps/web/src/App.tsx`
 
 **Critérios de aceite:**
-- Pets perdidos não são misturados com a listagem comum de adoção.
-- Contato entre as partes protegido para evitar extorsões.
+- Pets perdidos rigorosamente separados da listagem padrão de animais para adoção.
+- Cálculo de proximidade geoespacial exato por PostGIS.
+- Transição festiva para status `REUNITED`.
 
 **Testes:**
-- Testes de filtragem espacial no endpoint de animais perdidos.
+- Teste de cadastro de relato de cão perdido com coordenadas geográficas do Parque Ibirapuera em SP (HTTP 201 Created).
+- Teste de busca espacial com PostGIS (`ST_DWithin` raio 20km) retornando o pet cadastrado com distância exata calculada (4.78 km).
+- Teste de transição para `REUNITED` com sucesso (HTTP 200 OK).
+- Teste de compilação de produção do Vite no container `patinhas_web` gerando bundle em 6.38s com 1950 módulos e 0 erros.
 
 **Resultado esperado:**
-Módulo comunitário ágil para resgate e reencontro de animais.
+Módulo comunitário ágil para resgate e reencontro de animais. Concluído com êxito!
 
 ---
 

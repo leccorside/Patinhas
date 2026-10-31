@@ -50,6 +50,9 @@ import { MatchExplanationModal } from './features/matching/MatchExplanationModal
 import { ShelterDashboardView } from './features/shelter/ShelterDashboardView';
 import { AdminMasterDashboardView } from './features/admin/AdminMasterDashboardView';
 import { ReportModal } from './features/moderation/ReportModal';
+import { LostFoundView } from './features/lost-found/LostFoundView';
+import { CreateLostFoundModal } from './features/lost-found/CreateLostFoundModal';
+import { LostFoundType } from './features/lost-found/lostFoundService';
 import { Building2 } from 'lucide-react';
 
 export function App() {
@@ -106,6 +109,11 @@ export function App() {
   // Moderação e Denúncias (Etapa 16)
   const [reportingPet, setReportingPet] = useState<Animal | null>(null);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+
+  // Animais Perdidos e Encontrados (Etapa 17)
+  const [isLostFoundOpen, setIsLostFoundOpen] = useState(false);
+  const [isCreateLostFoundOpen, setIsCreateLostFoundOpen] = useState(false);
+  const [lostFoundCreateType, setLostFoundCreateType] = useState<LostFoundType>('LOST');
 
   // Toast
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -498,6 +506,15 @@ export function App() {
                   showToast={showToast}
                 />
               )
+            ) : isLostFoundOpen ? (
+              <LostFoundView
+                onBack={() => setIsLostFoundOpen(false)}
+                onOpenCreate={(t) => {
+                  setLostFoundCreateType(t);
+                  setIsCreateLostFoundOpen(true);
+                }}
+                showToast={showToast}
+              />
             ) : isAdminDashboardOpen ? (
               <AdminMasterDashboardView onBack={() => setIsAdminDashboardOpen(false)} />
             ) : isShelterDashboardOpen ? (
@@ -638,6 +655,32 @@ export function App() {
                     </div>
                   </div>
                   <ChevronRight size={18} className="text-secondary group-hover:translate-x-0.5 transition-transform" />
+                </button>
+
+                {/* Banner de Perdidos e Achados (Etapa 17) */}
+                <button
+                  onClick={() => setIsLostFoundOpen(true)}
+                  className="flex w-full items-center justify-between p-4 bg-gradient-to-r from-red-50 via-orange-50 to-amber-100/40 rounded-3xl border border-red-200/70 shadow-sm text-left hover:border-red-300 transition-all group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-2xl bg-red-600 text-white flex items-center justify-center text-xl font-bold shadow-md shadow-red-600/30 group-hover:scale-105 transition-transform">
+                      🚨
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-extrabold text-sm text-[#263238] block">
+                          Perdidos & Achados
+                        </span>
+                        <span className="text-[10px] bg-red-600 text-white font-bold px-1.5 py-0.5 rounded-full">
+                          Busca Urgente
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#78909C]">
+                        Alertas geolocalizados de pets desaparecidos ou resgatados
+                      </span>
+                    </div>
+                  </div>
+                  <ChevronRight size={18} className="text-red-600 group-hover:translate-x-0.5 transition-transform" />
                 </button>
 
                 {/* Banner de Painel da ONG e Protetor (Etapa 14) */}
@@ -930,6 +973,15 @@ export function App() {
           }}
         />
       )}
+      {/* Modal de Cadastro de Perdidos e Achados (Etapa 17) */}
+      <CreateLostFoundModal
+        isOpen={isCreateLostFoundOpen}
+        onClose={() => setIsCreateLostFoundOpen(false)}
+        defaultType={lostFoundCreateType}
+        onSuccess={() => {
+          showToast('Alerta de pet publicado com sucesso! 🐾', 'success');
+        }}
+      />
     </MobileAppShell>
   );
 }

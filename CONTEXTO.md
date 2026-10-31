@@ -4,8 +4,8 @@
 
 ## 📅 Última Atualização
 - **Data:** 31/10/2026
-- **Etapa atual:** ETAPA 17 — Animais Perdidos e Achados (Em andamento)
-- **Status geral:** 🟢 ETAPAS 00 a 16 Concluídas com sucesso e commitadas. Execução contínua e autônoma das etapas até a entrega final (Etapa 26).
+- **Etapa atual:** ETAPA 18 — Gestão de Lares Temporários (Em andamento)
+- **Status geral:** 🟢 ETAPAS 00 a 17 Concluídas com sucesso e commitadas. Execução contínua e autônoma das etapas até a entrega final (Etapa 26).
 
 ---
 
@@ -47,8 +47,8 @@ A documentação e todo o planejamento adotaram integralmente a identidade visua
 | **14** | Dashboard de ONGs | 🟢 Concluída | Métricas, triagem mobile de candidaturas e equipe da ONG |
 | **15** | Admin Master | 🟢 Concluída | Painel Master mobile, moderação global de ONGs/usuários e auditoria |
 | **16** | Moderação e Antifraude | 🟢 Concluída | Denúncias sigilosas, antifraude preventivo e ações disciplinares |
-| **17** | Animais Perdidos e Achados | 🔄 Em andamento | Alertas de desaparecimento, busca geolocalizada e cartazes de busca |
-| **18** | Lar Temporário | ⏳ Pendente | Voluntariado e acolhimento transitório |
+| **17** | Animais Perdidos e Achados | 🟢 Concluída | Alertas de desaparecimento, busca geolocalizada PostGIS e reencontros |
+| **18** | Lar Temporário | 🔄 Em andamento | Voluntariado, perfis de acolhimento transitório e alocação por ONGs |
 | **19** | Eventos e Feiras | ⏳ Pendente | Calendário de feiras presenciais |
 | **20** | Campanhas de Doação | ⏳ Pendente | Apoio a ONGs e prestação de contas |
 | **21** | Acompanhamento Pós-Adoção | ⏳ Pendente | Checklists de adaptação e lembretes |
