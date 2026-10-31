@@ -20,6 +20,7 @@ import {
   ChevronRight,
   ClipboardList,
   MessageSquare,
+  Globe,
 } from 'lucide-react';
 import { useAuthStore } from './store/authStore';
 import { LoginView } from './features/auth/LoginView';
@@ -59,6 +60,7 @@ import { EventsView } from './features/events/EventsView';
 import { CreateEventModal } from './features/events/CreateEventModal';
 import { CampaignsView } from './features/campaigns/CampaignsView';
 import { PostAdoptionView } from './features/education/PostAdoptionView';
+import { LanguageSettingsModal } from './features/settings/LanguageSettingsModal';
 import { Building2 } from 'lucide-react';
 
 export function App() {
@@ -134,6 +136,9 @@ export function App() {
 
   // Acompanhamento Pós-Adoção e Guia Educativo (Etapa 21)
   const [isPostAdoptionOpen, setIsPostAdoptionOpen] = useState(false);
+
+  // Internacionalização e Idioma (Etapa 22)
+  const [isLanguageModalOpen, setIsLanguageModalOpen] = useState(false);
 
   // Toast
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -904,6 +909,20 @@ export function App() {
                 {/* Opções de Configuração */}
                 <div className="rounded-3xl bg-white shadow-sm border border-neutral-100 divide-y divide-neutral-100 text-xs">
                   <button
+                    onClick={() => setIsLanguageModalOpen(true)}
+                    className="flex w-full items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <Globe size={16} className="text-primary" />
+                      <div>
+                        <span className="font-bold text-charcoal block text-left">Idioma e Região</span>
+                        <span className="text-[10px] text-charcoal-muted block text-left">Português (Brasil), English, Español</span>
+                      </div>
+                    </div>
+                    <span className="text-charcoal-muted">›</span>
+                  </button>
+
+                  <button
                     onClick={() => setIsEditProfileOpen(true)}
                     className="flex w-full items-center justify-between p-4 hover:bg-gray-50 transition-colors"
                   >
@@ -1143,6 +1162,14 @@ export function App() {
           showToast('Feira de adoção cadastrada com sucesso! 🎉', 'success');
         }}
       />
+
+      {/* Modal de Configuração de Idioma e Região (Etapa 22) */}
+      {isLanguageModalOpen && (
+        <LanguageSettingsModal
+          onClose={() => setIsLanguageModalOpen(false)}
+          showToast={showToast}
+        />
+      )}
     </MobileAppShell>
   );
 }

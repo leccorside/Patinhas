@@ -82,26 +82,24 @@ A documentação e todo o planejamento adotaram integralmente a identidade visua
 
 ---
 
-## 📁 Arquivos Criados na Sessão Atual (Etapa 21)
+## 📁 Arquivos Criados na Sessão Atual (Etapa 22)
 
 | Arquivo | Descrição |
 |---|---|
-| `apps/api/src/modules/education/dto/education.dto.ts` | DTOs de submissão de feedback pós-adoção e relatos periódicos |
-| `apps/api/src/modules/education/education.service.ts` | Regras de artigos educativos, checklists de 15/30/90 dias e auditoria |
-| `apps/api/src/modules/education/education.controller.ts` | Rotas REST públicas e autenticadas de artigos e checklists |
-| `apps/api/src/modules/education/education.module.ts` | Módulo NestJS registrado no `AppModule` |
-| `apps/web/src/features/education/educationService.ts` | Cliente HTTP frontend para consumo dos artigos e checklists |
-| `apps/web/src/features/education/ArticleDetailModal.tsx` | Leitura de artigos com tempo de leitura e aviso legal veterinário |
-| `apps/web/src/features/education/PostAdoptionFeedbackModal.tsx` | Envio de fotos recentes e relato de adaptação do pet |
-| `apps/web/src/features/education/PostAdoptionView.tsx` | Tela de checklist interativo (15/30/90 dias) e feed de artigos |
-| `apps/web/src/App.tsx` | Integração do banner e navegação móvel de pós-adoção |
+| `apps/web/src/i18n/locales/pt-BR/translation.json` | Dicionário de tradução Português do Brasil (padrão) |
+| `apps/web/src/i18n/locales/en/translation.json` | Dicionário de tradução Inglês americano |
+| `apps/web/src/i18n/locales/es/translation.json` | Dicionário de tradução Espanhol |
+| `apps/web/src/i18n/index.ts` | Configuração central do i18next e react-i18next |
+| `apps/web/src/features/settings/LanguageSettingsModal.tsx` | Modal mobile de seleção de idioma (uxui/idioma_regi_o_patinhas) |
+| `apps/web/src/main.tsx` | Inicialização do i18n na raiz da aplicação |
+| `apps/web/src/App.tsx` | Integração do modal de idioma nas configurações do perfil |
 
 ---
 
 ## 🟢 Progresso Atual das Etapas
 
-- **Etapas 00 a 21:** Concluídas com sucesso e validadas com testes ponta a ponta e build de produção.
-- **Etapa 22 em diante:** Internacionalização i18n (execução autônoma contínua até a Etapa 26).
+- **Etapas 00 a 22:** Concluídas com sucesso e validadas com testes ponta a ponta e build de produção.
+- **Etapa 23 em diante:** PWA, Manifest e Modo Offline (execução autônoma contínua até a Etapa 26).
 
 ---
 

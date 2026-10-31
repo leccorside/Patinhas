@@ -1,0 +1,72 @@
+{
+  "common": {
+    "appName": "Patinhas",
+    "tagline": "Adoção consciente e acolhimento animal",
+    "loading": "Carregando...",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "close": "Fechar",
+    "back": "Voltar",
+    "share": "Compartilhar",
+    "search": "Buscar por nome, raça...",
+    "filter": "Filtros",
+    "viewMore": "Ver mais",
+    "seeAll": "Ver todos",
+    "copied": "Copiado com sucesso!"
+  },
+  "nav": {
+    "home": "Início",
+    "explore": "Explorar",
+    "map": "Mapa",
+    "favorites": "Favoritos",
+    "profile": "Perfil"
+  },
+  "home": {
+    "welcome": "Encontre seu novo amigo",
+    "urgentCases": "Resgates Urgentes",
+    "recentPets": "Chegaram Recentemente",
+    "successStories": "Histórias com Final Feliz",
+    "discoveryMode": "Modo Descoberta",
+    "discoveryDesc": "Deslize para a direita para favoritar!",
+    "openDiscovery": "Iniciar Descoberta"
+  },
+  "pet": {
+    "adopt": "Quero Adotar",
+    "foster": "Oferecer Lar Temporário",
+    "share": "Compartilhar Pet",
+    "report": "Denunciar Anúncio",
+    "match": "Compatibilidade",
+    "matchScore": "Match Inteligente",
+    "details": "Detalhes do Pet",
+    "history": "Histórico e Saúde",
+    "vaccinated": "Vacinado",
+    "neutered": "Castrado",
+    "dewormed": "Vermifugado",
+    "specialNeeds": "Cuidados Especiais",
+    "dog": "Cachorro",
+    "cat": "Gato",
+    "male": "Macho",
+    "female": "Fêmea",
+    "small": "Porte Pequeno",
+    "medium": "Porte Médio",
+    "large": "Porte Grande",
+    "puppy": "Filhote",
+    "adult": "Adulto",
+    "senior": "Idoso"
+  },
+  "language": {
+    "title": "Idioma e Região",
+    "subtitle": "Selecione o idioma preferido para a interface",
+    "portuguese": "Português (Brasil)",
+    "english": "English (US)",
+    "spanish": "Español"
+  },
+  "settings": {
+    "notifications": "Notificações",
+    "language": "Idioma",
+    "terms": "Termos de Uso",
+    "privacy": "Privacidade",
+    "logout": "Sair da Conta"
+  }
+}

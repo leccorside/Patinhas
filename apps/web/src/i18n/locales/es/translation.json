@@ -1,0 +1,72 @@
+{
+  "common": {
+    "appName": "Patinhas",
+    "tagline": "Adopción consciente y bienestar animal",
+    "loading": "Cargando...",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "close": "Cerrar",
+    "back": "Volver",
+    "share": "Compartir",
+    "search": "Buscar por nombre, raza...",
+    "filter": "Filtros",
+    "viewMore": "Ver más",
+    "seeAll": "Ver todos",
+    "copied": "¡Copiado con éxito!"
+  },
+  "nav": {
+    "home": "Inicio",
+    "explore": "Explorar",
+    "map": "Mapa",
+    "favorites": "Favoritos",
+    "profile": "Perfil"
+  },
+  "home": {
+    "welcome": "Encuentra a tu nuevo amigo",
+    "urgentCases": "Rescates Urgentes",
+    "recentPets": "Llegaron Recientemente",
+    "successStories": "Finales Felices",
+    "discoveryMode": "Modo Descubrimiento",
+    "discoveryDesc": "¡Desliza a la derecha para dar me gusta!",
+    "openDiscovery": "Iniciar Descubrimiento"
+  },
+  "pet": {
+    "adopt": "Quiero Adoptar",
+    "foster": "Ofrecer Hogar Temporal",
+    "share": "Compartir Mascota",
+    "report": "Denunciar Anuncio",
+    "match": "Compatibilidad",
+    "matchScore": "Match Inteligente",
+    "details": "Detalles de la Mascota",
+    "history": "Historial y Salud",
+    "vaccinated": "Vacunado",
+    "neutered": "Esterilizado",
+    "dewormed": "Desparasitado",
+    "specialNeeds": "Cuidados Especiales",
+    "dog": "Perro",
+    "cat": "Gato",
+    "male": "Macho",
+    "female": "Hembra",
+    "small": "Tamaño Pequeño",
+    "medium": "Tamaño Mediano",
+    "large": "Tamaño Grande",
+    "puppy": "Cachorro",
+    "adult": "Adulto",
+    "senior": "Senior"
+  },
+  "language": {
+    "title": "Idioma y Región",
+    "subtitle": "Selecciona tu idioma preferido para la interfaz",
+    "portuguese": "Português (Brasil)",
+    "english": "English (US)",
+    "spanish": "Español"
+  },
+  "settings": {
+    "notifications": "Notificaciones",
+    "language": "Idioma",
+    "terms": "Términos de Uso",
+    "privacy": "Privacidad",
+    "logout": "Cerrar Sesión"
+  }
+}

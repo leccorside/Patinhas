@@ -1,0 +1,72 @@
+{
+  "common": {
+    "appName": "Patinhas",
+    "tagline": "Conscious adoption and animal welfare",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "close": "Close",
+    "back": "Back",
+    "share": "Share",
+    "search": "Search by name, breed...",
+    "filter": "Filters",
+    "viewMore": "View more",
+    "seeAll": "See all",
+    "copied": "Copied successfully!"
+  },
+  "nav": {
+    "home": "Home",
+    "explore": "Explore",
+    "map": "Map",
+    "favorites": "Favorites",
+    "profile": "Profile"
+  },
+  "home": {
+    "welcome": "Find your new best friend",
+    "urgentCases": "Urgent Rescues",
+    "recentPets": "Recently Added",
+    "successStories": "Happy Endings",
+    "discoveryMode": "Discovery Mode",
+    "discoveryDesc": "Swipe right to favorite!",
+    "openDiscovery": "Start Discovery"
+  },
+  "pet": {
+    "adopt": "Adopt Me",
+    "foster": "Offer Foster Care",
+    "share": "Share Pet",
+    "report": "Report Listing",
+    "match": "Compatibility",
+    "matchScore": "Smart Match",
+    "details": "Pet Details",
+    "history": "History & Health",
+    "vaccinated": "Vaccinated",
+    "neutered": "Neutered",
+    "dewormed": "Dewormed",
+    "specialNeeds": "Special Needs",
+    "dog": "Dog",
+    "cat": "Cat",
+    "male": "Male",
+    "female": "Female",
+    "small": "Small Size",
+    "medium": "Medium Size",
+    "large": "Large Size",
+    "puppy": "Puppy",
+    "adult": "Adult",
+    "senior": "Senior"
+  },
+  "language": {
+    "title": "Language & Region",
+    "subtitle": "Choose your preferred interface language",
+    "portuguese": "Português (Brasil)",
+    "english": "English (US)",
+    "spanish": "Español"
+  },
+  "settings": {
+    "notifications": "Notifications",
+    "language": "Language",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "logout": "Log Out"
+  }
+}
