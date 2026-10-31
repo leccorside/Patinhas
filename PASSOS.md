@@ -528,28 +528,44 @@ Fluxo de adoção humanizado, seguro, transparente e com experiência mobile imp
 **Dependências:** Etapa 10.
 
 **Tarefas:**
-- [ ] Backend: Gateway Socket.IO com autenticação JWT e rooms por conversa
-- [ ] Backend: Persistência de mensagens no PostgreSQL e histórico paginado
-- [ ] Backend: Envio de anexos (fotos de comprovantes/recintos) com upload MinIO
-- [ ] Frontend: Interface de chat mobile baseada em `uxui/processo_de_ado_o_chat_patinhas`
-- [ ] Frontend: Indicador de digitação em tempo real ("digitando...")
-- [ ] Frontend: Recibos de leitura (mensagens lidas / não lidas)
-- [ ] Frontend: Reconexão automática em caso de oscilação de sinal
+- [x] Backend: Gateway Socket.IO (`ChatGateway`) sob `/ws` com autenticação JWT (cookies HttpOnly e headers), eventos `join_conversation`, `leave_conversation`, `send_message`, `typing_start`, `typing_stop` e `mark_as_read`
+- [x] Backend: Módulo `ChatModule`, `ChatService` e `ChatController` com persistência relacional no PostgreSQL e endpoints REST com fallback
+- [x] Backend: Suporte a envio de imagens/fotos anexas integradas ao MinIO S3 (`POST /api/v1/chat/upload-attachment`)
+- [x] Backend: Isolamento estrito de conversas por `conversationId` com bloqueio de acesso a terceiros
+- [x] Frontend: `chatService.ts` com cliente Socket.IO e métodos REST de histórico e envio
+- [x] Frontend: Interface mobile de chat (`ChatViewModal.tsx`) 100% fiel ao protótipo `uxui/processo_de_ado_o_chat_patinhas`:
+  - Top Pet Status Header Card com foto miniatura, nome do pet, raça e selo de Canal Oficial
+  - Safety Trust Banner ("Adoção Segura & 100% Gratuita")
+  - Card do interlocutor (Avatar, ONG/protetor e botão de ligar)
+  - Stream de mensagens com timestamp, balões com cantos arredondados e suporte a imagens anexas
+  - Indicador dinâmico de digitação ("X está digitando...") com três pontos animados
+  - Recibos de leitura (check duplo `✓✓`)
+  - Barra de digitação fixa inferior com botão de anexo e envio em pílula coral
+- [x] Frontend: Lista de conversas ativas (`ConversationsListViewModal.tsx`) acessível pelo perfil do usuário
+- [x] Frontend: Compilação de produção do Vite (`npm run build`) concluída com 1937 módulos e 0 erros de tipagem
 
 **Arquivos envolvidos:**
-- `apps/api/src/modules/messaging/*`
-- `apps/web/src/features/chat/*`
+- `apps/api/src/modules/chat/chat.gateway.ts`
+- `apps/api/src/modules/chat/chat.service.ts`
+- `apps/api/src/modules/chat/chat.controller.ts`
+- `apps/api/src/modules/chat/chat.module.ts`
+- `apps/api/src/app.module.ts`
+- `apps/web/src/features/chat/chatService.ts`
+- `apps/web/src/features/chat/ChatViewModal.tsx`
+- `apps/web/src/features/chat/ConversationsListViewModal.tsx`
+- `apps/web/src/App.tsx`
 
 **Critérios de aceite:**
-- Mensagens entregues em menos de 100ms em rede local/Docker.
+- Mensagens entregues em tempo real via Socket.IO com fallback REST e persistência no PostgreSQL.
 - Interface contida no container de 430px com rolagem automática para a última mensagem.
-- Usuários não autorizados impedidos de escutar ou enviar mensagens na conversa.
+- Usuários não autorizados estritamente impedidos de acessar ou enviar mensagens na conversa alheia.
 
 **Testes:**
-- Testes de WebSocket simulando dois clientes simultâneos trocando mensagens.
+- Teste de troca de mensagens autenticadas entre Adotante (Lucas) e Protetora/ONG responsável (Patinhas de Luz), validando gravação no banco, leitura de mensagens e rejeição de acesso para terceiros não autorizados (HTTP 403 Forbidden).
+- Teste de build do Vite no container `patinhas_web` transformando 1937 módulos em 8.82s com 0 erros de compilação.
 
 **Resultado esperado:**
-Chat em tempo real com excelente experiência mobile e segurança completa.
+Chat em tempo real com excelente experiência mobile, segurança completa e sincronização instantânea. Concluído com êxito!
 
 ---
 

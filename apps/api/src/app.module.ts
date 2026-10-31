@@ -10,6 +10,7 @@ import { AnimalsModule } from './modules/animals/animals.module';
 import { GeoModule } from './modules/geo/geo.module';
 import { FavoritesModule } from './modules/favorites/favorites.module';
 import { AdoptionsModule } from './modules/adoptions/adoptions.module';
+import { ChatModule } from './modules/chat/chat.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { AdoptionsModule } from './modules/adoptions/adoptions.module';
     GeoModule,
     FavoritesModule,
     AdoptionsModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [],

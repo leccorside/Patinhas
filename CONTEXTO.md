@@ -41,8 +41,8 @@ A documentação e todo o planejamento adotaram integralmente a identidade visua
 | **08** | Mapa e Geolocalização | 🟢 Concluída | MapLibre GL JS, GeoJSON PostGIS ST_DWithin, markers DOM e Bottom Sheet |
 | **09** | Favoritos e Modo Descoberta | 🟢 Concluída | Swipe tátil Tinder-style, persistência Postgres e tela de favoritos |
 | **10** | Processo de Adoção | 🟢 Concluída | Questionário em 3 passos, máquina de estados e conclusão atômica Prisma |
-| **11** | Chat em Tempo Real | ⏳ Aguardando autorização | Socket.IO, salas privadas e anexos |
-| **12** | Notificações Push | ⏳ Pendente | Web Push API, VAPID e BullMQ |
+| **11** | Chat em Tempo Real | 🟢 Concluída | Gateway Socket.IO /ws, salas privadas e interface de chat mobile |
+| **12** | Notificações Push | 🔄 Em andamento | Web Push API, chaves VAPID e BullMQ |
 | **13** | Match Inteligente | ⏳ Pendente | Compatibilidade ponderada tutor-pet |
 | **14** | Dashboard de ONGs | ⏳ Pendente | Métricas e gestão de solicitações mobile |
 | **15** | Admin Master | ⏳ Pendente | Moderação global e auditoria |

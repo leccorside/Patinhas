@@ -20,7 +20,7 @@ import { adoptionService, AdoptionApplication } from './adoptionService';
 
 interface MyAdoptionsViewProps {
   onSelectApplication: (app: AdoptionApplication) => void;
-  onOpenChatWithHost?: (hostUserId: string, petName: string) => void;
+  onOpenChatWithHost?: (animalId: string, petName: string) => void;
   showToast: (msg: string, type?: 'success' | 'error' | 'info') => void;
 }
 
@@ -388,9 +388,7 @@ export const MyAdoptionsView: React.FC<MyAdoptionsViewProps> = ({
                   <button
                     onClick={() => {
                       if (onOpenChatWithHost) {
-                        const hostId =
-                          app.animal.protector?.id || app.animal.organization?.id || '';
-                        onOpenChatWithHost(hostId, app.animal.name);
+                        onOpenChatWithHost(app.animal.id, app.animal.name);
                       } else {
                         showToast(`Abrindo canal com os responsáveis por ${app.animal.name}`, 'info');
                       }

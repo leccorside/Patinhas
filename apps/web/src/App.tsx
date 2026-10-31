@@ -19,6 +19,7 @@ import {
   HelpCircle,
   ChevronRight,
   ClipboardList,
+  MessageSquare,
 } from 'lucide-react';
 import { useAuthStore } from './store/authStore';
 import { LoginView } from './features/auth/LoginView';
@@ -40,6 +41,9 @@ import { AdoptionQuestionnaireModal } from './features/adoption/AdoptionQuestion
 import { MyAdoptionsView } from './features/adoption/MyAdoptionsView';
 import { AdoptionProcessDetailModal } from './features/adoption/AdoptionProcessDetailModal';
 import { AdoptionApplication } from './features/adoption/adoptionService';
+import { ChatViewModal } from './features/chat/ChatViewModal';
+import { ConversationsListViewModal } from './features/chat/ConversationsListViewModal';
+import { chatService } from './features/chat/chatService';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<NavTabId>('home');
@@ -75,12 +79,30 @@ export function App() {
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [selectedPet, setSelectedPet] = useState<Animal | null>(null);
 
+  // Chat em Tempo Real (Etapa 11)
+  const [activeChatConversationId, setActiveChatConversationId] = useState<string | null>(null);
+  const [isConversationsListOpen, setIsConversationsListOpen] = useState(false);
+
   // Toast
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('success');
 
   // Zustand Auth Store
   const { user, isAuthenticated, checkAuth, logout } = useAuthStore();
+
+  const handleOpenChatForAnimal = async (animalId: string) => {
+    if (!isAuthenticated) {
+      setActiveTab('profile');
+      showToast('Faça login para conversar com o responsável! 🐾', 'info');
+      return;
+    }
+    try {
+      const conv = await chatService.getOrCreateConversation(animalId);
+      setActiveChatConversationId(conv.id);
+    } catch (err: any) {
+      showToast(err.message || 'Erro ao abrir chat com o responsável.', 'error');
+    }
+  };
 
   useEffect(() => {
     checkAuth();
@@ -417,9 +439,9 @@ export function App() {
                 </button>
                 <MyAdoptionsView
                   onSelectApplication={(app) => setSelectedApplicationForDetail(app)}
-                  onOpenChatWithHost={(hostId, petName) =>
-                    showToast(`Canal de atendimento aberto para ${petName}! 🐾`, 'info')
-                  }
+                  onOpenChatWithHost={(animalId, petName) => {
+                    handleOpenChatForAnimal(animalId);
+                  }}
                   showToast={showToast}
                 />
               </div>
@@ -502,6 +524,30 @@ export function App() {
                     </div>
                   </div>
                   <ChevronRight size={18} className="text-primary group-hover:translate-x-0.5 transition-transform" />
+                </button>
+
+                {/* Banner de Mensagens e Chat em Tempo Real (Etapa 11) */}
+                <button
+                  onClick={() => setIsConversationsListOpen(true)}
+                  className="flex w-full items-center justify-between p-4 bg-white rounded-3xl border border-neutral-100 shadow-sm text-left hover:border-secondary/40 transition-all group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-2xl bg-secondary/15 text-secondary flex items-center justify-center text-xl font-bold shadow-sm group-hover:scale-105 transition-transform">
+                      💬
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-extrabold text-sm text-charcoal block">
+                          Mensagens & Chat em Tempo Real
+                        </span>
+                        <span className="w-2 h-2 rounded-full bg-secondary" />
+                      </div>
+                      <span className="text-[11px] text-charcoal-muted">
+                        Converse diretamente com os responsáveis pelos pets
+                      </span>
+                    </div>
+                  </div>
+                  <ChevronRight size={18} className="text-secondary group-hover:translate-x-0.5 transition-transform" />
                 </button>
 
                 {/* Ações Rápidas de Gestão */}
@@ -666,6 +712,29 @@ export function App() {
         }}
         showToast={showToast}
       />
+
+      {/* Lista de Conversas do Usuário (Etapa 11) */}
+      <ConversationsListViewModal
+        isOpen={isConversationsListOpen}
+        onClose={() => setIsConversationsListOpen(false)}
+        currentUserId={user?.id || ''}
+        onSelectConversation={(convId) => {
+          setIsConversationsListOpen(false);
+          setActiveChatConversationId(convId);
+        }}
+        showToast={showToast}
+      />
+
+      {/* Janela de Chat em Tempo Real com Socket.IO (Etapa 11) */}
+      {activeChatConversationId && (
+        <ChatViewModal
+          isOpen={!!activeChatConversationId}
+          conversationId={activeChatConversationId}
+          onClose={() => setActiveChatConversationId(null)}
+          currentUserId={user?.id || ''}
+          showToast={showToast}
+        />
+      )}
     </MobileAppShell>
   );
 }
