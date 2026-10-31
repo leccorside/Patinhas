@@ -16,6 +16,7 @@ import { MatchingModule } from './modules/matching/matching.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { ModerationModule } from './modules/moderation/moderation.module';
 import { LostFoundModule } from './modules/lost-found/lost-found.module';
+import { FosterModule } from './modules/foster/foster.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { LostFoundModule } from './modules/lost-found/lost-found.module';
     AdminModule,
     ModerationModule,
     LostFoundModule,
+    FosterModule,
   ],
   controllers: [AppController],
   providers: [],

@@ -53,6 +53,8 @@ import { ReportModal } from './features/moderation/ReportModal';
 import { LostFoundView } from './features/lost-found/LostFoundView';
 import { CreateLostFoundModal } from './features/lost-found/CreateLostFoundModal';
 import { LostFoundType } from './features/lost-found/lostFoundService';
+import { FosterView } from './features/foster/FosterView';
+import { FosterVolunteerModal } from './features/foster/FosterVolunteerModal';
 import { Building2 } from 'lucide-react';
 
 export function App() {
@@ -114,6 +116,10 @@ export function App() {
   const [isLostFoundOpen, setIsLostFoundOpen] = useState(false);
   const [isCreateLostFoundOpen, setIsCreateLostFoundOpen] = useState(false);
   const [lostFoundCreateType, setLostFoundCreateType] = useState<LostFoundType>('LOST');
+
+  // Lares Temporários (Etapa 18)
+  const [isFosterOpen, setIsFosterOpen] = useState(false);
+  const [isFosterVolunteerModalOpen, setIsFosterVolunteerModalOpen] = useState(false);
 
   // Toast
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -506,6 +512,12 @@ export function App() {
                   showToast={showToast}
                 />
               )
+            ) : isFosterOpen ? (
+              <FosterView
+                onBack={() => setIsFosterOpen(false)}
+                onOpenVolunteerModal={() => setIsFosterVolunteerModalOpen(true)}
+                showToast={showToast}
+              />
             ) : isLostFoundOpen ? (
               <LostFoundView
                 onBack={() => setIsLostFoundOpen(false)}
@@ -681,6 +693,32 @@ export function App() {
                     </div>
                   </div>
                   <ChevronRight size={18} className="text-red-600 group-hover:translate-x-0.5 transition-transform" />
+                </button>
+
+                {/* Banner de Lar Temporário (Etapa 18) */}
+                <button
+                  onClick={() => setIsFosterOpen(true)}
+                  className="flex w-full items-center justify-between p-4 bg-gradient-to-r from-teal-50 via-emerald-50 to-cyan-100/40 rounded-3xl border border-teal-200/70 shadow-sm text-left hover:border-teal-300 transition-all group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-2xl bg-[#4DB6AC] text-white flex items-center justify-center text-xl font-bold shadow-md shadow-[#4DB6AC]/30 group-hover:scale-105 transition-transform">
+                      🏡
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-extrabold text-sm text-[#263238] block">
+                          Lar Temporário & Voluntariado
+                        </span>
+                        <span className="text-[10px] bg-[#4DB6AC] text-white font-bold px-1.5 py-0.5 rounded-full">
+                          Acolhimento
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#78909C]">
+                        Ofereça ou encontre acolhimento seguro para pets resgatados
+                      </span>
+                    </div>
+                  </div>
+                  <ChevronRight size={18} className="text-[#00796B] group-hover:translate-x-0.5 transition-transform" />
                 </button>
 
                 {/* Banner de Painel da ONG e Protetor (Etapa 14) */}
@@ -980,6 +1018,15 @@ export function App() {
         defaultType={lostFoundCreateType}
         onSuccess={() => {
           showToast('Alerta de pet publicado com sucesso! 🐾', 'success');
+        }}
+      />
+
+      {/* Modal de Voluntário de Lar Temporário (Etapa 18) */}
+      <FosterVolunteerModal
+        isOpen={isFosterVolunteerModalOpen}
+        onClose={() => setIsFosterVolunteerModalOpen(false)}
+        onSuccess={() => {
+          showToast('Perfil de Lar Temporário atualizado com sucesso! 🐾', 'success');
         }}
       />
     </MobileAppShell>

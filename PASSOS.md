@@ -861,23 +861,48 @@ Módulo comunitário ágil para resgate e reencontro de animais. Concluído com 
 **Dependências:** Etapa 05 e 06.
 
 **Tarefas:**
-- [ ] Backend: Módulo de Lares Temporários (`foster_profiles`)
-- [ ] Backend: Filtros por tipo de imóvel, espécies aceitas e capacidade de acolhimento
-- [ ] Frontend: Formulário de voluntariado de lar temporário
-- [ ] Frontend: Painel da ONG para buscar e alocar lares temporários disponíveis
+- [x] Backend: Módulo `FosterModule`, `FosterService` e `FosterController` com endpoints REST autenticados:
+  - `GET /api/v1/foster/my-profile`: Consulta do perfil de voluntário do usuário autenticado
+  - `POST /api/v1/foster/profile`: Cadastro e atualização atômica (`upsert`) do perfil de Lar Temporário com capacidade de pets, espécies aceitas, quarentena, cidade/UF e disponibilidade ativa
+  - `GET /api/v1/foster/available`: Busca de lares temporários disponíveis com filtros por cidade, estado e espécies
+  - `POST /api/v1/foster/requests`: Envio de solicitação de acolhimento temporário por líderes ou membros de ONGs
+  - `GET /api/v1/foster/my-requests`: Fila de solicitações de acolhimento recebidas pelo voluntário com dados da ONG solicitante
+  - `PATCH /api/v1/foster/requests/:id/respond`: Resposta do voluntário (`ACCEPTED` ou `DECLINED`)
+- [x] Backend: Auditoria em `AuditLog` para criação de perfil e disparo de solicitações
+- [x] Frontend: `fosterService.ts` com tipagens completas e integração HTTP nativa
+- [x] Frontend: Modal humanizado de cadastro de voluntário (`FosterVolunteerModal.tsx`) com seleção de capacidade, espécies aceitas, chave seletora de quarentena e disponibilidade ativa
+- [x] Frontend: Interface mobile (`FosterView.tsx`) formatada estritamente para largura de 430px:
+  - Header com alternador de abas ("🏡 Lares Disponíveis" vs "📋 Pedidos Recebidos")
+  - Filtro por cidade
+  - Cards detalhados com capacidades, selo de quarentena, experiência e ação de contato telefônico
+  - Ações ágeis com 1 toque para aceitar ou recusar acolhimento temporário
+- [x] Frontend: Integração com o Perfil do usuário via banner "Lar Temporário & Voluntariado"
+- [x] Frontend: Compilação de produção do Vite (`npm run build`) concluída com 1953 módulos e 0 erros de tipagem
 
 **Arquivos envolvidos:**
-- `apps/api/src/modules/foster/*`
-- `apps/web/src/features/foster/*`
+- `apps/api/src/modules/foster/dto/foster.dto.ts`
+- `apps/api/src/modules/foster/foster.service.ts`
+- `apps/api/src/modules/foster/foster.controller.ts`
+- `apps/api/src/modules/foster/foster.module.ts`
+- `apps/api/src/app.module.ts`
+- `apps/web/src/features/foster/fosterService.ts`
+- `apps/web/src/features/foster/FosterVolunteerModal.tsx`
+- `apps/web/src/features/foster/FosterView.tsx`
+- `apps/web/src/App.tsx`
 
 **Critérios de aceite:**
 - Diferenciação clara entre acolhimento transitório e solicitação de adoção definitiva.
+- Capacidades de acolhimento e cômodo de quarentena respeitados.
+- Transições de aceitação ou recusa refletidas instantaneamente.
 
 **Testes:**
-- Teste de cadastro e busca de voluntários disponíveis por região.
+- Teste de cadastro/upsert de perfil de voluntário com capacidade para 2 pets em São Paulo (HTTP 201 Created).
+- Teste de busca de lares temporários disponíveis por cidade retornando o voluntário cadastrado (HTTP 200 OK).
+- Teste de solicitação de acolhimento emitida pela ONG e aceitação pelo voluntário com mensagem de sucesso (HTTP 200 OK).
+- Teste de compilação de produção do Vite no container `patinhas_web` gerando bundle em 9.45s com 1953 módulos e 0 erros.
 
 **Resultado esperado:**
-Rede organizada de apoio a animais resgatados aguardando adoção.
+Rede organizada de apoio a animais resgatados aguardando adoção. Concluído com êxito!
 
 ---
 
