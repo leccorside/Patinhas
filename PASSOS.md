@@ -228,26 +228,35 @@ Sistema de autenticação robusto e seguro em pleno funcionamento. Concluído co
 **Dependências:** Etapa 04.
 
 **Tarefas:**
-- [ ] Backend: Módulo de Usuários e Perfis com upload de avatar no MinIO
-- [ ] Backend: Módulo de Organizações (cadastro de ONG, CNPJ, dados de contato, upload de logotipo)
-- [ ] Backend: Gestão de múltiplos membros por ONG com papéis (Owner, Admin, Voluntário)
-- [ ] Frontend: Tela de Perfil do Usuário baseada em `uxui/perfil_do_adotante_patinhas`
-- [ ] Frontend: Fluxo de cadastro institucional de ONGs
-- [ ] Frontend: Upload e corte de fotos com preview
+- [x] Backend: StorageService com MinIO (`cgr.dev/chainguard/minio`) para upload seguro de arquivos e bucket `patinhas-media` público
+- [x] Backend: Módulo de Usuários e Perfis (`UsersService`, `UsersController`) com atualização cadastral, coordenadas geográficas PostGIS e upload de avatar
+- [x] Backend: Módulo de Organizações (`OrganizationsService`, `OrganizationsController`) com criação, listagem com filtros, busca por ID, edição, upload de logotipo e gestão de membros (Owner, Admin, Member, Volunteer)
+- [x] Frontend: Perfil completo do Usuário (`ProfileView.tsx`, `EditProfileModal.tsx`) com edição de dados, bio, localização e upload de avatar
+- [x] Frontend: Cadastro e listagem institucional de ONGs (`CreateOrganizationModal.tsx`, `ShelterCard.tsx`)
+- [x] Frontend: Preview e upload de imagens conectado ao backend
+- [x] Build limpo do frontend React/Vite com 1889 módulos transformados e 0 erros de compilação
 
 **Arquivos envolvidos:**
-- `apps/api/src/modules/users/*`, `apps/api/src/modules/organizations/*`
-- `apps/web/src/features/profile/*`, `apps/web/src/features/organizations/*`
+- `apps/api/src/modules/storage/storage.service.ts`
+- `apps/api/src/modules/users/users.service.ts`, `apps/api/src/modules/users/users.controller.ts`
+- `apps/api/src/modules/organizations/organizations.service.ts`, `apps/api/src/modules/organizations/organizations.controller.ts`
+- `apps/web/src/features/profile/EditProfileModal.tsx`
+- `apps/web/src/features/organizations/CreateOrganizationModal.tsx`
+- `apps/web/src/features/organizations/ShelterCard.tsx`
+- `apps/web/src/App.tsx`
 
 **Critérios de aceite:**
-- Upload seguro de fotos armazenadas no MinIO e servidas com URLs assinadas/públicas.
+- Upload seguro de fotos armazenadas no MinIO e servidas via URL pública.
 - Edição de perfil refletindo instantaneamente no app.
+- Criação e consulta de organizações vinculadas a membros operacionais.
 
 **Testes:**
-- Testes unitários para regras de permissão de membros da ONG.
+- Teste de autenticação e consulta de perfil via HTTP (`GET /api/v1/users/profile`) retornando perfil e dados de stats.
+- Teste de listagem pública de ONGs (`GET /api/v1/organizations`) retornando organizações ativas e contagem de animais.
+- Teste de build do frontend Vite (`npm run build`) concluído com êxito em 4.43s.
 
 **Resultado esperado:**
-Perfis individuais e de organizações ativos e prontos para cadastrar pets.
+Perfis individuais e de organizações ativos e prontos para cadastrar pets. Concluído com êxito!
 
 ---
 

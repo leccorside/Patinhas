@@ -18,24 +18,42 @@ import {
   NavTabId,
   PetCardData,
 } from './components';
-import { Sparkles, Filter, LogOut, CheckCircle2, Shield, User, Heart, Settings, HelpCircle, FileText } from 'lucide-react';
+import {
+  Sparkles,
+  Filter,
+  LogOut,
+  CheckCircle2,
+  Shield,
+  User,
+  Heart,
+  Edit3,
+  Building2,
+  FileText,
+  HelpCircle,
+} from 'lucide-react';
 import { useAuthStore } from './store/authStore';
 import { LoginView } from './features/auth/LoginView';
 import { RegisterView } from './features/auth/RegisterView';
 import { ForgotPasswordModal } from './features/auth/ForgotPasswordModal';
+import { EditProfileModal } from './features/profile/EditProfileModal';
+import { CreateOrganizationModal } from './features/organizations/CreateOrganizationModal';
+import { ShelterCard, ShelterData } from './features/organizations/ShelterCard';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<NavTabId>('home');
   const [pets, setPets] = useState<PetCardData[]>([]);
+  const [shelters, setShelters] = useState<ShelterData[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<'ALL' | 'DOG' | 'CAT' | 'PUPPY'>('ALL');
   const [favoritedIds, setFavoritedIds] = useState<Set<string>>(new Set());
 
-  // Estados dos Componentes Interativos
+  // Estados dos Modais e Bottom Sheets
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const [isAdoptDialogOpen, setIsAdoptDialogOpen] = useState(false);
   const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+  const [isCreateOrgOpen, setIsCreateOrgOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const [selectedPet, setSelectedPet] = useState<PetCardData | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -48,8 +66,9 @@ export function App() {
     checkAuth();
   }, [checkAuth]);
 
-  // Busca animais da API NestJS (PostgreSQL + PostGIS)
-  useEffect(() => {
+  // Busca dados iniciais da API (Pets e ONGs)
+  const fetchData = () => {
+    // Busca animais
     fetch('http://localhost:3333/api/v1/animals/demo')
       .then((res) => res.json())
       .then((data) => {
@@ -77,6 +96,16 @@ export function App() {
         console.error('Erro ao buscar pets:', err);
         setLoading(false);
       });
+
+    // Busca organizações cadastradas
+    fetch('http://localhost:3333/api/v1/organizations')
+      .then((res) => res.json())
+      .then((data) => setShelters(data))
+      .catch((err) => console.error('Erro ao buscar ONGs:', err));
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   const handleFavoriteToggle = (id: string, e: React.MouseEvent) => {
@@ -104,7 +133,7 @@ export function App() {
     showToast('Sessão encerrada com sucesso', 'info');
   };
 
-  // Filtragem local de pets
+  // Filtragem de pets
   const filteredPets = pets.filter((pet) => {
     const matchesSearch =
       pet.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -140,8 +169,9 @@ export function App() {
         onSelectLocation={() => setIsFilterSheetOpen(true)}
       />
 
-      {/* Roteamento de Abas Internas Mobile */}
+      {/* Conteúdo Principal Scrollável */}
       <main className="flex-1 px-5 pb-28 pt-1">
+        {/* ABA: INÍCIO */}
         {activeTab === 'home' && (
           <>
             {/* Banner Hero do Warm Paws System */}
@@ -149,15 +179,15 @@ export function App() {
               <div className="relative z-10">
                 <div className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-0.5 text-[11px] font-semibold backdrop-blur-sm">
                   <Sparkles size={13} />
-                  Autenticação & Segurança Ativas
+                  Perfis & ONGs Integrados
                 </div>
                 <h2 className="mt-2.5 text-xl font-extrabold leading-tight">
                   Adote com amor, transforme uma vida
                 </h2>
                 <p className="mt-1 text-xs text-white/90">
                   {isAuthenticated
-                    ? `Olá, ${user?.fullName}! Animais compatíveis com você esperam um lar.`
-                    : 'Cadastre-se ou entre na sua conta para iniciar processos de adoção.'}
+                    ? `Olá, ${user?.fullName}! Conecte-se com ONGs e protetores verificados.`
+                    : 'Cadastre-se ou entre na sua conta para acompanhar processos de adoção.'}
                 </p>
               </div>
             </div>
@@ -187,7 +217,7 @@ export function App() {
               />
             </div>
 
-            {/* Seção Principal: Lista de Animais */}
+            {/* Seção de Animais Próximos */}
             <div className="mt-5">
               <div className="flex items-center justify-between mb-3">
                 <div>
@@ -243,120 +273,59 @@ export function App() {
                 </div>
               )}
             </div>
+
+            {/* Seção: ONGs e Abrigos Verificados */}
+            <div className="mt-8">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <h3 className="text-base font-extrabold text-charcoal">ONGs & Abrigos</h3>
+                  <p className="text-xs text-charcoal-muted">Organizações dedicadas à causa animal</p>
+                </div>
+
+                {isAuthenticated && (
+                  <button
+                    onClick={() => setIsCreateOrgOpen(true)}
+                    className="flex items-center gap-1 text-xs font-bold text-primary hover:underline"
+                  >
+                    + Criar ONG
+                  </button>
+                )}
+              </div>
+
+              <div className="space-y-3">
+                {shelters.map((shelter) => (
+                  <ShelterCard
+                    key={shelter.id}
+                    shelter={shelter}
+                    onContact={() => showToast(`Abrindo perfil institucional de ${shelter.name}`, 'info')}
+                  />
+                ))}
+              </div>
+            </div>
           </>
         )}
 
-        {/* ABA DE PERFIL / AUTENTICAÇÃO */}
-        {activeTab === 'profile' && (
-          <div className="pt-2">
-            {!isAuthenticated ? (
-              authMode === 'login' ? (
-                <LoginView
-                  onSuccess={() => setActiveTab('home')}
-                  onNavigateToRegister={() => setAuthMode('register')}
-                  onForgotPassword={() => setIsForgotPasswordOpen(true)}
-                  showToast={showToast}
+        {/* ABA: EXPLORAR (ONGs e Busca Avançada) */}
+        {activeTab === 'explore' && (
+          <div className="pt-2 space-y-5">
+            <div>
+              <h2 className="text-lg font-extrabold text-charcoal">Explorar ONGs Parceiras</h2>
+              <p className="text-xs text-charcoal-muted">Encontre abrigos e protetores em São Paulo e região</p>
+            </div>
+
+            <div className="space-y-3">
+              {shelters.map((shelter) => (
+                <ShelterCard
+                  key={shelter.id}
+                  shelter={shelter}
+                  onContact={() => showToast(`Conectando com ${shelter.name}`, 'info')}
                 />
-              ) : (
-                <RegisterView
-                  onSuccess={() => setAuthMode('login')}
-                  onNavigateToLogin={() => setAuthMode('login')}
-                  showToast={showToast}
-                />
-              )
-            ) : (
-              // Visão do Perfil Autenticado (baseada em uxui/perfil_do_adotante_patinhas)
-              <div className="space-y-5">
-                {/* Card de Identidade do Usuário */}
-                <div className="overflow-hidden rounded-3xl bg-white p-5 shadow-card border border-gray-100 text-center">
-                  <div className="relative mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-[#FF8A65] to-[#FF7043] text-2xl font-black text-white shadow-coral">
-                    {user?.fullName.charAt(0)}
-                    <span className="absolute bottom-0 right-0 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-white border-2 border-white">
-                      <CheckCircle2 size={12} />
-                    </span>
-                  </div>
-
-                  <h3 className="mt-3 text-lg font-extrabold text-charcoal">{user?.fullName}</h3>
-                  <p className="text-xs text-charcoal-muted">{user?.email}</p>
-
-                  <div className="mt-3 flex justify-center gap-2">
-                    <Badge variant="coral">
-                      {user?.role === 'MASTER_ADMIN'
-                        ? 'Administrador Master'
-                        : user?.role === 'SHELTER_MEMBER'
-                        ? 'Representante de ONG'
-                        : user?.role === 'PROTECTOR'
-                        ? 'Protetor Independente'
-                        : 'Adotante Verificado'}
-                    </Badge>
-                    <Badge variant="success">Conta Ativa</Badge>
-                  </div>
-                </div>
-
-                {/* Estatísticas Rápidas */}
-                <div className="grid grid-cols-3 gap-2">
-                  <SpecBadge label="Favoritos" value={favoritedIds.size} variant="apricot" />
-                  <SpecBadge label="Adoções" value="0" variant="white" />
-                  <SpecBadge label="Mensagens" value="0" variant="ice" />
-                </div>
-
-                {/* Menu de Configurações e Atalhos */}
-                <div className="rounded-3xl bg-white shadow-card border border-gray-100 overflow-hidden divide-y divide-gray-100 text-xs">
-                  <button className="flex w-full items-center justify-between p-4 hover:bg-gray-50 transition-colors">
-                    <div className="flex items-center gap-2.5">
-                      <User size={16} className="text-primary" />
-                      <span className="font-bold text-charcoal">Meus Dados Pessoais</span>
-                    </div>
-                    <span className="text-charcoal-muted">›</span>
-                  </button>
-
-                  <button className="flex w-full items-center justify-between p-4 hover:bg-gray-50 transition-colors">
-                    <div className="flex items-center gap-2.5">
-                      <Heart size={16} className="text-[#E91E63]" />
-                      <span className="font-bold text-charcoal">Animais Favoritados</span>
-                    </div>
-                    <span className="text-charcoal-muted">{favoritedIds.size} ›</span>
-                  </button>
-
-                  <button className="flex w-full items-center justify-between p-4 hover:bg-gray-50 transition-colors">
-                    <div className="flex items-center gap-2.5">
-                      <FileText size={16} className="text-secondary" />
-                      <span className="font-bold text-charcoal">Comprovantes & Documentos</span>
-                    </div>
-                    <span className="text-charcoal-muted">›</span>
-                  </button>
-
-                  <button className="flex w-full items-center justify-between p-4 hover:bg-gray-50 transition-colors">
-                    <div className="flex items-center gap-2.5">
-                      <Shield size={16} className="text-[#0277BD]" />
-                      <span className="font-bold text-charcoal">Privacidade e LGPD</span>
-                    </div>
-                    <span className="text-charcoal-muted">›</span>
-                  </button>
-
-                  <button className="flex w-full items-center justify-between p-4 hover:bg-gray-50 transition-colors">
-                    <div className="flex items-center gap-2.5">
-                      <HelpCircle size={16} className="text-charcoal-muted" />
-                      <span className="font-bold text-charcoal">Central de Ajuda</span>
-                    </div>
-                    <span className="text-charcoal-muted">›</span>
-                  </button>
-                </div>
-
-                {/* Botão de Logout */}
-                <SecondaryButton
-                  variant="outline"
-                  onClick={handleLogout}
-                  icon={<LogOut size={16} className="text-red-500" />}
-                >
-                  <span className="text-red-500 font-bold">Encerrar Sessão</span>
-                </SecondaryButton>
-              </div>
-            )}
+              ))}
+            </div>
           </div>
         )}
 
-        {/* ABA DE FAVORITOS */}
+        {/* ABA: FAVORITOS */}
         {activeTab === 'favorites' && (
           <div className="pt-2">
             <h2 className="text-lg font-extrabold text-charcoal mb-3">Meus Pets Favoritos</h2>
@@ -388,19 +357,173 @@ export function App() {
           </div>
         )}
 
-        {/* OUTRAS ABAS (EXPLORAR / MAPA) */}
-        {(activeTab === 'explore' || activeTab === 'map') && (
+        {/* ABA: MAPA */}
+        {activeTab === 'map' && (
           <div className="pt-4">
             <EmptyState
-              title={activeTab === 'map' ? 'Mapa Interativo em Breve' : 'Busca Avançada'}
-              description={
-                activeTab === 'map'
-                  ? 'O mapa MapLibre GL com consultas espaciais PostGIS será implementado na Etapa 08.'
-                  : 'Filtros detalhados de porte, compatibilidade e raio serão consolidados na Etapa 07.'
-              }
+              title="Mapa de Adoção"
+              description="A tela interativa com MapLibre GL JS e raios espaciais de 5km a 200km será construída na Etapa 08."
               actionText="Voltar para Início"
               onAction={() => setActiveTab('home')}
             />
+          </div>
+        )}
+
+        {/* ABA: PERFIL DO USUÁRIO */}
+        {activeTab === 'profile' && (
+          <div className="pt-2">
+            {!isAuthenticated ? (
+              authMode === 'login' ? (
+                <LoginView
+                  onSuccess={() => setActiveTab('home')}
+                  onNavigateToRegister={() => setAuthMode('register')}
+                  onForgotPassword={() => setIsForgotPasswordOpen(true)}
+                  showToast={showToast}
+                />
+              ) : (
+                <RegisterView
+                  onSuccess={() => setAuthMode('login')}
+                  onNavigateToLogin={() => setAuthMode('login')}
+                  showToast={showToast}
+                />
+              )
+            ) : (
+              // Visão do Perfil Autenticado (baseada em uxui/perfil_do_adotante_patinhas)
+              <div className="space-y-5">
+                {/* Card de Identidade do Usuário */}
+                <div className="overflow-hidden rounded-3xl bg-white p-5 shadow-card border border-gray-100 text-center">
+                  <div className="relative mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-[#FF8A65] to-[#FF7043] text-2xl font-black text-white shadow-coral overflow-hidden">
+                    {user?.avatarUrl ? (
+                      <img src={user.avatarUrl} alt={user.fullName} className="h-full w-full object-cover" />
+                    ) : (
+                      user?.fullName.charAt(0)
+                    )}
+                    <span className="absolute bottom-0 right-0 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-white border-2 border-white">
+                      <CheckCircle2 size={12} />
+                    </span>
+                  </div>
+
+                  <h3 className="mt-3 text-lg font-extrabold text-charcoal">{user?.fullName}</h3>
+                  <p className="text-xs text-charcoal-muted">{user?.email}</p>
+
+                  <div className="mt-3 flex justify-center gap-2">
+                    <Badge variant="coral">
+                      {user?.role === 'MASTER_ADMIN'
+                        ? 'Administrador Master'
+                        : user?.role === 'SHELTER_MEMBER'
+                        ? 'Representante de ONG'
+                        : user?.role === 'PROTECTOR'
+                        ? 'Protetor Independente'
+                        : 'Adotante Verificado'}
+                    </Badge>
+                    <Badge variant="success">Conta Ativa</Badge>
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-gray-100 flex justify-center">
+                    <button
+                      onClick={() => setIsEditProfileOpen(true)}
+                      className="flex items-center gap-1.5 rounded-full bg-tertiary px-4 py-2 text-xs font-bold text-primary hover:bg-[#FFE0B2] transition-colors"
+                    >
+                      <Edit3 size={14} />
+                      Editar Meus Dados
+                    </button>
+                  </div>
+                </div>
+
+                {/* Estatísticas Rápidas */}
+                <div className="grid grid-cols-3 gap-2">
+                  <SpecBadge label="Favoritos" value={favoritedIds.size} variant="apricot" />
+                  <SpecBadge label="Adoções" value="0" variant="white" />
+                  <SpecBadge label="ONGs" value={shelters.length} variant="ice" />
+                </div>
+
+                {/* Atalho para Criar ONG se ainda não tiver */}
+                <div className="rounded-3xl bg-gradient-to-r from-secondary/10 to-secondary/5 p-4 border border-secondary/20 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-secondary text-white shadow-teal">
+                      <Building2 size={20} />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-extrabold text-charcoal">Representa uma ONG?</h4>
+                      <p className="text-[11px] text-charcoal-muted">Cadastre sua instituição na plataforma</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setIsCreateOrgOpen(true)}
+                    className="rounded-full bg-secondary text-white px-3 py-1.5 text-xs font-bold shadow-sm hover:bg-secondary-dark transition-colors"
+                  >
+                    Criar
+                  </button>
+                </div>
+
+                {/* Menu de Configurações e Atalhos */}
+                <div className="rounded-3xl bg-white shadow-card border border-gray-100 overflow-hidden divide-y divide-gray-100 text-xs">
+                  <button
+                    onClick={() => setIsEditProfileOpen(true)}
+                    className="flex w-full items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <User size={16} className="text-primary" />
+                      <span className="font-bold text-charcoal">Meus Dados Pessoais</span>
+                    </div>
+                    <span className="text-charcoal-muted">›</span>
+                  </button>
+
+                  <button
+                    onClick={() => setActiveTab('favorites')}
+                    className="flex w-full items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <Heart size={16} className="text-[#E91E63]" />
+                      <span className="font-bold text-charcoal">Animais Favoritados</span>
+                    </div>
+                    <span className="text-charcoal-muted">{favoritedIds.size} ›</span>
+                  </button>
+
+                  <button
+                    onClick={() => showToast('Módulo de documentos na Etapa 10', 'info')}
+                    className="flex w-full items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <FileText size={16} className="text-secondary" />
+                      <span className="font-bold text-charcoal">Comprovantes & Documentos</span>
+                    </div>
+                    <span className="text-charcoal-muted">›</span>
+                  </button>
+
+                  <button
+                    onClick={() => showToast('Seus dados estão protegidos conforme a LGPD', 'info')}
+                    className="flex w-full items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <Shield size={16} className="text-[#0277BD]" />
+                      <span className="font-bold text-charcoal">Privacidade e LGPD</span>
+                    </div>
+                    <span className="text-charcoal-muted">›</span>
+                  </button>
+
+                  <button
+                    onClick={() => showToast('Central de Ajuda ativa', 'info')}
+                    className="flex w-full items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <HelpCircle size={16} className="text-charcoal-muted" />
+                      <span className="font-bold text-charcoal">Central de Ajuda</span>
+                    </div>
+                    <span className="text-charcoal-muted">›</span>
+                  </button>
+                </div>
+
+                {/* Botão de Logout */}
+                <SecondaryButton
+                  variant="outline"
+                  onClick={handleLogout}
+                  icon={<LogOut size={16} className="text-red-500" />}
+                >
+                  <span className="text-red-500 font-bold">Encerrar Sessão</span>
+                </SecondaryButton>
+              </div>
+            )}
           </div>
         )}
       </main>
@@ -509,6 +632,21 @@ export function App() {
         isOpen={isForgotPasswordOpen}
         onClose={() => setIsForgotPasswordOpen(false)}
         showToast={showToast}
+      />
+
+      {/* Modal de Edição de Perfil e Upload MinIO */}
+      <EditProfileModal
+        isOpen={isEditProfileOpen}
+        onClose={() => setIsEditProfileOpen(false)}
+        showToast={showToast}
+      />
+
+      {/* Modal de Cadastro de ONG */}
+      <CreateOrganizationModal
+        isOpen={isCreateOrgOpen}
+        onClose={() => setIsCreateOrgOpen(false)}
+        showToast={showToast}
+        onSuccess={fetchData}
       />
     </MobileAppShell>
   );

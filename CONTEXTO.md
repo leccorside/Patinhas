@@ -35,10 +35,8 @@ A documentação e todo o planejamento adotaram integralmente a identidade visua
 | **02** | Banco de Dados e Migrations | 🟢 Concluída | Schema com 36+ entidades, 5 índices GIST, migration e seed com PostGIS |
 | **03** | MobileAppShell e Design System | 🟢 Concluída | MobileAppShell (430px) e 14 componentes UI com Framer Motion |
 | **04** | Autenticação e Segurança | 🟢 Concluída | Argon2id, JWT, refresh rotativo, Mailpit, telas de Login/Cadastro/Perfil |
-| **05** | Usuários, Perfis e Organizações | ⏳ Aguardando autorização | CRUD de perfis, múltiplos membros de ONG e upload MinIO |
-| **04** | Autenticação e Segurança | ⏳ Pendente | JWT, Argon2id, refresh rotativo em cookies |
-| **05** | Usuários, Perfis e ONGs | ⏳ Pendente | Perfis, uploads no MinIO e membros |
-| **06** | Cadastro de Animais | ⏳ Pendente | Formulário em etapas e galeria de fotos |
+| **05** | Usuários, Perfis e Organizações | 🟢 Concluída | MinIO S3, edição de perfil, gestão de ONGs com membros e cards |
+| **06** | Cadastro de Animais | ⏳ Aguardando autorização | Formulário em etapas e galeria de fotos |
 | **07** | Home, Busca e Filtros | ⏳ Pendente | Bottom sheets, infinite scroll e categorias |
 | **08** | Mapa e Geolocalização | ⏳ Pendente | MapLibre GL JS e PostGIS espacial |
 | **09** | Favoritos e Modo Descoberta | ⏳ Pendente | Curtidas, listas e animações |
@@ -96,10 +94,7 @@ A documentação e todo o planejamento adotaram integralmente a identidade visua
 
 ## 🔴 Pendências que Precisam de Aprovação do Usuário
 
-1. **Autorização para a ETAPA 01:** Permissão explícita para iniciar a criação dos diretórios do monorepo, configuração dos pacotes e escrita dos arquivos Docker Compose e Dockerfiles.
-2. **Provedor de Tiles do Mapa:** Em desenvolvimento será utilizado OpenStreetMap / Positron Carto. Confirmar se para produção haverá preferência por MapTiler, Stadia Maps ou servidor de tiles próprio.
-3. **Provedor de Geocodificação:** Utilização do Nominatim (OpenStreetMap) em desenvolvimento para conversão de CEP/cidade em coordenadas.
-4. **Gateway de Pagamento Futuro:** Identificação de preferência para o módulo futuro de doações (Mercado Pago, Stripe, Asaas ou PIX direto).
+1. **Autorização para a ETAPA 06:** Permissão explícita para iniciar a ETAPA 06 — Cadastro e Gestão de Animais (CRUD de pets, formulário assistido em etapas no mobile, upload de múltiplas fotos no MinIO, registros de saúde e PostGIS).
 
 ---
 
