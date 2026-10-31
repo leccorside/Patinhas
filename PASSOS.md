@@ -667,25 +667,40 @@ Sistema de notificações push funcional mantendo o adotante engajado. Concluíd
 **Dependências:** Etapas 06 e 10.
 
 **Tarefas:**
-- [ ] Backend: Endpoints de agregação e métricas por organização (totais, taxa de adoção, pendências)
-- [ ] Frontend: Dashboard mobile com cards de estatísticas compactos
-- [ ] Frontend: Gestão de solicitações de adoção recebidas (Aprovar, Agendar, Recusar)
-- [ ] Frontend: Gestão do time e colaboradores da ONG
-- [ ] Frontend: Relatórios em formato de lista e gráficos leves adaptados a 430px
+- [x] Backend: Endpoints de agregação e métricas por organização:
+  - `GET /api/v1/organizations/my-shelters`: Lista organizações das quais o usuário autenticado faz parte com contadores de pets e equipe
+  - `GET /api/v1/organizations/:id/dashboard`: Métricas consolidadas (animais ativos, disponíveis, em adoção, adotados, candidaturas pendentes, entrevistas, taxa de conversão %, candidaturas prioritárias, pets recentes e colaboradores)
+- [x] Backend: Validação rigorosa de permissão impedindo adotantes comuns ou terceiros de visualizarem dados operacionais (HTTP 403 Forbidden)
+- [x] Frontend: `shelterDashboardService.ts` com tipagens completas e integração HTTP nativa com cookies seguros
+- [x] Frontend: Dashboard mobile (`ShelterDashboardView.tsx`) formatado estritamente para largura de 430px:
+  - Top bar com seletor de ONGs, botão voltar e botão rápido "+ Novo Pet"
+  - Bento Grid com 4 cards de métricas (Nossos Pets, Triagem Pendente, Adotados 🎉, Afinidade/Taxa de Sucesso %)
+  - Aba "Triagem & Candidaturas" com dados do pretendente, moradia, telas de proteção e botões de ação imediata (Aprovar, Entrevista, Concluir Adoção, Recusar)
+  - Aba "Nossos Pets" com lista compacta de animais, fotos de capa, status pills e atalho de navegação
+  - Aba "Equipe & Colaboradores" com lista de membros, papéis e modal de convite por e-mail
+  - Modais de Agendamento de Entrevista e de Inclusão de Novos Membros
+- [x] Frontend: Integração com o Perfil do usuário em `App.tsx` através de card de destaque "Painel da ONG & Protetores" com badge "Gestão Mobile"
+- [x] Frontend: Compilação de produção do Vite (`npm run build`) concluída com 1943 módulos e 0 erros de tipagem
 
 **Arquivos envolvidos:**
-- `apps/api/src/modules/organizations/controllers/shelter-dashboard.controller.ts`
-- `apps/web/src/features/shelter-admin/*`
+- `apps/api/src/modules/organizations/organizations.service.ts`
+- `apps/api/src/modules/organizations/organizations.controller.ts`
+- `apps/web/src/features/shelter/shelterDashboardService.ts`
+- `apps/web/src/features/shelter/ShelterDashboardView.tsx`
+- `apps/web/src/App.tsx`
 
 **Critérios de aceite:**
-- Dashboard 100% responsivo dentro da largura de 430px sem tabelas horizontais largas.
-- Mudanças de status de candidaturas refletidas imediatamente.
+- Dashboard 100% responsivo dentro da largura de 430px sem rolagem horizontal indesejada.
+- Mudanças de status de candidaturas refletidas imediatamente no estado local.
+- Adotantes sem permissão na ONG bloqueados com 403 Forbidden.
 
 **Testes:**
-- Testes de autorização garantindo que apenas membros da ONG visualizem seus dados.
+- Teste com líder de ONG autenticado (`contato@patinhasdeluz.org`) recuperando lista de abrigos e métricas consolidadas (3 animais, taxas de adoção, equipe).
+- Teste de segurança com adotante comum (`lucas.adotante@gmail.com`) sendo rejeitado com HTTP 403 Forbidden ao tentar acessar o dashboard de organização alheia.
+- Teste de build do Vite no container `patinhas_web` transformando 1943 módulos em 8.52s com 0 erros TypeScript.
 
 **Resultado esperado:**
-Painel de gestão intuitivo na palma da mão para protetores e voluntários.
+Painel de gestão intuitivo na palma da mão para protetores e voluntários. Concluído com êxito!
 
 ---
 

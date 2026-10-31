@@ -4,8 +4,8 @@
 
 ## 📅 Última Atualização
 - **Data:** 31/10/2026
-- **Etapa atual:** ETAPA 14 — Dashboard Mobile para ONGs e Protetores (Em andamento)
-- **Status geral:** 🟢 ETAPAS 00 a 13 Concluídas com sucesso e commitadas. Execução contínua e autônoma das etapas até a entrega final (Etapa 26).
+- **Etapa atual:** ETAPA 15 — Admin Master (Painel de Gestão da Plataforma) (Em andamento)
+- **Status geral:** 🟢 ETAPAS 00 a 14 Concluídas com sucesso e commitadas. Execução contínua e autônoma das etapas até a entrega final (Etapa 26).
 
 ---
 
@@ -44,8 +44,8 @@ A documentação e todo o planejamento adotaram integralmente a identidade visua
 | **11** | Chat em Tempo Real | 🟢 Concluída | Gateway Socket.IO /ws, salas privadas e interface de chat mobile |
 | **12** | Notificações Push | 🟢 Concluída | Web Push API, chaves VAPID, Service Worker e central de alertas |
 | **13** | Match Inteligente | 🟢 Concluída | Compatibilidade ponderada tutor-pet em 4 dimensões (Espaço, Rotina, Sociabilidade, Orçamento) |
-| **14** | Dashboard de ONGs | 🔄 Em andamento | Métricas, solicitações de adoção e gestão da equipe mobile |
-| **15** | Admin Master | ⏳ Pendente | Moderação global e auditoria |
+| **14** | Dashboard de ONGs | 🟢 Concluída | Métricas, triagem mobile de candidaturas e equipe da ONG |
+| **15** | Admin Master | 🔄 Em andamento | Moderação global da plataforma, verificação de ONGs e auditoria |
 | **16** | Moderação e Antifraude | ⏳ Pendente | Denúncias e suspensão de contas |
 | **17** | Animais Perdidos e Achados | ⏳ Pendente | Módulo comunitário de busca |
 | **18** | Lar Temporário | ⏳ Pendente | Voluntariado e acolhimento transitório |

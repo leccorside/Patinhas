@@ -53,6 +53,25 @@ export class OrganizationsController {
     return this.organizationsService.findAll(city, state, verifiedOnly === 'true');
   }
 
+  @Get('my-shelters')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Listar organizações das quais o usuário autenticado faz parte' })
+  async getMyShelters(@CurrentUser() user: AuthenticatedUser) {
+    return this.organizationsService.getUserOrganizations(user.id);
+  }
+
+  @Get(':id/dashboard')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Obter painel de métricas e gestão mobile da ONG' })
+  async getDashboard(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.organizationsService.getDashboard(id, user.id, user.role);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Obter detalhes de uma ONG, equipe, animais e eventos' })
   async findOne(@Param('id') id: string) {

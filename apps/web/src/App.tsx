@@ -47,6 +47,8 @@ import { chatService } from './features/chat/chatService';
 import { NotificationsViewModal } from './features/notifications/NotificationsViewModal';
 import { notificationsService } from './features/notifications/notificationsService';
 import { MatchExplanationModal } from './features/matching/MatchExplanationModal';
+import { ShelterDashboardView } from './features/shelter/ShelterDashboardView';
+import { Building2 } from 'lucide-react';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<NavTabId>('home');
@@ -92,6 +94,9 @@ export function App() {
 
   // Match Inteligente (Etapa 13)
   const [matchExplanationPet, setMatchExplanationPet] = useState<Animal | null>(null);
+
+  // Dashboard de ONG e Protetor (Etapa 14)
+  const [isShelterDashboardOpen, setIsShelterDashboardOpen] = useState(false);
 
   // Toast
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -464,6 +469,25 @@ export function App() {
                   showToast={showToast}
                 />
               )
+            ) : isShelterDashboardOpen ? (
+              <ShelterDashboardView
+                onBack={() => setIsShelterDashboardOpen(false)}
+                onOpenRegisterPet={() => {
+                  setIsShelterDashboardOpen(false);
+                  setIsCreatePetOpen(true);
+                }}
+                onOpenChat={(convId) => {
+                  setIsShelterDashboardOpen(false);
+                  setActiveChatConversationId(convId);
+                }}
+                onViewPet={(petId) => {
+                  const found = animals.find((a) => a.id === petId);
+                  if (found) {
+                    setDetailedPet(found);
+                    setIsShelterDashboardOpen(false);
+                  }
+                }}
+              />
             ) : isMyAdoptionsOpen ? (
               <div className="space-y-3">
                 <button
@@ -583,6 +607,32 @@ export function App() {
                     </div>
                   </div>
                   <ChevronRight size={18} className="text-secondary group-hover:translate-x-0.5 transition-transform" />
+                </button>
+
+                {/* Banner de Painel da ONG e Protetor (Etapa 14) */}
+                <button
+                  onClick={() => setIsShelterDashboardOpen(true)}
+                  className="flex w-full items-center justify-between p-4 bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-100/40 rounded-3xl border border-emerald-200/70 shadow-sm text-left hover:border-emerald-300 transition-all group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-2xl bg-[#4DB6AC] text-white flex items-center justify-center text-xl font-bold shadow-md shadow-[#4DB6AC]/30 group-hover:scale-105 transition-transform">
+                      🏢
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-extrabold text-sm text-[#263238] block">
+                          Painel da ONG & Protetores
+                        </span>
+                        <span className="text-[10px] bg-emerald-600 text-white font-bold px-1.5 py-0.5 rounded-full">
+                          Gestão Mobile
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#78909C]">
+                        Métricas, triagem rápida de candidaturas e equipe
+                      </span>
+                    </div>
+                  </div>
+                  <ChevronRight size={18} className="text-emerald-700 group-hover:translate-x-0.5 transition-transform" />
                 </button>
 
                 {/* Ações Rápidas de Gestão */}

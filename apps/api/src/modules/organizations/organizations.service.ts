@@ -258,6 +258,232 @@ export class OrganizationsService {
     return { message: 'Membro removido da equipe com sucesso.' };
   }
 
+  // Obter organizações vinculadas ao usuário logado
+  async getUserOrganizations(userId: string) {
+    const memberships = await this.prisma.organizationMember.findMany({
+      where: { userId },
+      include: {
+        organization: {
+          include: {
+            _count: {
+              select: {
+                animals: true,
+                members: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return memberships.map((m) => ({
+      organization: m.organization,
+      myRole: m.role,
+      joinedAt: m.createdAt,
+    }));
+  }
+
+  // Obter métricas consolidadas do Dashboard da ONG
+  async getDashboard(orgId: string, userId: string, userRole: UserRole) {
+    // Permissão: qualquer membro ativo da ONG ou MASTER_ADMIN
+    if (userRole !== UserRole.MASTER_ADMIN) {
+      const member = await this.prisma.organizationMember.findUnique({
+        where: {
+          organizationId_userId: {
+            organizationId: orgId,
+            userId,
+          },
+        },
+      });
+
+      if (!member) {
+        throw new ForbiddenException('Acesso não autorizado aos dados operacionais desta organização.');
+      }
+    }
+
+    const org = await this.prisma.organization.findUnique({
+      where: { id: orgId },
+      include: {
+        members: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                email: true,
+                profile: {
+                  select: { fullName: true, avatarUrl: true, phone: true },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!org || org.deletedAt) {
+      throw new NotFoundException('Organização não encontrada');
+    }
+
+    // 1. Estatísticas dos Animais
+    const animalsStats = await this.prisma.animal.groupBy({
+      by: ['status'],
+      where: { organizationId: orgId, deletedAt: null },
+      _count: { _all: true },
+    });
+
+    let totalAnimals = 0;
+    let availableAnimals = 0;
+    let inAdoptionAnimals = 0;
+    let adoptedAnimals = 0;
+    let specialCareAnimals = 0;
+
+    for (const stat of animalsStats) {
+      totalAnimals += stat._count._all;
+      if (stat.status === 'AVAILABLE') availableAnimals += stat._count._all;
+      else if (stat.status === 'IN_ADOPTION') inAdoptionAnimals += stat._count._all;
+      else if (stat.status === 'ADOPTED') adoptedAnimals += stat._count._all;
+      else if (stat.status === 'UNAVAILABLE' || stat.status === 'PENDING_REVIEW') {
+        specialCareAnimals += stat._count._all;
+      }
+    }
+
+    // 2. Estatísticas das Candidaturas de Adoção
+    const applicationsStats = await this.prisma.adoptionApplication.groupBy({
+      by: ['currentStatus'],
+      where: {
+        animal: {
+          organizationId: orgId,
+        },
+      },
+      _count: { _all: true },
+    });
+
+    let totalApplications = 0;
+    let pendingApplications = 0;
+    let interviewApplications = 0;
+    let approvedApplications = 0;
+    let completedApplications = 0;
+    let rejectedApplications = 0;
+
+    for (const stat of applicationsStats) {
+      totalApplications += stat._count._all;
+      if (stat.currentStatus === 'SUBMITTED' || stat.currentStatus === 'UNDER_REVIEW') {
+        pendingApplications += stat._count._all;
+      } else if (stat.currentStatus === 'INTERVIEW_SCHEDULED') {
+        interviewApplications += stat._count._all;
+      } else if (stat.currentStatus === 'APPROVED') {
+        approvedApplications += stat._count._all;
+      } else if (stat.currentStatus === 'COMPLETED') {
+        completedApplications += stat._count._all;
+      } else if (stat.currentStatus === 'REJECTED') {
+        rejectedApplications += stat._count._all;
+      }
+    }
+
+    // Taxa de conversão: completadas sobre total finalizadas (completas + rejeitadas)
+    const finalized = completedApplications + rejectedApplications;
+    const conversionRate = finalized > 0 ? Math.round((completedApplications / finalized) * 100) : 100;
+
+    // 3. Candidaturas Recentes que demandam atenção imediata (SUBMITTED, UNDER_REVIEW, INTERVIEW_SCHEDULED)
+    const pendingActions = await this.prisma.adoptionApplication.findMany({
+      where: {
+        animal: { organizationId: orgId },
+        currentStatus: { in: ['SUBMITTED', 'UNDER_REVIEW', 'INTERVIEW_SCHEDULED'] },
+      },
+      include: {
+        animal: {
+          select: {
+            id: true,
+            name: true,
+            species: true,
+            breed: true,
+            photos: { where: { isCover: true }, take: 1, select: { url: true } },
+          },
+        },
+        adopter: {
+          select: {
+            id: true,
+            email: true,
+            profile: {
+              select: {
+                fullName: true,
+                avatarUrl: true,
+                addressCity: true,
+                addressState: true,
+                phone: true,
+              },
+            },
+          },
+        },
+        questionnaire: {
+          select: {
+            housingType: true,
+            hasNettingScreens: true,
+            hasOtherPets: true,
+            monthlyBudgetBrl: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 6,
+    });
+
+    // 4. Animais mais recentes sob cuidado da ONG
+    const recentAnimals = await this.prisma.animal.findMany({
+      where: { organizationId: orgId, deletedAt: null },
+      include: {
+        photos: { where: { isCover: true }, take: 1, select: { url: true } },
+        _count: {
+          select: {
+            adoptionApplications: true,
+            favorites: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 6,
+    });
+
+    return {
+      organization: {
+        id: org.id,
+        name: org.name,
+        tradeName: org.tradeName,
+        logoUrl: org.logoUrl,
+        verifiedStatus: org.verifiedStatus,
+        city: org.addressCity,
+        state: org.addressState,
+        membersCount: org.members.length,
+      },
+      metrics: {
+        totalAnimals,
+        availableAnimals,
+        inAdoptionAnimals,
+        adoptedAnimals,
+        specialCareAnimals,
+        totalApplications,
+        pendingApplications,
+        interviewApplications,
+        approvedApplications,
+        completedApplications,
+        conversionRate,
+      },
+      pendingActions,
+      recentAnimals,
+      members: org.members.map((m) => ({
+        id: m.id,
+        userId: m.userId,
+        role: m.role,
+        fullName: m.user.profile?.fullName || m.user.email,
+        email: m.user.email,
+        avatarUrl: m.user.profile?.avatarUrl,
+        phone: m.user.profile?.phone,
+        joinedAt: m.createdAt,
+      })),
+    };
+  }
+
   // Validador de permissão (Master Admin ou Membro Owner/Admin da ONG)
   private async checkUserPermission(orgId: string, userId: string, userRole: UserRole) {
     if (userRole === UserRole.MASTER_ADMIN) {
