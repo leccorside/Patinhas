@@ -1,0 +1,29 @@
+{
+  "name": "patinhas-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Plataforma completa de adoção responsável de animais em formato mobile permanente",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "docker compose up",
+    "dev:build": "docker compose up --build",
+    "down": "docker compose down",
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces"
+  },
+  "keywords": [
+    "pet-adoption",
+    "nestjs",
+    "react",
+    "docker",
+    "postgis",
+    "mobile-first"
+  ],
+  "author": "Patinhas Team",
+  "license": "MIT"
+}
+

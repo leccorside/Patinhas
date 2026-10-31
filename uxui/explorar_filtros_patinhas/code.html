@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "secondary-fixed": "#8ef4e9", "on-error": "#ffffff", "surface-bright": "#f4faff", "on-tertiary": "#ffffff", "on-primary-fixed": "#3a0a00", "surface-container": "#e3f0f8", "secondary": "#006a63", "secondary-fixed-dim": "#71d7cd", "inverse-primary": "#ffb59f", "on-secondary-fixed-variant": "#00504a", "on-error-container": "#93000a", "surface-container-highest": "#d7e4ec", "primary-container": "#ff7043", "primary-fixed-dim": "#ffb59f", "on-secondary-container": "#006f67", "inverse-on-surface": "#e6f3fb", "on-surface": "#111d23", "on-surface-variant": "#59413a", "on-tertiary-fixed": "#201b10", "surface-container-high": "#ddeaf2", "error": "#ba1a1a", "surface-container-lowest": "#ffffff", "background": "#f4faff", "on-primary-container": "#641800", "tertiary-fixed-dim": "#d0c5b3", "on-secondary-fixed": "#00201d", "on-background": "#111d23", "on-tertiary-fixed-variant": "#4d4638", "secondary-container": "#8bf1e6", "surface-dim": "#cfdce4", "surface-container-low": "#e9f6fd", "tertiary": "#655d4f", "outline": "#8d7169", "inverse-surface": "#263238", "surface": "#f4faff", "primary-fixed": "#ffdbd0", "primary": "#ac3509", "tertiary-fixed": "#ede1cf", "error-container": "#ffdad6", "on-secondary": "#ffffff", "surface-variant": "#d7e4ec", "surface-tint": "#ac3509", "on-tertiary-container": "#393326", "on-primary": "#ffffff", "on-primary-fixed-variant": "#852300", "outline-variant": "#e0bfb6", "tertiary-container": "#a59b8a" }, borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" }, spacing: { "margin-mobile": "1rem", "space-2xl": "3rem", "space-xs": "0.25rem", "gutter-mobile": "0.75rem", "margin": "1.5rem", "space-sm": "0.5rem", "space-lg": "1.5rem", "space-xl": "2rem", "space-md": "1rem", "gutter": "1rem" }, fontFamily: { "headline-sm": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"], "label-lg": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "display-lg": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"] }, fontSize: { "headline-sm": ["18px", { lineHeight: "24px", fontWeight: "600" }], "headline-lg-mobile": ["24px", { lineHeight: "32px", letterSpacing: "-0.02em", fontWeight: "700" }], "label-lg": ["14px", { lineHeight: "20px", fontWeight: "700" }], "label-sm": ["11px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "600" }], "display-lg": ["36px", { lineHeight: "44px", letterSpacing: "-0.03em", fontWeight: "800" }], "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }], "label-md": ["12px", { lineHeight: "16px", fontWeight: "600" }], "headline-md": ["20px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "700" }], "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }], "headline-lg": ["28px", { lineHeight: "36px", letterSpacing: "-0.02em", fontWeight: "700" }], "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }] } } } }</script><style>@layer base { html, body { width: 100vw; margin: 0; padding: 0; } body { overscroll-behavior: none; } .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head><body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen selection:bg-primary-fixed"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-margin-mobile flex items-center justify-between gap-gutter-mobile"><div class="flex items-center gap-space-sm min-w-0"><img alt="Logo Patinhas" class="h-8 w-auto object-contain flex-shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1WCH0IfmhO1zWbtX2STdMEjKEqfkTXnzHx8bLPU_7ExIX6dsfnmTax2lnj1mUGyjrzJ4aTNxeWdfT6hyKkR69DQPiUGOUlznQ0j_pxrSzRT0LbER3_uXRLyHc5_sevnSdECeQLH9HEFfm_RNpKmxubmxBv0Q87f7j8bi3O6WjBUSKUi0klBaXlGyQDwAWuCGHR01noJTKR34YS6bOsD4rs0bdhTfNISoeu0PMZy0R04aX-fPS6VhNhf3A"/><div class="flex flex-col min-w-0"><span class="font-label-sm text-label-sm text-primary uppercase tracking-wider font-bold leading-none">Patinhas</span><button class="flex items-center gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors mt-0.5" type="button"><span class="material-symbols-outlined text-[16px] text-secondary leading-none">location_on</span><span class="font-label-md text-label-md font-bold truncate max-w-[110px] text-on-surface">São Paulo, SP</span><span class="material-symbols-outlined text-[14px] leading-none text-outline">keyboard_arrow_down</span></button></div></div><div class="flex items-center gap-space-xs"><button aria-label="Notificações" class="relative w-11 h-11 flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container-high/60 transition-colors" type="button"><span class="material-symbols-outlined text-[24px]">notifications</span><span class="absolute top-2 right-2 flex items-center justify-center min-w-[16px] h-4 px-1 rounded-full bg-primary-container text-surface-container-lowest font-label-sm text-[10px] font-bold leading-none shadow-[0_2px_8px_rgba(255,112,67,0.4)]">3</span></button><a class="w-11 h-11 flex items-center justify-center rounded-full hover:opacity-90 transition-opacity" data-path="perfil" href="#"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-primary-container/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDN_WArsZitvp5Vda2odw2xzpJAE48ywSY116u_20xHQLEL-BEgogn4CJA9XcdtmwCVx_GxHTlPHiomoMXNDGxlg02k88HBWffUzevZ2_aGeV75HUiOqtAeRRi1JDwY0Y3vvEEELBpGW9PKVOm7wYvPaHhqz1UTmTAVFYO1WDKqlOEGf7jo_0h863kCt29onxFcz8qM9kFsU2Kl_BCoIoc2JA3wNTk2XWbStzieNlhy2kShdpdMJkQK"/></a></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-28 bg-surface"><div class="flex flex-col w-full">
+<!-- Search & View Toggle Section -->
+<section class="px-margin-mobile pt-space-sm pb-space-xs flex flex-col gap-space-sm">
+<div class="flex items-center gap-space-xs">
+<div class="flex-1 relative flex items-center">
+<span class="material-symbols-outlined text-outline absolute left-3 pointer-events-none text-[20px]">search</span>
+<input class="w-full h-12 pl-10 pr-4 bg-surface-container-lowest text-on-surface placeholder:text-outline font-body-md text-body-md rounded-full shadow-[0_2px_12px_rgba(38,50,56,0.06)] focus:outline-none focus:ring-2 focus:ring-primary-container/40 transition-all" placeholder="Buscar raça, nome, abrigo..." type="text"/>
+</div>
+<button class="relative h-12 px-space-md flex items-center gap-1.5 bg-surface-container-lowest text-on-surface rounded-full shadow-[0_2px_12px_rgba(38,50,56,0.06)] hover:bg-surface-container-high transition-colors active:scale-95" id="btn-filter-drawer" type="button">
+<span class="material-symbols-outlined text-[20px] text-primary">tune</span>
+<span class="font-label-md text-label-md font-bold">Filtros</span>
+<span class="flex items-center justify-center min-w-[18px] h-[18px] px-1 bg-primary text-on-primary rounded-full font-label-sm text-[10px] font-bold">3</span>
+</button>
+</div>
+<!-- Mode Selector Pill -->
+<div class="flex items-center justify-between pt-space-xs">
+<div class="bg-surface-container-high p-1 rounded-full flex items-center shadow-inner">
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md font-bold shadow-sm transition-all" id="mode-grid" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">grid_view</span>
+<span>Catálogo</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-on-surface-variant font-label-md text-label-md font-medium transition-all hover:text-on-surface" id="mode-match" type="button">
+<span class="material-symbols-outlined text-[16px] text-secondary">auto_awesome</span>
+<span>Descoberta</span>
+</button>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-lowest px-3 py-1.5 rounded-full shadow-[0_2px_8px_rgba(38,50,56,0.04)]">
+<span class="material-symbols-outlined text-secondary text-[16px]">swap_vert</span>
+<select class="bg-transparent font-label-sm text-label-sm font-bold text-on-surface focus:outline-none cursor-pointer pr-1">
+<option>Mais próximos</option>
+<option>Maior match</option>
+<option>Mais recentes</option>
+</select>
+</div>
+</div>
+</section>
+<!-- Removable Active Tags + Quick Categories Bar -->
+<section class="py-space-xs overflow-x-auto no-scrollbar flex items-center gap-2 px-margin-mobile">
+<!-- Active dismissible chips -->
+<div class="flex items-center gap-1.5 bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full text-label-sm font-label-sm font-bold shrink-0 shadow-sm">
+<span>🐶 Cachorros</span>
+<button class="material-symbols-outlined text-[14px] leading-none hover:opacity-70" type="button">close</button>
+</div>
+<div class="flex items-center gap-1.5 bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-label-sm font-label-sm font-bold shrink-0 shadow-sm">
+<span>📍 Até 10 km</span>
+<button class="material-symbols-outlined text-[14px] leading-none hover:opacity-70" type="button">close</button>
+</div>
+<div class="flex items-center gap-1.5 bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-label-sm font-label-sm font-bold shrink-0 shadow-sm">
+<span>💉 Vacinado</span>
+<button class="material-symbols-outlined text-[14px] leading-none hover:opacity-70" type="button">close</button>
+</div>
+<!-- Quick Category Pill Suggestions -->
+<button class="px-3 py-1 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-sm text-label-sm font-semibold shrink-0 shadow-[0_2px_6px_rgba(0,0,0,0.04)] hover:bg-surface-container-high transition-colors" type="button">
+      🐱 Gatos
+    </button>
+<button class="px-3 py-1 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-sm text-label-sm font-semibold shrink-0 shadow-[0_2px_6px_rgba(0,0,0,0.04)] hover:bg-surface-container-high transition-colors" type="button">
+      🏢 Para Apartamento
+    </button>
+<button class="px-3 py-1 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-sm text-label-sm font-semibold shrink-0 shadow-[0_2px_6px_rgba(0,0,0,0.04)] hover:bg-surface-container-high transition-colors" type="button">
+      ⚡ Urgentes
+    </button>
+<button class="px-3 py-1 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-sm text-label-sm font-semibold shrink-0 shadow-[0_2px_6px_rgba(0,0,0,0.04)] hover:bg-surface-container-high transition-colors" type="button">
+      🍼 Filhotes
+    </button>
+</section>
+<!-- Results Count Bar -->
+<section class="px-margin-mobile pt-space-xs pb-space-xs flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-md text-label-md text-on-surface-variant">
+<strong class="text-on-surface font-bold">148 amiguinhos</strong> esperando por você
+      </span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary font-bold flex items-center gap-0.5 cursor-pointer">
+<span class="material-symbols-outlined text-[14px]">tune</span> Limpar tudo
+    </span>
+</section>
+<!-- Pet Grid Feed (2 Columns Mobile Optimized) -->
+<section class="px-margin-mobile py-space-xs grid grid-cols-2 gap-gutter-mobile">
+<!-- Card 1: Mel -->
+<article class="bg-surface-container-lowest rounded-lg p-2.5 flex flex-col justify-between shadow-[0_4px_16px_rgba(38,50,56,0.06)] hover:shadow-md transition-all group relative">
+<div>
+<div class="relative w-full aspect-[4/5] rounded-[1.25rem] overflow-hidden bg-primary-fixed/40">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="A cheerful golden retriever crossbreed dog with honey-colored silky fur, bright sparkling eyes, sitting comfortably in an illuminated, warm sunlight studio with a soft peach pastel backdrop, professional pet adoption photography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUsqmBKx0PZJ2we0mERFqpwUo63V7B5CF9gaU89oxP1WD5cupIXM4tfTjBrYB_VqeyNcijIh8rPAXNyGlfVlXmmOsHje3SB1ZM48SPxFFwMLk_VBCIMZBnsdSLuPjUwZWoo_Z_iv8JiNBD7z7y636Pcifmzzx-eW2gkLpfjMotKkGZ-Fjjr0ghybHLiLlUMUap8cqbASvtNpwwsxCLQLfoqIRhqEUVr7pKI5_2IbpN-wvfvmiLRWUG"/>
+<!-- Top Floating Badges -->
+<div class="absolute top-2 left-2 flex flex-col gap-1">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-primary font-label-sm text-[10px] font-bold shadow-sm">
+              96% Match
+            </span>
+</div>
+<button aria-label="Favoritar Mel" class="favorite-btn absolute top-2 right-2 w-8 h-8 rounded-full bg-surface-container-lowest/90 backdrop-blur-md flex items-center justify-center text-primary-container shadow-sm hover:scale-110 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</button>
+<div class="absolute bottom-2 left-2 right-2">
+<div class="bg-surface-container-lowest/90 backdrop-blur-md px-2 py-1 rounded-full flex items-center justify-between text-on-surface">
+<span class="font-label-sm text-[10px] font-bold truncate">3.2 km</span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-[10px] text-on-surface-variant font-medium">1 ano</span>
+</div>
+</div>
+</div>
+<div class="pt-2.5 px-0.5">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface truncate">Mel</h3>
+<span class="material-symbols-outlined text-primary-container text-[16px]" title="Fêmea">female</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant truncate">Golden Mix • Porte Médio</p>
+<div class="flex flex-wrap gap-1 mt-1.5">
+<span class="px-1.5 py-0.5 rounded-md bg-secondary-container/50 text-on-secondary-container font-label-sm text-[9px] font-bold">Vacinada</span>
+<span class="px-1.5 py-0.5 rounded-md bg-primary-fixed/60 text-on-primary-fixed-variant font-label-sm text-[9px] font-bold">Castrada</span>
+</div>
+</div>
+</div>
+<a class="mt-2.5 w-full py-2 bg-primary-container hover:bg-primary text-on-primary rounded-full font-label-md text-label-md font-bold flex items-center justify-center gap-1 shadow-[0_4px_12px_rgba(255,112,67,0.3)] transition-all" href="#">
+<span>Conhecer</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</article>
+<!-- Card 2: Thor -->
+<article class="bg-surface-container-lowest rounded-lg p-2.5 flex flex-col justify-between shadow-[0_4px_16px_rgba(38,50,56,0.06)] hover:shadow-md transition-all group relative">
+<div>
+<div class="relative w-full aspect-[4/5] rounded-[1.25rem] overflow-hidden bg-secondary-fixed/40">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="An adorable Brazilian caramelo mongrel dog with floppy ears, wet friendly black nose, and an alert, loving expression looking into camera against a gentle light mint green studio background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0X7G-aNq8NTSYg91Rc2qZXCL7M353n9G_3MzX7_zDmJ4tpJ6ukgSelP04m4Y3pQNJCgL31IswEmzR-9UTn3ahhjXs28pF2w4oA5IWqiY7Xt-cu7aKQK6heW81ORU1HmAg4g8zpg6n-Pp9QF1YyW1RM3zEOITm9Ts2340RM_D9EUmS6UmFBd9vPeRUjWGgeMoGDXnpwir0sTwZhEYvoAokAqiEb5QukfI0_ZvETScpCaFrNE0dyhWL"/>
+<button aria-label="Favoritar Thor" class="favorite-btn absolute top-2 right-2 w-8 h-8 rounded-full bg-surface-container-lowest/90 backdrop-blur-md flex items-center justify-center text-outline hover:text-primary-container shadow-sm hover:scale-110 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</button>
+<div class="absolute bottom-2 left-2 right-2">
+<div class="bg-surface-container-lowest/90 backdrop-blur-md px-2 py-1 rounded-full flex items-center justify-between text-on-surface">
+<span class="font-label-sm text-[10px] font-bold truncate">1.8 km</span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-[10px] text-on-surface-variant font-medium">2 anos</span>
+</div>
+</div>
+</div>
+<div class="pt-2.5 px-0.5">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface truncate">Thor</h3>
+<span class="material-symbols-outlined text-secondary text-[16px]" title="Macho">male</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant truncate">Vira-lata Caramelo</p>
+<div class="flex flex-wrap gap-1 mt-1.5">
+<span class="px-1.5 py-0.5 rounded-md bg-secondary-container/50 text-on-secondary-container font-label-sm text-[9px] font-bold">Super Dócil</span>
+<span class="px-1.5 py-0.5 rounded-md bg-surface-container-high text-on-surface-variant font-label-sm text-[9px] font-bold">Médio</span>
+</div>
+</div>
+</div>
+<a class="mt-2.5 w-full py-2 bg-surface-container-high hover:bg-surface-container text-on-surface rounded-full font-label-md text-label-md font-bold flex items-center justify-center gap-1 transition-all" href="#">
+<span>Conhecer</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">arrow_forward</span>
+</a>
+</article>
+<!-- Card 3: Pipoca -->
+<article class="bg-surface-container-lowest rounded-lg p-2.5 flex flex-col justify-between shadow-[0_4px_16px_rgba(38,50,56,0.06)] hover:shadow-md transition-all group relative">
+<div>
+<div class="relative w-full aspect-[4/5] rounded-[1.25rem] overflow-hidden bg-error-container/40">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="An extremely cute small mixed breed puppy with warm white and tan patches, looking curiously forward, soft natural morning ambient studio lighting, clean warm cream backdrop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdmHTlNvoW1Zr8dPEG2jdiEdQBKQ_sk7wwmp4TIbwrXM7UFH4Uv1jpNc5IXfIyjz1p1dAeD0B8l0XImRRJqKLiKAgQLSIjfGEdmgM15V5x4ZNJhFRTMVEVTx22pPquygRGKMom0MKABDzDIuaXse_ak_uH9tA-uwjqtyvqkKsKraQglKcjfMNM0cWdvFGTIu54Sv31nsb7fK1_-LyFfjaWPg7GkuAyJgKvg9GRw76bTkEnUwIhsXqB"/>
+<!-- Urgent Badge -->
+<div class="absolute top-2 left-2">
+<span class="px-2 py-0.5 rounded-full bg-error text-on-error font-label-sm text-[10px] font-bold shadow-sm flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px]">schedule</span> Urgente
+            </span>
+</div>
+<button aria-label="Favoritar Pipoca" class="favorite-btn absolute top-2 right-2 w-8 h-8 rounded-full bg-surface-container-lowest/90 backdrop-blur-md flex items-center justify-center text-outline hover:text-primary-container shadow-sm hover:scale-110 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</button>
+<div class="absolute bottom-2 left-2 right-2">
+<div class="bg-surface-container-lowest/90 backdrop-blur-md px-2 py-1 rounded-full flex items-center justify-between text-on-surface">
+<span class="font-label-sm text-[10px] font-bold truncate">4.5 km</span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-[10px] text-on-surface-variant font-medium">4 meses</span>
+</div>
+</div>
+</div>
+<div class="pt-2.5 px-0.5">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface truncate">Pipoca</h3>
+<span class="material-symbols-outlined text-primary-container text-[16px]" title="Fêmea">female</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant truncate">Filhote SRD • Lar Temp.</p>
+<div class="flex flex-wrap gap-1 mt-1.5">
+<span class="px-1.5 py-0.5 rounded-md bg-error-container text-on-error-container font-label-sm text-[9px] font-bold">Precisa de Lar</span>
+<span class="px-1.5 py-0.5 rounded-md bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-[9px] font-bold">Porte P</span>
+</div>
+</div>
+</div>
+<a class="mt-2.5 w-full py-2 bg-surface-container-high hover:bg-surface-container text-on-surface rounded-full font-label-md text-label-md font-bold flex items-center justify-center gap-1 transition-all" href="#">
+<span>Conhecer</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">arrow_forward</span>
+</a>
+</article>
+<!-- Card 4: Bento -->
+<article class="bg-surface-container-lowest rounded-lg p-2.5 flex flex-col justify-between shadow-[0_4px_16px_rgba(38,50,56,0.06)] hover:shadow-md transition-all group relative">
+<div>
+<div class="relative w-full aspect-[4/5] rounded-[1.25rem] overflow-hidden bg-secondary-fixed-dim/30">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="A handsome Siamese cat with striking deep blue sapphire eyes and characteristic chocolate point markings, calmly perched against a gentle soft ivory studio backdrop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAISowgjkudSBektW1NoylFIttoyVpfT96DpRrWRZmjzg8XdCn3sdMob62cKRJby2F8MCdbv16RMKTbdcstlp0PeCVAbOSqiOXarFy4o1LzEnh7hStE39G6fbi5jjBYrfsEwzCPLj9l90Y4h7nhD_vy8vsyHzgN0v2qrXSNBnwli5DaPjh9yfipt8hinweS9-wz98yXXTdw3TyEAVSc72rGSReBtVwqRrUyYug5HjzMB6I0ms6IVK3P"/>
+<button aria-label="Favoritar Bento" class="favorite-btn absolute top-2 right-2 w-8 h-8 rounded-full bg-surface-container-lowest/90 backdrop-blur-md flex items-center justify-center text-outline hover:text-primary-container shadow-sm hover:scale-110 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</button>
+<div class="absolute bottom-2 left-2 right-2">
+<div class="bg-surface-container-lowest/90 backdrop-blur-md px-2 py-1 rounded-full flex items-center justify-between text-on-surface">
+<span class="font-label-sm text-[10px] font-bold truncate">2.1 km</span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-[10px] text-on-surface-variant font-medium">1 ano</span>
+</div>
+</div>
+</div>
+<div class="pt-2.5 px-0.5">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface truncate">Bento</h3>
+<span class="material-symbols-outlined text-secondary text-[16px]" title="Macho">male</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant truncate">Siamês • Apto para Apê</p>
+<div class="flex flex-wrap gap-1 mt-1.5">
+<span class="px-1.5 py-0.5 rounded-md bg-secondary-container/50 text-on-secondary-container font-label-sm text-[9px] font-bold">FIV/FELV -</span>
+<span class="px-1.5 py-0.5 rounded-md bg-surface-container-high text-on-surface-variant font-label-sm text-[9px] font-bold">Calmo</span>
+</div>
+</div>
+</div>
+<a class="mt-2.5 w-full py-2 bg-surface-container-high hover:bg-surface-container text-on-surface rounded-full font-label-md text-label-md font-bold flex items-center justify-center gap-1 transition-all" href="#">
+<span>Conhecer</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">arrow_forward</span>
+</a>
+</article>
+</section>
+<!-- Contextual Tip / Adoption Alert Banner -->
+<section class="px-margin-mobile py-space-sm">
+<div class="bg-gradient-to-br from-primary-fixed to-secondary-fixed/50 rounded-lg p-space-md shadow-[0_4px_20px_rgba(255,112,67,0.12)] relative overflow-hidden flex flex-col gap-space-sm">
+<div class="flex items-start gap-space-sm z-10">
+<div class="w-10 h-10 rounded-full bg-surface-container-lowest text-primary flex items-center justify-center shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[24px]">notifications_active</span>
+</div>
+<div class="flex-1">
+<h4 class="font-headline-sm text-headline-sm font-bold text-on-surface leading-tight">Não achou seu match hoje?</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+            Crie um alerta inteligente e receba um aviso instantâneo no momento em que um pet ideal chegar a um abrigo parceiro!
+          </p>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1 z-10">
+<span class="font-label-sm text-label-sm text-on-primary-fixed-variant font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">check_circle</span> Gratuito &amp; Instantâneo
+        </span>
+<button class="px-4 py-2 bg-primary hover:bg-on-primary-container text-on-primary rounded-full font-label-md text-label-md font-bold shadow-md hover:scale-105 active:scale-95 transition-all" type="button">
+          Criar Alerta
+        </button>
+</div>
+<!-- Subtle background decorative paw outline -->
+<span class="material-symbols-outlined absolute -bottom-4 -right-4 text-[96px] text-primary/10 select-none pointer-events-none">pets</span>
+</div>
+</section>
+<!-- Continued Grid Feed -->
+<section class="px-margin-mobile py-space-xs grid grid-cols-2 gap-gutter-mobile">
+<!-- Card 5: Frida -->
+<article class="bg-surface-container-lowest rounded-lg p-2.5 flex flex-col justify-between shadow-[0_4px_16px_rgba(38,50,56,0.06)] hover:shadow-md transition-all group relative">
+<div>
+<div class="relative w-full aspect-[4/5] rounded-[1.25rem] overflow-hidden bg-primary-fixed-dim/30">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="A playful French Bulldog mix dog with soft fawn coat, bat-like ears perked up, tongue slightly out, studio lighting with a warm pastel background, high resolution pet portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqUpundmmQnv2MzAomwD2masyWfa9wcznOkrM_OiqkicN4gLYyckby-DJjrB-3yzLDq6sq6G1KpYBHKblc6qgakdJ2CyNmVK5HJPV08LD5GKSdsYYYrqCVjEKucBmAaAjQTZ6vwwNwH5S8de9yE0K9T9ZmGsTiaGWSTGZ4eEspgG_42szLpr1UNj-fL8-cDigthWLh0GtD5bp4DpeCpqnf6gDE_tuLCYa-8zjws25iBU1SawkQ8FA1"/>
+<button aria-label="Favoritar Frida" class="favorite-btn absolute top-2 right-2 w-8 h-8 rounded-full bg-surface-container-lowest/90 backdrop-blur-md flex items-center justify-center text-outline hover:text-primary-container shadow-sm hover:scale-110 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</button>
+<div class="absolute bottom-2 left-2 right-2">
+<div class="bg-surface-container-lowest/90 backdrop-blur-md px-2 py-1 rounded-full flex items-center justify-between text-on-surface">
+<span class="font-label-sm text-[10px] font-bold truncate">5.0 km</span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-[10px] text-on-surface-variant font-medium">3 anos</span>
+</div>
+</div>
+</div>
+<div class="pt-2.5 px-0.5">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface truncate">Frida</h3>
+<span class="material-symbols-outlined text-primary-container text-[16px]" title="Fêmea">female</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant truncate">Bulldog Mix • Sociável</p>
+<div class="flex flex-wrap gap-1 mt-1.5">
+<span class="px-1.5 py-0.5 rounded-md bg-secondary-container/50 text-on-secondary-container font-label-sm text-[9px] font-bold">Amigável</span>
+<span class="px-1.5 py-0.5 rounded-md bg-surface-container-high text-on-surface-variant font-label-sm text-[9px] font-bold">Castrada</span>
+</div>
+</div>
+</div>
+<a class="mt-2.5 w-full py-2 bg-surface-container-high hover:bg-surface-container text-on-surface rounded-full font-label-md text-label-md font-bold flex items-center justify-center gap-1 transition-all" href="#">
+<span>Conhecer</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">arrow_forward</span>
+</a>
+</article>
+<!-- Card 6: Simba -->
+<article class="bg-surface-container-lowest rounded-lg p-2.5 flex flex-col justify-between shadow-[0_4px_16px_rgba(38,50,56,0.06)] hover:shadow-md transition-all group relative">
+<div>
+<div class="relative w-full aspect-[4/5] rounded-[1.25rem] overflow-hidden bg-primary-fixed/50">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="A charming young ginger tabby cat with bright amber eyes, sitting comfortably on a soft blanket in studio lighting with a warm creamy yellow backdrop, sharp focus on whiskers" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuCUNN-9cPK9H2XuEcibgZqezAKj5LCZM02rofee5B5Dlu4VUKDhvDpKkNLGxEpCsg83NQo6yQloaVPlk-LdOJJh8tqBrIbwxTfYrO6RhF6TnzGlHn-6EvjhVlGgvWZDegLinYqtOe76bZ_P_emRqMVbJa7oQrh6kg2B0VbM9tnSNT0f784Gg76vlq1FIQp-b4RTIMbnvNbAkLA8oSTl5EUNQ3JztxRrFujcww_MDmnN8NG8BgAPfY"/>
+<button aria-label="Favoritar Simba" class="favorite-btn absolute top-2 right-2 w-8 h-8 rounded-full bg-surface-container-lowest/90 backdrop-blur-md flex items-center justify-center text-outline hover:text-primary-container shadow-sm hover:scale-110 active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</button>
+<div class="absolute bottom-2 left-2 right-2">
+<div class="bg-surface-container-lowest/90 backdrop-blur-md px-2 py-1 rounded-full flex items-center justify-between text-on-surface">
+<span class="font-label-sm text-[10px] font-bold truncate">6.2 km</span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-[10px] text-on-surface-variant font-medium">8 meses</span>
+</div>
+</div>
+</div>
+<div class="pt-2.5 px-0.5">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface truncate">Simba</h3>
+<span class="material-symbols-outlined text-secondary text-[16px]" title="Macho">male</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant truncate">Gato Laranja • Brincalhão</p>
+<div class="flex flex-wrap gap-1 mt-1.5">
+<span class="px-1.5 py-0.5 rounded-md bg-secondary-container/50 text-on-secondary-container font-label-sm text-[9px] font-bold">Castrado</span>
+<span class="px-1.5 py-0.5 rounded-md bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-[9px] font-bold">Dócil</span>
+</div>
+</div>
+</div>
+<a class="mt-2.5 w-full py-2 bg-surface-container-high hover:bg-surface-container text-on-surface rounded-full font-label-md text-label-md font-bold flex items-center justify-center gap-1 transition-all" href="#">
+<span>Conhecer</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">arrow_forward</span>
+</a>
+</article>
+</section>
+<!-- Interactive Filter Bottom Drawer / Modal (Lightweight inline sheet) -->
+<div class="fixed inset-0 z-50 bg-inverse-surface/40 backdrop-blur-sm hidden flex-col justify-end transition-opacity" id="filter-modal">
+<div class="w-full bg-surface-container-lowest rounded-t-xl p-margin-mobile flex flex-col gap-space-md shadow-[0_-8px_32px_rgba(38,50,56,0.15)] max-h-[85vh] overflow-y-auto">
+<div class="w-12 h-1.5 rounded-full bg-surface-container-highest mx-auto"></div>
+<div class="flex items-center justify-between">
+<div>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Filtros Avançados</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Encontre o pet que mais combina com seu lar</p>
+</div>
+<button class="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface hover:bg-surface-container" id="close-filter-modal" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Distance Slider -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between font-label-md text-label-md">
+<span class="text-on-surface font-bold">Distância Máxima</span>
+<span class="text-primary font-bold">10 km</span>
+</div>
+<input class="w-full accent-primary cursor-pointer" max="50" min="1" type="range" value="10"/>
+</div>
+<!-- Species Selection -->
+<div class="flex flex-col gap-2">
+<span class="font-label-md text-label-md font-bold text-on-surface">Espécie</span>
+<div class="grid grid-cols-3 gap-2">
+<button class="py-2.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-md text-label-md font-bold shadow-sm" type="button">Cachorros</button>
+<button class="py-2.5 rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md font-medium" type="button">Gatos</button>
+<button class="py-2.5 rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md font-medium" type="button">Outros</button>
+</div>
+</div>
+<!-- Size Selection -->
+<div class="flex flex-col gap-2">
+<span class="font-label-md text-label-md font-bold text-on-surface">Porte</span>
+<div class="grid grid-cols-3 gap-2">
+<button class="py-2 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold" type="button">Pequeno</button>
+<button class="py-2 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm font-bold" type="button">Médio</button>
+<button class="py-2 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm font-semibold" type="button">Grande</button>
+</div>
+</div>
+<!-- Modal Bottom Actions -->
+<div class="pt-space-xs flex items-center gap-space-sm pb-safe">
+<button class="flex-1 py-3 bg-surface-container-high hover:bg-surface-container text-on-surface font-label-lg text-label-lg rounded-full font-bold transition-all" type="button">
+          Limpar
+        </button>
+<button class="flex-[2] py-3 bg-primary-container hover:bg-primary text-on-primary font-label-lg text-label-lg rounded-full font-bold shadow-[0_6px_20px_rgba(255,112,67,0.35)] transition-all" id="apply-filters-btn" type="button">
+          Ver 148 pets
+        </button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Dynamic Tab highlight sync in parent nav bar (Sets 'Explorar' as active)
+  (function initExplorarNavHighlight() {
+    const navLinks = document.querySelectorAll('nav a[data-path]');
+    navLinks.forEach(link => {
+      const isExplorar = link.getAttribute('data-path') === 'explorar';
+      if (isExplorar) {
+        link.classList.add('text-primary', 'bg-primary-fixed/60', 'font-bold');
+        link.classList.remove('text-on-surface-variant');
+        const icon = link.querySelector('.material-symbols-outlined');
+        if (icon) icon.style.fontVariationSettings = "'FILL' 1";
+      } else {
+        link.classList.remove('text-primary', 'bg-primary-fixed/60', 'font-bold');
+        link.classList.add('text-on-surface-variant');
+        const icon = link.querySelector('.material-symbols-outlined');
+        if (icon) icon.style.fontVariationSettings = "'FILL' 0";
+      }
+    });
+
+    // Favorite heart toggle micro-interaction
+    document.querySelectorAll('.favorite-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const icon = btn.querySelector('.material-symbols-outlined');
+        const isFav = icon.style.fontVariationSettings === "'FILL' 1";
+        if (isFav) {
+          icon.style.fontVariationSettings = "'FILL' 0";
+          btn.classList.remove('text-primary-container');
+          btn.classList.add('text-outline');
+        } else {
+          icon.style.fontVariationSettings = "'FILL' 1";
+          btn.classList.remove('text-outline');
+          btn.classList.add('text-primary-container');
+          btn.classList.add('scale-125');
+          setTimeout(() => btn.classList.remove('scale-125'), 200);
+        }
+      });
+    });
+
+    // Toggle Modal Drawer
+    const filterBtn = document.getElementById('btn-filter-drawer');
+    const modal = document.getElementById('filter-modal');
+    const closeBtn = document.getElementById('close-filter-modal');
+    const applyBtn = document.getElementById('apply-filters-btn');
+
+    const toggleModal = (show) => {
+      if (show) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      } else {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    };
+
+    if (filterBtn) filterBtn.addEventListener('click', () => toggleModal(true));
+    if (closeBtn) closeBtn.addEventListener('click', () => toggleModal(false));
+    if (applyBtn) applyBtn.addEventListener('click', () => toggleModal(false));
+
+    // View selector toggle
+    const btnGrid = document.getElementById('mode-grid');
+    const btnMatch = document.getElementById('mode-match');
+    if (btnGrid && btnMatch) {
+      btnGrid.addEventListener('click', () => {
+        btnGrid.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md font-bold shadow-sm transition-all';
+        btnMatch.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-on-surface-variant font-label-md text-label-md font-medium transition-all hover:text-on-surface';
+      });
+      btnMatch.addEventListener('click', () => {
+        btnMatch.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface font-label-md text-label-md font-bold shadow-sm transition-all';
+        btnGrid.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-on-surface-variant font-label-md text-label-md font-medium transition-all hover:text-on-surface';
+      });
+    }
+  })();
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe pointer-events-none" data-active-classes="text-primary bg-primary-fixed/60 font-bold"><div class="mx-auto max-w-md px-margin-mobile pb-3 pointer-events-auto"><div class="flex items-center justify-around h-16 px-space-xs bg-surface-container-lowest/90 backdrop-blur-xl rounded-full shadow-[0_8px_24px_rgba(38,50,56,0.08)]"><a class="flex flex-col items-center justify-center flex-1 h-12 rounded-full text-on-surface-variant hover:text-on-surface transition-all gap-0.5" data-path="inicio" href="#"><span class="material-symbols-outlined text-[22px]">home</span><span class="font-label-sm text-[10px] leading-none">Início</span></a><a class="flex flex-col items-center justify-center flex-1 h-12 rounded-full text-on-surface-variant hover:text-on-surface transition-all gap-0.5" data-path="explorar" href="#"><span class="material-symbols-outlined text-[22px]">search</span><span class="font-label-sm text-[10px] leading-none">Explorar</span></a><a class="flex flex-col items-center justify-center flex-1 h-12 rounded-full text-on-surface-variant hover:text-on-surface transition-all gap-0.5" data-path="mapa" href="#"><span class="material-symbols-outlined text-[22px]">distance</span><span class="font-label-sm text-[10px] leading-none">Mapa</span></a><a class="flex flex-col items-center justify-center flex-1 h-12 rounded-full text-on-surface-variant hover:text-on-surface transition-all gap-0.5" data-path="favoritos" href="#"><span class="material-symbols-outlined text-[22px]">favorite</span><span class="font-label-sm text-[10px] leading-none">Favoritos</span></a><a class="flex flex-col items-center justify-center flex-1 h-12 rounded-full text-on-surface-variant hover:text-on-surface transition-all gap-0.5" data-path="perfil" href="#"><span class="material-symbols-outlined text-[22px]">person</span><span class="font-label-sm text-[10px] leading-none">Perfil</span></a></div></div></nav></body></html>

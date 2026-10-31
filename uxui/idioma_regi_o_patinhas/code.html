@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "secondary-fixed": "#8ef4e9", "on-error": "#ffffff", "surface-bright": "#f4faff", "on-tertiary": "#ffffff", "on-primary-fixed": "#3a0a00", "surface-container": "#e3f0f8", "secondary": "#006a63", "secondary-fixed-dim": "#71d7cd", "inverse-primary": "#ffb59f", "on-secondary-fixed-variant": "#00504a", "on-error-container": "#93000a", "surface-container-highest": "#d7e4ec", "primary-container": "#ff7043", "primary-fixed-dim": "#ffb59f", "on-secondary-container": "#006f67", "inverse-on-surface": "#e6f3fb", "on-surface": "#111d23", "on-surface-variant": "#59413a", "on-tertiary-fixed": "#201b10", "surface-container-high": "#ddeaf2", "error": "#ba1a1a", "surface-container-lowest": "#ffffff", "background": "#f4faff", "on-primary-container": "#641800", "tertiary-fixed-dim": "#d0c5b3", "on-secondary-fixed": "#00201d", "on-background": "#111d23", "on-tertiary-fixed-variant": "#4d4638", "secondary-container": "#8bf1e6", "surface-dim": "#cfdce4", "surface-container-low": "#e9f6fd", "tertiary": "#655d4f", "outline": "#8d7169", "inverse-surface": "#263238", "surface": "#f4faff", "primary-fixed": "#ffdbd0", "primary": "#ac3509", "tertiary-fixed": "#ede1cf", "error-container": "#ffdad6", "on-secondary": "#ffffff", "surface-variant": "#d7e4ec", "surface-tint": "#ac3509", "on-tertiary-container": "#393326", "on-primary": "#ffffff", "on-primary-fixed-variant": "#852300", "outline-variant": "#e0bfb6", "tertiary-container": "#a59b8a" }, borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" }, spacing: { "margin-mobile": "1rem", "space-2xl": "3rem", "space-xs": "0.25rem", "gutter-mobile": "0.75rem", "margin": "1.5rem", "space-sm": "0.5rem", "space-lg": "1.5rem", "space-xl": "2rem", "space-md": "1rem", "gutter": "1rem" }, fontFamily: { "headline-sm": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"], "label-lg": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "display-lg": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"] }, fontSize: { "headline-sm": ["18px", { lineHeight: "24px", fontWeight: "600" }], "headline-lg-mobile": ["24px", { lineHeight: "32px", letterSpacing: "-0.02em", fontWeight: "700" }], "label-lg": ["14px", { lineHeight: "20px", fontWeight: "700" }], "label-sm": ["11px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "600" }], "display-lg": ["36px", { lineHeight: "44px", letterSpacing: "-0.03em", fontWeight: "800" }], "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }], "label-md": ["12px", { lineHeight: "16px", fontWeight: "600" }], "headline-md": ["20px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "700" }], "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }], "headline-lg": ["28px", { lineHeight: "36px", letterSpacing: "-0.02em", fontWeight: "700" }], "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }] } } } }</script><style>@layer base { html, body { width: 100vw; margin: 0; padding: 0; } body { overscroll-behavior: none; } .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head><body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen selection:bg-primary-fixed"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-margin-mobile flex items-center justify-between gap-gutter-mobile"><div class="flex items-center gap-space-sm min-w-0"><button aria-label="Voltar" class="w-11 h-11 -ml-2 flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container-high/60 transition-colors" onclick="history.back()"><span class="material-symbols-outlined text-[24px]">arrow_back_ios_new</span></button><img alt="Logo Patinhas" class="h-7 w-auto object-contain flex-shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1WCH0IfmhO1zWbtX2STdMEjKEqfkTXnzHx8bLPU_7ExIX6dsfnmTax2lnj1mUGyjrzJ4aTNxeWdfT6hyKkR69DQPiUGOUlznQ0j_pxrSzRT0LbER3_uXRLyHc5_sevnSdECeQLH9HEFfm_RNpKmxubmxBv0Q87f7j8bi3O6WjBUSKUi0klBaXlGyQDwAWuCGHR01noJTKR34YS6bOsD4rs0bdhTfNISoeu0PMZy0R04aX-fPS6VhNhf3A"/><h1 class="font-headline-sm text-headline-sm text-on-surface truncate">Formulário De Adoção</h1></div><div class="flex items-center gap-space-xs"><button aria-label="Compartilhar" class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container-high/60 transition-colors" type="button"><span class="material-symbols-outlined text-[22px]">share</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-primary-container/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDN_WArsZitvp5Vda2odw2xzpJAE48ywSY116u_20xHQLEL-BEgogn4CJA9XcdtmwCVx_GxHTlPHiomoMXNDGxlg02k88HBWffUzevZ2_aGeV75HUiOqtAeRRi1JDwY0Y3vvEEELBpGW9PKVOm7wYvPaHhqz1UTmTAVFYO1WDKqlOEGf7jo_0h863kCt29onxFcz8qM9kFsU2Kl_BCoIoc2JA3wNTk2XWbStzieNlhy2kShdpdMJkQK"/></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 bg-surface"><div class="flex flex-col w-full px-margin-mobile pb-space-2xl gap-space-lg">
+<!-- Introductory Banner -->
+<section class="flex flex-col gap-space-xs mt-space-sm">
+<div class="inline-flex items-center gap-space-xs text-primary font-label-md text-label-md">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">public</span>
+<span>Preferências Globais</span>
+</div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Idioma &amp; Região</h2>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+      Personalize a linguagem do app e o formato de exibição das fichas de adoção, distâncias e conversas com os abrigos.
+    </p>
+</section>
+<!-- Interactive Search Input -->
+<section class="relative w-full">
+<div class="flex items-center w-full bg-surface-container-lowest shadow-sm rounded-2xl px-space-md py-3 gap-space-sm transition-all focus-within:shadow-md focus-within:bg-surface-container-low">
+<span class="material-symbols-outlined text-outline text-[22px] select-none">search</span>
+<input class="w-full bg-transparent border-none outline-none font-body-md text-body-md text-on-surface placeholder:text-outline font-label-md" id="languageSearch" placeholder="Buscar idioma ou país..." type="search"/>
+<button aria-label="Limpar busca" class="hidden w-6 h-6 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center transition-opacity" id="clearSearch" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+</section>
+<!-- Primary Languages Section -->
+<section class="flex flex-col gap-space-sm" id="primaryLanguagesSection">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">translate</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Idioma Principal</h3>
+</div>
+<span class="font-label-sm text-label-sm text-secondary font-bold uppercase tracking-wider bg-secondary-container/40 px-2 py-0.5 rounded-full">Suporte Oficial</span>
+</div>
+<div class="flex flex-col gap-space-xs" id="primaryLanguageList">
+<!-- Português (Brasil) - Active by default -->
+<label class="lang-option group relative flex items-center justify-between p-space-md bg-surface-container-lowest rounded-2xl shadow-sm cursor-pointer transition-all hover:bg-surface-container-low" data-lang="português brasil pt-br">
+<input checked="" class="peer sr-only" name="app_language" type="radio" value="pt-br"/>
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-[26px] shadow-sm flex-shrink-0">
+            🇧🇷
+          </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface">Português (Brasil)</span>
+<span class="bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm px-2 py-0.5 rounded-full">Padrão</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">PT-BR • Tradução completa e nativa</span>
+</div>
+</div>
+<div class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center flex-shrink-0 shadow-sm transition-transform scale-100 peer-checked:flex peer-not-checked:hidden">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex-shrink-0 hidden peer-not-checked:block"></div>
+</label>
+<!-- English (US) -->
+<label class="lang-option group relative flex items-center justify-between p-space-md bg-surface-container-lowest rounded-2xl shadow-sm cursor-pointer transition-all hover:bg-surface-container-low" data-lang="english us en-us inglês ingles">
+<input class="peer sr-only" name="app_language" type="radio" value="en-us"/>
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-[26px] shadow-sm flex-shrink-0">
+            🇺🇸
+          </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface">English (US)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">EN-US • Complete translation</span>
+</div>
+</div>
+<div class="w-7 h-7 rounded-full bg-primary text-on-primary items-center justify-center flex-shrink-0 shadow-sm hidden peer-checked:flex">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex-shrink-0 block peer-checked:hidden"></div>
+</label>
+<!-- Español -->
+<label class="lang-option group relative flex items-center justify-between p-space-md bg-surface-container-lowest rounded-2xl shadow-sm cursor-pointer transition-all hover:bg-surface-container-low" data-lang="español espanhol es-es spain spanish">
+<input class="peer sr-only" name="app_language" type="radio" value="es-es"/>
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-[26px] shadow-sm flex-shrink-0">
+            🇪🇸
+          </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface">Español</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">ES-ES • Traducción completa</span>
+</div>
+</div>
+<div class="w-7 h-7 rounded-full bg-primary text-on-primary items-center justify-center flex-shrink-0 shadow-sm hidden peer-checked:flex">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex-shrink-0 block peer-checked:hidden"></div>
+</label>
+</div>
+</section>
+<!-- Other Languages Section -->
+<section class="flex flex-col gap-space-sm" id="otherLanguagesSection">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-outline text-[20px]">language</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Outros Idiomas Disponíveis</h3>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Comunidade</span>
+</div>
+<div class="flex flex-col gap-space-xs" id="otherLanguageList">
+<!-- Français -->
+<label class="lang-option group relative flex items-center justify-between p-space-md bg-surface-container-lowest rounded-2xl shadow-sm cursor-pointer transition-all hover:bg-surface-container-low" data-lang="français frances fr-fr france">
+<input class="peer sr-only" name="app_language" type="radio" value="fr-fr"/>
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-[26px] shadow-sm flex-shrink-0">
+            🇫🇷
+          </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface">Français</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">FR-FR • Traduction communautaire</span>
+</div>
+</div>
+<div class="w-7 h-7 rounded-full bg-primary text-on-primary items-center justify-center flex-shrink-0 shadow-sm hidden peer-checked:flex">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex-shrink-0 block peer-checked:hidden"></div>
+</label>
+<!-- Deutsch -->
+<label class="lang-option group relative flex items-center justify-between p-space-md bg-surface-container-lowest rounded-2xl shadow-sm cursor-pointer transition-all hover:bg-surface-container-low" data-lang="deutsch alemao alemanha de-de german">
+<input class="peer sr-only" name="app_language" type="radio" value="de-de"/>
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-[26px] shadow-sm flex-shrink-0">
+            🇩🇪
+          </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface">Deutsch</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">DE-DE • Vollständige Übersetzung</span>
+</div>
+</div>
+<div class="w-7 h-7 rounded-full bg-primary text-on-primary items-center justify-center flex-shrink-0 shadow-sm hidden peer-checked:flex">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex-shrink-0 block peer-checked:hidden"></div>
+</label>
+<!-- Italiano -->
+<label class="lang-option group relative flex items-center justify-between p-space-md bg-surface-container-lowest rounded-2xl shadow-sm cursor-pointer transition-all hover:bg-surface-container-low" data-lang="italiano it-it italia italian">
+<input class="peer sr-only" name="app_language" type="radio" value="it-it"/>
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-[26px] shadow-sm flex-shrink-0">
+            🇮🇹
+          </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface">Italiano</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">IT-IT • Traduzione comunitaria</span>
+</div>
+</div>
+<div class="w-7 h-7 rounded-full bg-primary text-on-primary items-center justify-center flex-shrink-0 shadow-sm hidden peer-checked:flex">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex-shrink-0 block peer-checked:hidden"></div>
+</label>
+<!-- 日本語 (Japanese) -->
+<label class="lang-option group relative flex items-center justify-between p-space-md bg-surface-container-lowest rounded-2xl shadow-sm cursor-pointer transition-all hover:bg-surface-container-low" data-lang="japanese japão japones ja-jp 日本語 nihongo">
+<input class="peer sr-only" name="app_language" type="radio" value="ja-jp"/>
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-[26px] shadow-sm flex-shrink-0">
+            🇯🇵
+          </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-on-surface">日本語 (Japanese)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">JA-JP • 日本語サポート</span>
+</div>
+</div>
+<div class="w-7 h-7 rounded-full bg-primary text-on-primary items-center justify-center flex-shrink-0 shadow-sm hidden peer-checked:flex">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</div>
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex-shrink-0 block peer-checked:hidden"></div>
+</label>
+</div>
+<!-- Empty Search State -->
+<div class="hidden flex-col items-center justify-center py-space-xl px-space-md text-center bg-surface-container-lowest rounded-2xl" id="noResults">
+<div class="w-14 h-14 rounded-full bg-surface-container-low flex items-center justify-center text-primary mb-space-sm">
+<span class="material-symbols-outlined text-[28px]">search_off</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-on-surface">Nenhum idioma encontrado</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Verifique a grafia ou procure pelo nome nativo do país.</p>
+</div>
+</section>
+<!-- Regional Preferences Card -->
+<section class="flex flex-col gap-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[20px]" style="font-variation-settings: 'FILL' 1;">tune</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Preferências Regionais &amp; Formatação</h3>
+</div>
+<div class="flex flex-col bg-surface-container-lowest rounded-3xl p-space-md shadow-sm gap-space-md">
+<!-- Date Format Selector -->
+<div class="flex items-center justify-between gap-space-sm py-1">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-secondary flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg text-on-surface">Data &amp; Hora</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Resgates e vacinação</span>
+</div>
+</div>
+<div class="relative flex-shrink-0">
+<select class="appearance-none bg-surface-container-low font-label-md text-label-md text-on-surface py-2 pl-3 pr-8 rounded-xl outline-none focus:bg-surface-container cursor-pointer">
+<option selected="" value="dmy">DD/MM/AAAA (24h)</option>
+<option value="mdy">MM/DD/YYYY (12h)</option>
+<option value="ymd">AAAA-MM-DD (24h)</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-2 top-2.5 text-[18px] text-outline">expand_more</span>
+</div>
+</div>
+<!-- Unit of Measurement -->
+<div class="flex items-center justify-between gap-space-sm py-1">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">straighten</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg text-on-surface">Porte &amp; Distância</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Peso do pet e raio do mapa</span>
+</div>
+</div>
+<div class="relative flex-shrink-0">
+<select class="appearance-none bg-surface-container-low font-label-md text-label-md text-on-surface py-2 pl-3 pr-8 rounded-xl outline-none focus:bg-surface-container cursor-pointer">
+<option selected="" value="metric">Métrico (kg, km)</option>
+<option value="imperial">Imperial (lb, mi)</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-2 top-2.5 text-[18px] text-outline">expand_more</span>
+</div>
+</div>
+<!-- Currency Selector -->
+<div class="flex items-center justify-between gap-space-sm py-1">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-secondary flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg text-on-surface">Moeda de Doação</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Custos veterinários e ração</span>
+</div>
+</div>
+<div class="relative flex-shrink-0">
+<select class="appearance-none bg-surface-container-low font-label-md text-label-md text-on-surface py-2 pl-3 pr-8 rounded-xl outline-none focus:bg-surface-container cursor-pointer">
+<option selected="" value="brl">BRL (R$)</option>
+<option value="usd">USD ($)</option>
+<option value="eur">EUR (€)</option>
+</select>
+<span class="material-symbols-outlined pointer-events-none absolute right-2 top-2.5 text-[18px] text-outline">expand_more</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Smart Translation Module -->
+<section class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Tradução Inteligente</h3>
+</div>
+<span class="font-label-sm text-label-sm text-on-primary-container bg-primary-fixed px-2 py-0.5 rounded-full font-bold">Assistente IA</span>
+</div>
+<div class="flex flex-col bg-surface-container-lowest rounded-3xl p-space-md shadow-sm gap-space-md">
+<!-- Auto-translate chat messages toggle -->
+<label class="flex items-start justify-between gap-space-md cursor-pointer select-none">
+<div class="flex flex-col gap-0.5">
+<span class="font-label-lg text-label-lg text-on-surface">Traduzir conversas de ONGs automaticamente</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Converse facilmente com abrigos e protetores internacionais ou de outras regiões no seu idioma nativo.</span>
+</div>
+<div class="relative inline-flex items-center flex-shrink-0 mt-0.5">
+<input checked="" class="sr-only peer" id="toggleTranslate" type="checkbox"/>
+<div class="w-12 h-7 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</label>
+<!-- Auto detect device language toggle -->
+<label class="flex items-start justify-between gap-space-md cursor-pointer select-none">
+<div class="flex flex-col gap-0.5">
+<span class="font-label-lg text-label-lg text-on-surface">Detectar idioma do dispositivo</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Ajusta termos regionais e nomenclaturas conforme o sistema operacional.</span>
+</div>
+<div class="relative inline-flex items-center flex-shrink-0 mt-0.5">
+<input checked="" class="sr-only peer" id="toggleAutoDetect" type="checkbox"/>
+<div class="w-12 h-7 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</label>
+</div>
+</section>
+<!-- Paws Caring Guarantee Note -->
+<section class="flex items-center gap-space-md p-space-md bg-secondary-container/20 rounded-2xl">
+<div class="w-10 h-10 rounded-full bg-secondary text-on-secondary flex items-center justify-center flex-shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">pets</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">
+      As fichas de saúde de cães e gatos mantêm seus termos veterinários padronizados independentemente da tradução.
+    </p>
+</section>
+<!-- Floating / Sticky Save Action Bar -->
+<div class="sticky bottom-4 w-full z-40 pt-space-xs">
+<div class="bg-surface-container-lowest/90 backdrop-blur-xl p-space-sm rounded-full shadow-[0_8px_32px_rgba(38,50,56,0.14)] flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs pl-space-sm">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-md text-label-md text-on-surface-variant" id="statusMessage">Pronto para salvar</span>
+</div>
+<button class="bg-gradient-to-r from-primary-container to-primary text-on-primary font-label-lg text-label-lg px-space-lg py-3 rounded-full shadow-[0_4px_16px_rgba(255,112,67,0.35)] active:scale-95 transition-all flex items-center gap-space-xs group" id="btnSavePreferences" type="button">
+<span>Salvar Preferências</span>
+<span class="material-symbols-outlined text-[18px] group-hover:translate-x-0.5 transition-transform">check</span>
+</button>
+</div>
+</div>
+<!-- Notification Toast -->
+<div class="fixed top-20 left-1/2 -translate-x-1/2 z-50 flex items-center gap-space-sm px-space-md py-3 rounded-full bg-inverse-surface text-inverse-on-surface shadow-xl opacity-0 pointer-events-none transition-all duration-300 transform -translate-y-2" id="toastFeedback">
+<span class="material-symbols-outlined text-secondary-fixed text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-md text-label-md">Preferências aplicadas com carinho!</span>
+</div>
+</div>
+<script>
+  (function() {
+    const searchInput = document.getElementById('languageSearch');
+    const clearBtn = document.getElementById('clearSearch');
+    const langCards = document.querySelectorAll('.lang-option');
+    const primarySection = document.getElementById('primaryLanguagesSection');
+    const otherSection = document.getElementById('otherLanguagesSection');
+    const noResults = document.getElementById('noResults');
+    const saveBtn = document.getElementById('btnSavePreferences');
+    const toast = document.getElementById('toastFeedback');
+    const statusMsg = document.getElementById('statusMessage');
+
+    // Filter functionality
+    function filterLanguages(query) {
+      const term = query.toLowerCase().trim();
+      let visiblePrimary = 0;
+      let visibleOther = 0;
+
+      langCards.forEach(card => {
+        const keywords = card.getAttribute('data-lang') || '';
+        const text = card.textContent.toLowerCase();
+        const matches = keywords.includes(term) || text.includes(term);
+
+        if (matches) {
+          card.classList.remove('hidden');
+          if (card.closest('#primaryLanguageList')) visiblePrimary++;
+          if (card.closest('#otherLanguageList')) visibleOther++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      primarySection.style.display = (visiblePrimary > 0 || term === '') ? 'flex' : 'none';
+      otherSection.style.display = (visibleOther > 0 || term === '') ? 'flex' : 'none';
+
+      if (visiblePrimary === 0 && visibleOther === 0 && term !== '') {
+        noResults.classList.remove('hidden');
+        noResults.classList.add('flex');
+        otherSection.style.display = 'flex';
+      } else {
+        noResults.classList.add('hidden');
+        noResults.classList.remove('flex');
+      }
+    }
+
+    searchInput.addEventListener('input', (e) => {
+      const val = e.target.value;
+      if (val.length > 0) {
+        clearBtn.classList.remove('hidden');
+        clearBtn.classList.add('flex');
+      } else {
+        clearBtn.classList.add('hidden');
+        clearBtn.classList.remove('flex');
+      }
+      filterLanguages(val);
+    });
+
+    clearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      clearBtn.classList.add('hidden');
+      clearBtn.classList.remove('flex');
+      filterLanguages('');
+      searchInput.focus();
+    });
+
+    // Language selection feedback
+    document.querySelectorAll('input[name="app_language"]').forEach(radio => {
+      radio.addEventListener('change', () => {
+        statusMsg.textContent = 'Alterações pendentes';
+      });
+    });
+
+    // Save action animation and toast
+    saveBtn.addEventListener('click', () => {
+      saveBtn.classList.add('scale-95');
+      setTimeout(() => saveBtn.classList.remove('scale-95'), 150);
+
+      // Trigger warm confirmation toast
+      toast.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-2');
+      toast.classList.add('opacity-100', 'translate-y-0');
+      statusMsg.textContent = 'Atualizado agora';
+
+      setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'pointer-events-none', '-translate-y-2');
+      }, 2800);
+    });
+  })();
+</script></main></body></html>

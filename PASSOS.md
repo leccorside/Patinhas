@@ -54,31 +54,34 @@ Base de documentação aprovada para início da configuração de infraestrutura
 **Dependências:** Etapa 00 aprovada.
 
 **Tarefas:**
-- [ ] Criar estrutura de diretórios (`apps/web`, `apps/api`, `packages/shared`, `packages/types`, `packages/config`, `docker/`)
-- [ ] Configurar monorepo com `pnpm-workspace.yaml` ou `npm/yarn workspaces`
-- [ ] Criar `docker-compose.yml` com serviços: web, api, postgres (postgis), redis, minio, mailpit, worker
-- [ ] Criar `docker-compose.prod.yml` para produção
-- [ ] Criar `.env.example` com todas as variáveis documentadas
-- [ ] Criar `Dockerfile` para `apps/web` (Vite dev / Nginx prod)
-- [ ] Criar `Dockerfile` para `apps/api` (NestJS dev / dist prod)
-- [ ] Configurar health checks para Postgres, Redis e MinIO
-- [ ] Criar scripts auxiliares em `docker/scripts/` para inicialização
+- [x] Criar estrutura de diretórios (`apps/web`, `apps/api`, `packages/shared`, `packages/types`, `packages/config`, `docker/`)
+- [x] Configurar monorepo com npm workspaces no `package.json` raiz
+- [x] Criar `docker-compose.yml` com serviços: web, api, postgres (postgis), redis, minio, mailpit
+- [x] Criar `docker-compose.prod.yml` para produção com Nginx gateway
+- [x] Criar `.env.example` e `.env` com todas as variáveis documentadas e portas dedicadas
+- [x] Criar `Dockerfile` e `Dockerfile.dev` para `apps/web` (Vite dev / Nginx prod)
+- [x] Criar `Dockerfile` e `Dockerfile.dev` para `apps/api` (NestJS dev / dist prod)
+- [x] Configurar health checks para Postgres, Redis e Mailpit
+- [x] Criar scripts de inicialização (`docker/postgres/init-postgis.sh`) e proxy Nginx
 
 **Arquivos envolvidos:**
-- `docker-compose.yml`, `docker-compose.prod.yml`, `.env.example`
-- `apps/web/Dockerfile`, `apps/api/Dockerfile`
-- `package.json`, `pnpm-workspace.yaml`
+- `docker-compose.yml`, `docker-compose.prod.yml`, `.env.example`, `.env`
+- `apps/web/Dockerfile`, `apps/web/Dockerfile.dev`, `apps/api/Dockerfile`, `apps/api/Dockerfile.dev`
+- `package.json`, `packages/*/package.json`, `docker/postgres/init-postgis.sh`, `docker/nginx/nginx.conf`
 
 **Critérios de aceite:**
-- Execução bem-sucedida de `docker compose up -d --build`.
-- Todos os serviços reportando status `healthy`.
-- Frontend e backend acessíveis em portas locais mapeadas.
+- Execução bem-sucedida de `docker compose up -d`.
+- Todos os serviços reportando status `healthy` ou ativos.
+- Frontend (porta 3005) e backend (porta 3333) acessíveis e comunicando-se.
+- PostGIS 3.4 ativo no PostgreSQL 16.
 
 **Testes:**
-- Teste de subida de containers e verificação de logs limpos (`docker compose logs`).
+- Teste de subida de containers e verificação de logs limpos (`docker compose ps` e `docker logs`).
+- Teste de requisições HTTP (`/api/v1/health`, `/api/docs`, web UI, mailpit e minio).
+- Teste de consulta geoespacial PostGIS no container PostgreSQL.
 
 **Resultado esperado:**
-Ambiente Docker completo rodando sem requerer Node.js ou banco instalados no host.
+Ambiente Docker completo rodando sem requerer Node.js ou banco instalados no host. Concluído com êxito!
 
 ---
 

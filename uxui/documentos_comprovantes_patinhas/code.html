@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "secondary-fixed": "#8ef4e9", "on-error": "#ffffff", "surface-bright": "#f4faff", "on-tertiary": "#ffffff", "on-primary-fixed": "#3a0a00", "surface-container": "#e3f0f8", "secondary": "#006a63", "secondary-fixed-dim": "#71d7cd", "inverse-primary": "#ffb59f", "on-secondary-fixed-variant": "#00504a", "on-error-container": "#93000a", "surface-container-highest": "#d7e4ec", "primary-container": "#ff7043", "primary-fixed-dim": "#ffb59f", "on-secondary-container": "#006f67", "inverse-on-surface": "#e6f3fb", "on-surface": "#111d23", "on-surface-variant": "#59413a", "on-tertiary-fixed": "#201b10", "surface-container-high": "#ddeaf2", "error": "#ba1a1a", "surface-container-lowest": "#ffffff", "background": "#f4faff", "on-primary-container": "#641800", "tertiary-fixed-dim": "#d0c5b3", "on-secondary-fixed": "#00201d", "on-background": "#111d23", "on-tertiary-fixed-variant": "#4d4638", "secondary-container": "#8bf1e6", "surface-dim": "#cfdce4", "surface-container-low": "#e9f6fd", "tertiary": "#655d4f", "outline": "#8d7169", "inverse-surface": "#263238", "surface": "#f4faff", "primary-fixed": "#ffdbd0", "primary": "#ac3509", "tertiary-fixed": "#ede1cf", "error-container": "#ffdad6", "on-secondary": "#ffffff", "surface-variant": "#d7e4ec", "surface-tint": "#ac3509", "on-tertiary-container": "#393326", "on-primary": "#ffffff", "on-primary-fixed-variant": "#852300", "outline-variant": "#e0bfb6", "tertiary-container": "#a59b8a" }, borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" }, spacing: { "margin-mobile": "1rem", "space-2xl": "3rem", "space-xs": "0.25rem", "gutter-mobile": "0.75rem", "margin": "1.5rem", "space-sm": "0.5rem", "space-lg": "1.5rem", "space-xl": "2rem", "space-md": "1rem", "gutter": "1rem" }, fontFamily: { "headline-sm": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"], "label-lg": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "display-lg": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"] }, fontSize: { "headline-sm": ["18px", { lineHeight: "24px", fontWeight: "600" }], "headline-lg-mobile": ["24px", { lineHeight: "32px", letterSpacing: "-0.02em", fontWeight: "700" }], "label-lg": ["14px", { lineHeight: "20px", fontWeight: "700" }], "label-sm": ["11px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "600" }], "display-lg": ["36px", { lineHeight: "44px", letterSpacing: "-0.03em", fontWeight: "800" }], "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }], "label-md": ["12px", { lineHeight: "16px", fontWeight: "600" }], "headline-md": ["20px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "700" }], "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }], "headline-lg": ["28px", { lineHeight: "36px", letterSpacing: "-0.02em", fontWeight: "700" }], "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }] } } } }</script><style>@layer base { html, body { width: 100vw; margin: 0; padding: 0; } body { overscroll-behavior: none; } .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head><body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen selection:bg-primary-fixed"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-margin-mobile flex items-center justify-between gap-gutter-mobile"><div class="flex items-center gap-space-sm min-w-0"><button aria-label="Voltar" class="w-11 h-11 -ml-2 flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container-high/60 transition-colors" onclick="history.back()"><span class="material-symbols-outlined text-[24px]">arrow_back_ios_new</span></button><img alt="Logo Patinhas" class="h-7 w-auto object-contain flex-shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1WCH0IfmhO1zWbtX2STdMEjKEqfkTXnzHx8bLPU_7ExIX6dsfnmTax2lnj1mUGyjrzJ4aTNxeWdfT6hyKkR69DQPiUGOUlznQ0j_pxrSzRT0LbER3_uXRLyHc5_sevnSdECeQLH9HEFfm_RNpKmxubmxBv0Q87f7j8bi3O6WjBUSKUi0klBaXlGyQDwAWuCGHR01noJTKR34YS6bOsD4rs0bdhTfNISoeu0PMZy0R04aX-fPS6VhNhf3A"/><h1 class="font-headline-sm text-headline-sm text-on-surface truncate">Formulário De Adoção</h1></div><div class="flex items-center gap-space-xs"><button aria-label="Compartilhar" class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container-high/60 transition-colors" type="button"><span class="material-symbols-outlined text-[22px]">share</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-primary-container/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDN_WArsZitvp5Vda2odw2xzpJAE48ywSY116u_20xHQLEL-BEgogn4CJA9XcdtmwCVx_GxHTlPHiomoMXNDGxlg02k88HBWffUzevZ2_aGeV75HUiOqtAeRRi1JDwY0Y3vvEEELBpGW9PKVOm7wYvPaHhqz1UTmTAVFYO1WDKqlOEGf7jo_0h863kCt29onxFcz8qM9kFsU2Kl_BCoIoc2JA3wNTk2XWbStzieNlhy2kShdpdMJkQK"/></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 bg-surface"><div class="flex flex-col w-full pb-12">
+<!-- Status & Progress Hero Card -->
+<div class="px-margin-mobile pt-space-md">
+<!-- Security Encrypted Notice Bar -->
+<div class="flex items-center justify-between px-space-md py-space-sm bg-secondary-fixed/30 rounded-xl mb-space-md">
+<div class="flex items-center gap-space-xs text-on-secondary-fixed-variant">
+<span class="material-symbols-outlined text-[18px] text-secondary">verified_user</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-bold">Ambiente Seguro &amp; Criptografado</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary font-medium">LGPD 100% Ativa</span>
+</div>
+<!-- Verification Scorecard -->
+<div class="relative overflow-hidden bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm">
+<div class="flex items-start justify-between gap-space-md">
+<div class="flex-1 min-w-0">
+<div class="inline-flex items-center gap-space-xs px-space-sm py-0.5 rounded-full bg-secondary-container text-on-secondary-container mb-space-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm">Perfil Pré-Aprovado</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">3 de 4 Validados</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+            Seus documentos aceleram o processo de triagem e adoção com as ONGs parceiras.
+          </p>
+</div>
+<!-- Circular Visual Gauge -->
+<div class="relative flex-shrink-0 w-16 h-16 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90" viewbox="0 0 48 48">
+<circle class="text-surface-container" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-width="4.5"></circle>
+<circle class="text-primary-container" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-dasharray="125.6" stroke-dashoffset="18.84" stroke-linecap="round" stroke-width="4.5"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+<span class="font-headline-sm text-headline-sm text-on-surface font-extrabold leading-none">85%</span>
+</div>
+</div>
+</div>
+<!-- Linear Micro Progress Bar -->
+<div class="mt-space-md pt-space-sm">
+<div class="w-full bg-surface-container-high rounded-full h-2 overflow-hidden flex">
+<div class="bg-primary-container h-full rounded-full transition-all duration-500" style="width: 85%"></div>
+</div>
+<div class="flex justify-between items-center mt-1.5">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Falta apenas 1 assinatura</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">Quase lá!</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 1: Documentos Pessoais & Residência -->
+<div class="px-margin-mobile mt-space-xl">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">badge</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Documentos Pessoais &amp; Residência</h3>
+</div>
+<span class="font-label-sm text-label-sm text-secondary font-bold">2/2 OK</span>
+</div>
+<div class="space-y-gutter-mobile">
+<!-- Card: RG / CNH -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex gap-space-sm items-start min-w-0">
+<div class="w-10 h-10 rounded-xl bg-secondary-fixed/40 flex items-center justify-center text-secondary flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">contact_emergency</span>
+</div>
+<div class="min-w-0">
+<h4 class="font-headline-sm text-[15px] text-on-surface font-semibold truncate">Documento de Identidade (RG/CNH)</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">CNH Digital • Verificada em 12/09/2024</p>
+</div>
+</div>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm flex-shrink-0">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+            Aprovado
+          </span>
+</div>
+<div class="flex items-center justify-between mt-space-md pt-space-xs">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px] text-secondary">lock</span>
+<span>Válido por 12 meses</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm hover:bg-surface-container-highest transition-colors active:scale-95" type="button">
+              Visualizar
+            </button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container-low text-primary font-label-sm text-label-sm hover:bg-surface-container transition-colors active:scale-95" type="button">
+              Atualizar
+            </button>
+</div>
+</div>
+</div>
+<!-- Card: Comprovante de Residência -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex gap-space-sm items-start min-w-0">
+<div class="w-10 h-10 rounded-xl bg-secondary-fixed/40 flex items-center justify-center text-secondary flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">home_pin</span>
+</div>
+<div class="min-w-0">
+<h4 class="font-headline-sm text-[15px] text-on-surface font-semibold truncate">Comprovante de Residência</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Conta de Energia • Moema, São Paulo (SP)</p>
+</div>
+</div>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm flex-shrink-0">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+            Aprovado
+          </span>
+</div>
+<div class="flex items-center justify-between mt-space-md pt-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Emitido há 45 dias • Válido</span>
+<button class="px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm hover:bg-surface-container-highest transition-colors active:scale-95" type="button">
+            Visualizar
+          </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 2: Condições do Lar & Segurança Animal -->
+<div class="px-margin-mobile mt-space-xl">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">pets</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Condições do Lar &amp; Segurança</h3>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-bold">1 Pendência</span>
+</div>
+<div class="space-y-gutter-mobile">
+<!-- Card: Telas de Proteção -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex gap-space-sm items-start min-w-0">
+<div class="w-10 h-10 rounded-xl bg-secondary-fixed/40 flex items-center justify-center text-secondary flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">grid_view</span>
+</div>
+<div class="min-w-0">
+<h4 class="font-headline-sm text-[15px] text-on-surface font-semibold truncate">Redes de Proteção (Janelas/Varanda)</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Triagem: ONG Amigos de Patas</p>
+</div>
+</div>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm flex-shrink-0">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+            Aprovado
+          </span>
+</div>
+<!-- Thumbnails Grid -->
+<div class="mt-space-md">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">3 fotos validadas com sucesso</span>
+<button class="text-primary font-label-sm text-label-sm font-bold hover:underline" type="button">Ver Fotos (3)</button>
+</div>
+<div class="grid grid-cols-3 gap-2">
+<div class="relative aspect-square rounded-xl overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Close up photograph of safe window safety mesh nylon netting installed in a modern apartment overlooking warm urban trees, soft sunny afternoon light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9SLKq45ljsqgenEEDIjXOjplGnjuOzNBJZk9FEWNamOll_JBZzQzUMsV8lkgNnxFiMTaaTIVU3MY6Y7d1q1VPPeg-fM6eWhCO3pWRMeOGg8PErBMUU5_1ZWbwfsXkKWx4Qohk65CRxibvLJAobiaVlhtqhz18BcutYWaqEvGKfpc0K5DP5pq5GfF48beEJ6Clh2CdZ_1wyC_pj6aUEQvJ7BiqvSIRcJCKPg5s-cEjaIWeN4bt8WVU"/>
+<div class="absolute bottom-1 right-1 bg-surface/90 text-on-surface px-1 py-0.5 rounded text-[10px] font-semibold">Janela 1</div>
+</div>
+<div class="relative aspect-square rounded-xl overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="High quality photography of a screened sunny balcony protection net in an apartment with indoor green plants, bright ambient day light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuu3_nbL2hAiCOY7EZ9_6FC1pOtsn0KrXAl24RWyCEKi0xEqUrXLR6lpxcwaIE2lRZK9XWPXxYS4AOnm_2dfWN75u9coyaPagmFuiKMhPHS2BDfZrgDBYs28NJVA_SLyZiMh6WvgoGQ2NHG6qjg-CI4OH2bHukx2KnfLc6aey6reslLnGRAsmwBQb3YASchtMJ9TUDZh5JbQYQopBNOqyokye0p10YruA-43eaIQt-5I15oQU6_pqg"/>
+<div class="absolute bottom-1 right-1 bg-surface/90 text-on-surface px-1 py-0.5 rounded text-[10px] font-semibold">Varanda</div>
+</div>
+<div class="relative aspect-square rounded-xl overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Cozy interior room window with safety nylon screen netting visible, bright warm sunlight illuminating a pet cushion nearby." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOmdPgbhaSUuQpHD2OoJwcsef0ABQdO6RGI59UFcav97IT2XBNse3e9lcRkfxD6yy5OPLYLVSIpb8Kn0lg6ClYlZZTpGqrYUzhIJK-BAw4z2A_05x3Phj5vU4xARLP2zZO1GSRBfhD8T2dvrol1GTBzCqL0DxetJujGH4P9-YCCiPHsvKQCKgAhqn014SmqEBbAx6W3gy65t8hw7wmaX57XqU5tQwet57yyod6D5b_z5fNQ8Uf1YdJ"/>
+<div class="absolute bottom-1 right-1 bg-surface/90 text-on-surface px-1 py-0.5 rounded text-[10px] font-semibold">Quarto</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Card: Termo de Compromisso e Guarda Responsável (Pendente) -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm relative overflow-hidden">
+<div class="absolute top-0 left-0 right-0 h-1 bg-primary-container"></div>
+<div class="flex items-start justify-between gap-space-sm pt-1">
+<div class="flex gap-space-sm items-start min-w-0">
+<div class="w-10 h-10 rounded-xl bg-primary-fixed flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">draw</span>
+</div>
+<div class="min-w-0">
+<div class="flex items-center gap-1.5 flex-wrap">
+<h4 class="font-headline-sm text-[15px] text-on-surface font-semibold">Termo de Guarda Responsável</h4>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                Adoção em andamento do cãozinho <span class="font-bold text-on-surface">Charlie (#AD-8492)</span>
+</p>
+</div>
+</div>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm flex-shrink-0 animate-pulse">
+<span class="material-symbols-outlined text-[14px]">pending</span>
+            Pendente
+          </span>
+</div>
+<div class="mt-space-md p-space-sm bg-surface-container-low rounded-xl flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[20px] flex-shrink-0">priority_high</span>
+<p class="font-body-sm text-body-sm text-on-surface">
+            Assine digitalmente pelo aplicativo para emitir o termo oficial e agendar a visita presencial.
+          </p>
+</div>
+<div class="mt-space-md flex gap-2">
+<button class="w-full py-3 px-4 rounded-full bg-gradient-to-r from-primary-container to-primary text-on-primary font-label-lg text-label-lg flex items-center justify-center gap-2 shadow-md hover:brightness-105 transition-all active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined text-[20px]">signature</span>
+<span>Assinar Digitalmente Agora</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 3: Adicionar Novo Comprovante (Dropzone) -->
+<div class="px-margin-mobile mt-space-xl">
+<div class="flex items-center gap-space-xs mb-space-sm">
+<span class="material-symbols-outlined text-primary text-[20px]">note_add</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Adicionar Novo Comprovante</h3>
+</div>
+<!-- Upload Box Card -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm text-center">
+<div class="w-14 h-14 mx-auto rounded-full bg-primary-fixed/50 flex items-center justify-center text-primary mb-space-sm">
+<span class="material-symbols-outlined text-[32px]">cloud_upload</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Anexar outros documentos</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-xs mx-auto mt-1">
+        Fotos do quintal, autorização de pets do condomínio ou comprovante de renda (opcional).
+      </p>
+<div class="inline-block mt-space-xs px-space-sm py-1 bg-surface-container-low text-on-surface-variant rounded-full font-label-sm text-label-sm">
+        Formatos: PDF, JPG ou PNG até 15MB
+      </div>
+<div class="grid grid-cols-2 gap-3 mt-space-lg">
+<button class="py-2.5 px-3 rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 hover:bg-surface-container-highest transition-colors active:scale-95" type="button">
+<span class="material-symbols-outlined text-[18px]">photo_camera</span>
+<span>Tirar Foto</span>
+</button>
+<button class="py-2.5 px-3 rounded-full bg-primary-container text-on-primary font-label-md text-label-md flex items-center justify-center gap-1.5 hover:opacity-90 transition-opacity active:scale-95" type="button">
+<span class="material-symbols-outlined text-[18px]">upload_file</span>
+<span>Subir Arquivo</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Section 4: Privacy & LGPD Assurance Note -->
+<div class="px-margin-mobile mt-space-xl">
+<div class="bg-surface-container rounded-2xl p-space-md flex gap-space-sm items-start">
+<div class="w-9 h-9 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[20px]">security</span>
+</div>
+<div class="min-w-0">
+<h5 class="font-headline-sm text-[14px] text-on-surface font-bold">Privacidade &amp; Proteção de Dados (LGPD)</h5>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-relaxed">
+          Seus documentos pessoais são armazenados de forma segura com criptografia de ponta a ponta. Eles só são visualizados pela coordenação das ONGs após você solicitar o interesse explícito na adoção de um pet.
+        </p>
+<button class="mt-2 text-primary font-label-sm text-label-sm font-bold flex items-center gap-1 hover:underline" type="button">
+<span>Saiba como tratamos seus dados</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div></main></body></html>

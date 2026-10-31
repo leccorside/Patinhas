@@ -3,9 +3,9 @@
 > **Documento vivo.** Atualizar após cada etapa concluída ou decisão técnica relevante tomada.
 
 ## 📅 Última Atualização
-- **Data:** 30/10/2026
-- **Etapa atual:** ETAPA 00 — Documentação e Arquitetura (Concluída, aguardando autorização)
-- **Status geral:** 🟢 ETAPA 00 Concluída. Nenhuma linha de código ou container iniciado antes da autorização.
+- **Data:** 31/10/2026
+- **Etapa atual:** ETAPA 01 — Monorepo e Infraestrutura Docker (Concluída com sucesso!)
+- **Status geral:** 🟢 ETAPAS 00 e 01 Concluídas. Serviços Docker em execução e saudáveis. Aguardando autorização para ETAPA 02.
 
 ---
 
@@ -31,8 +31,8 @@ A documentação e todo o planejamento adotaram integralmente a identidade visua
 | Etapa | Título | Status | Observação |
 |---|---|---|---|
 | **00** | Documentação e Arquitetura | 🟢 Concluída | `DOCUMENTACAO.md`, `PASSOS.md` e `CONTEXTO.md` gerados |
-| **01** | Monorepo e Infraestrutura Docker | ⏳ Aguardando autorização | Criação de Dockerfile, compose e pacotes |
-| **02** | Banco de Dados e Migrations | ⏳ Pendente | Prisma com PostgreSQL e PostGIS |
+| **01** | Monorepo e Infraestrutura Docker | 🟢 Concluída | Containers `api`, `web`, `postgres`, `redis`, `minio` e `mailpit` rodando |
+| **02** | Banco de Dados e Migrations | ⏳ Aguardando autorização | Prisma com PostgreSQL e PostGIS (36+ entidades) |
 | **03** | MobileAppShell e Design System | ⏳ Pendente | 430px max-width e componentes Warm Paws |
 | **04** | Autenticação e Segurança | ⏳ Pendente | JWT, Argon2id, refresh rotativo em cookies |
 | **05** | Usuários, Perfis e ONGs | ⏳ Pendente | Perfis, uploads no MinIO e membros |
