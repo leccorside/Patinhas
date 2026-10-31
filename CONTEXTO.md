@@ -4,8 +4,8 @@
 
 ## 📅 Última Atualização
 - **Data:** 31/10/2026
-- **Etapa atual:** ETAPA 19 — Eventos e Feiras de Adoção (Em andamento)
-- **Status geral:** 🟢 ETAPAS 00 a 18 Concluídas com sucesso e commitadas. Execução contínua e autônoma das etapas até a entrega final (Etapa 26).
+- **Etapa atual:** ETAPA 20 — Campanhas de Doação e Apoio a ONGs (Em andamento)
+- **Status geral:** 🟢 ETAPAS 00 a 19 Concluídas com sucesso e commitadas. Execução contínua e autônoma das etapas até a entrega final (Etapa 26).
 
 ---
 
@@ -49,8 +49,8 @@ A documentação e todo o planejamento adotaram integralmente a identidade visua
 | **16** | Moderação e Antifraude | 🟢 Concluída | Denúncias sigilosas, antifraude preventivo e ações disciplinares |
 | **17** | Animais Perdidos e Achados | 🟢 Concluída | Alertas de desaparecimento, busca geolocalizada PostGIS e reencontros |
 | **18** | Lar Temporário | 🟢 Concluída | Voluntariado, perfis de acolhimento transitório e alocação por ONGs |
-| **19** | Eventos e Feiras | 🔄 Em andamento | Calendário de feiras presenciais, geolocalização e lembretes |
-| **20** | Campanhas de Doação | ⏳ Pendente | Apoio a ONGs e prestação de contas |
+| **19** | Eventos e Feiras | 🟢 Concluída | Calendário de feiras presenciais, geolocalização e integração Google Calendar |
+| **20** | Campanhas de Doação | 🔄 Em andamento | Apoio financeiro a ONGs, metas de arrecadação e prestação de contas |
 | **21** | Acompanhamento Pós-Adoção | ⏳ Pendente | Checklists de adaptação e lembretes |
 | **22** | Internacionalização | ⏳ Pendente | Suporte a PT-BR, EN e ES com i18next |
 | **23** | PWA e Modo Offline | ⏳ Pendente | Manifest, Service Worker e instalação |

@@ -17,6 +17,7 @@ import { AdminModule } from './modules/admin/admin.module';
 import { ModerationModule } from './modules/moderation/moderation.module';
 import { LostFoundModule } from './modules/lost-found/lost-found.module';
 import { FosterModule } from './modules/foster/foster.module';
+import { EventsModule } from './modules/events/events.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { FosterModule } from './modules/foster/foster.module';
     ModerationModule,
     LostFoundModule,
     FosterModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [],

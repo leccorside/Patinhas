@@ -55,6 +55,8 @@ import { CreateLostFoundModal } from './features/lost-found/CreateLostFoundModal
 import { LostFoundType } from './features/lost-found/lostFoundService';
 import { FosterView } from './features/foster/FosterView';
 import { FosterVolunteerModal } from './features/foster/FosterVolunteerModal';
+import { EventsView } from './features/events/EventsView';
+import { CreateEventModal } from './features/events/CreateEventModal';
 import { Building2 } from 'lucide-react';
 
 export function App() {
@@ -120,6 +122,10 @@ export function App() {
   // Lares Temporários (Etapa 18)
   const [isFosterOpen, setIsFosterOpen] = useState(false);
   const [isFosterVolunteerModalOpen, setIsFosterVolunteerModalOpen] = useState(false);
+
+  // Eventos e Feiras de Adoção (Etapa 19)
+  const [isEventsOpen, setIsEventsOpen] = useState(false);
+  const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
 
   // Toast
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -512,6 +518,12 @@ export function App() {
                   showToast={showToast}
                 />
               )
+            ) : isEventsOpen ? (
+              <EventsView
+                onBack={() => setIsEventsOpen(false)}
+                onOpenCreate={() => setIsCreateEventOpen(true)}
+                showToast={showToast}
+              />
             ) : isFosterOpen ? (
               <FosterView
                 onBack={() => setIsFosterOpen(false)}
@@ -719,6 +731,32 @@ export function App() {
                     </div>
                   </div>
                   <ChevronRight size={18} className="text-[#00796B] group-hover:translate-x-0.5 transition-transform" />
+                </button>
+
+                {/* Banner de Eventos e Feiras (Etapa 19) */}
+                <button
+                  onClick={() => setIsEventsOpen(true)}
+                  className="flex w-full items-center justify-between p-4 bg-gradient-to-r from-amber-50 via-orange-50 to-coral-100/40 rounded-3xl border border-coral-200/70 shadow-sm text-left hover:border-coral-300 transition-all group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-2xl bg-[#FF7043] text-white flex items-center justify-center text-xl font-bold shadow-md shadow-[#FF7043]/30 group-hover:scale-105 transition-transform">
+                      📅
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-extrabold text-sm text-[#263238] block">
+                          Feiras de Adoção
+                        </span>
+                        <span className="text-[10px] bg-[#FF7043] text-white font-bold px-1.5 py-0.5 rounded-full">
+                          Presencial
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#78909C]">
+                        Encontros, campanhas e feiras presenciais na sua região
+                      </span>
+                    </div>
+                  </div>
+                  <ChevronRight size={18} className="text-[#FF7043] group-hover:translate-x-0.5 transition-transform" />
                 </button>
 
                 {/* Banner de Painel da ONG e Protetor (Etapa 14) */}
@@ -1027,6 +1065,15 @@ export function App() {
         onClose={() => setIsFosterVolunteerModalOpen(false)}
         onSuccess={() => {
           showToast('Perfil de Lar Temporário atualizado com sucesso! 🐾', 'success');
+        }}
+      />
+
+      {/* Modal de Cadastro de Eventos e Feiras (Etapa 19) */}
+      <CreateEventModal
+        isOpen={isCreateEventOpen}
+        onClose={() => setIsCreateEventOpen(false)}
+        onSuccess={() => {
+          showToast('Feira de adoção cadastrada com sucesso! 🎉', 'success');
         }}
       />
     </MobileAppShell>

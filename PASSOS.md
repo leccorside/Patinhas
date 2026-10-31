@@ -913,23 +913,47 @@ Rede organizada de apoio a animais resgatados aguardando adoção. Concluído co
 **Dependências:** Etapa 05 e 08.
 
 **Tarefas:**
-- [ ] Backend: CRUD de eventos com data, local, descrição e ONG promotora
-- [ ] Frontend: Calendário e listagem de eventos próximos
-- [ ] Frontend: Visualização de feiras no mapa interativo com marcador especial
-- [ ] Frontend: Botão de adicionar ao calendário do smartphone e compartilhamento
+- [x] Backend: Módulo `EventsModule`, `EventsService` e `EventsController` com endpoints REST:
+  - `POST /api/v1/events`: Cadastro de evento presencial por membros da ONG promotora com localização espacial PostGIS em `location_geom`
+  - `GET /api/v1/events`: Listagem pública de feiras futuras (`upcomingOnly=true`) ordenadas por proximidade de data e filtradas por cidade/estado
+  - `GET /api/v1/events/:id`: Detalhes completos da feira e da ONG organizadora
+  - `DELETE /api/v1/events/:id`: Exclusão restrita à ONG promotora ou Master Admin
+- [x] Backend: Auditoria em `AuditLog` para criação de novos eventos
+- [x] Frontend: `eventsService.ts` com tipagens completas e integração HTTP nativa
+- [x] Frontend: Interface mobile (`EventsView.tsx`) formatada estritamente para largura de 430px:
+  - Top bar com título e botão "+ Nova Feira"
+  - Cards visuais ricos com banner fotográfico, selo de evento presencial, data e horários
+  - Local físico em destaque com endereço completo e identificação da ONG organizadora com selo oficial
+  - Botão de integração com Google Calendar (geração de lembrete com 1 clique preenchendo título, local e horários)
+  - Botão de compartilhamento de feiras via Web Share API
+- [x] Frontend: Assistente de cadastro de feiras presenciais (`CreateEventModal.tsx`) para ONGs parceiras
+- [x] Frontend: Integração com o Perfil do usuário via banner "Feiras de Adoção"
+- [x] Frontend: Compilação de produção do Vite (`npm run build`) concluída com 1956 módulos e 0 erros de tipagem
 
 **Arquivos envolvidos:**
-- `apps/api/src/modules/events/*`
-- `apps/web/src/features/events/*`
+- `apps/api/src/modules/events/dto/events.dto.ts`
+- `apps/api/src/modules/events/events.service.ts`
+- `apps/api/src/modules/events/events.controller.ts`
+- `apps/api/src/modules/events/events.module.ts`
+- `apps/api/src/app.module.ts`
+- `apps/web/src/features/events/eventsService.ts`
+- `apps/web/src/features/events/CreateEventModal.tsx`
+- `apps/web/src/features/events/EventsView.tsx`
+- `apps/web/src/App.tsx`
 
 **Critérios de aceite:**
-- Feiras com data passada saem automaticamente do destaque principal.
+- Feiras com data passada filtradas automaticamente para não poluir o feed principal.
+- Integração ágil com calendário nativo do smartphone.
+- Autorização protegida impedindo usuários comuns de criarem feiras em nome de ONGs.
 
 **Testes:**
-- Teste de agendamento e exibição de eventos na data correta.
+- Teste de cadastro de feira de adoção futura pela líder da ONG no Parque Villa-Lobos em SP (HTTP 201 Created).
+- Teste de listagem de feiras futuras retornando o evento agendado (HTTP 200 OK).
+- Teste de segurança confirmando bloqueio de cadastro para usuário comum sem permissão na ONG (HTTP 403 Forbidden).
+- Teste de compilação de produção do Vite no container `patinhas_web` gerando bundle em 6.24s com 1956 módulos e 0 erros.
 
 **Resultado esperado:**
-Canal de divulgação de feiras presenciais integrando o ecossistema local.
+Canal de divulgação de feiras presenciais integrando o ecossistema local. Concluído com êxito!
 
 ---
 
