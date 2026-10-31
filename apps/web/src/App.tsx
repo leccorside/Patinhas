@@ -11,6 +11,7 @@ import {
   PetCard,
   EmptyState,
 } from './components';
+import { PWAInstallBanner } from './components/PWAInstallBanner';
 import {
   LogOut,
   Shield,
@@ -416,6 +417,9 @@ export function App() {
         type={toastType}
         onClose={() => setToastMessage(null)}
       />
+
+      {/* Banner de Instalação PWA e Alerta Offline (Etapa 23) */}
+      <PWAInstallBanner />
 
       {/* Header Mobile Global */}
       <AppHeader

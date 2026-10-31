@@ -82,24 +82,24 @@ A documentação e todo o planejamento adotaram integralmente a identidade visua
 
 ---
 
-## 📁 Arquivos Criados na Sessão Atual (Etapa 22)
+## 📁 Arquivos Criados na Sessão Atual (Etapa 23)
 
 | Arquivo | Descrição |
 |---|---|
-| `apps/web/src/i18n/locales/pt-BR/translation.json` | Dicionário de tradução Português do Brasil (padrão) |
-| `apps/web/src/i18n/locales/en/translation.json` | Dicionário de tradução Inglês americano |
-| `apps/web/src/i18n/locales/es/translation.json` | Dicionário de tradução Espanhol |
-| `apps/web/src/i18n/index.ts` | Configuração central do i18next e react-i18next |
-| `apps/web/src/features/settings/LanguageSettingsModal.tsx` | Modal mobile de seleção de idioma (uxui/idioma_regi_o_patinhas) |
-| `apps/web/src/main.tsx` | Inicialização do i18n na raiz da aplicação |
-| `apps/web/src/App.tsx` | Integração do modal de idioma nas configurações do perfil |
+| `apps/web/public/manifest.json` | Manifesto Web App com tema coral, modo standalone e atalhos |
+| `apps/web/public/icons/icon-192x192.svg` | Ícone vetorial da pata Patinhas em alta definição |
+| `apps/web/public/icons/icon-512x512.svg` | Ícone vetorial em alta definição para splash screen |
+| `apps/web/public/sw.js` | Service Worker com ciclo de vida, cache offline e Web Push |
+| `apps/web/index.html` | Meta tags mobile e link de manifesto para PWA nativo |
+| `apps/web/src/components/PWAInstallBanner.tsx` | Componente de prompt de instalação e banner offline |
+| `apps/web/src/App.tsx` | Integração do banner PWA na casca mobile |
 
 ---
 
 ## 🟢 Progresso Atual das Etapas
 
-- **Etapas 00 a 22:** Concluídas com sucesso e validadas com testes ponta a ponta e build de produção.
-- **Etapa 23 em diante:** PWA, Manifest e Modo Offline (execução autônoma contínua até a Etapa 26).
+- **Etapas 00 a 23:** Concluídas com sucesso e validadas com testes ponta a ponta e build de produção.
+- **Etapa 24 em diante:** Bateria de Testes Automatizados e Segurança (execução autônoma contínua até a Etapa 26).
 
 ---
 

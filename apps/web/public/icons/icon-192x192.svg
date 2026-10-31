@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <rect width="192" height="192" rx="42" fill="#FF7043" />
+  <!-- Almofada Central da Pata -->
+  <ellipse cx="96" cy="122" rx="36" ry="28" fill="#FFFFFF" />
+  <!-- Dedinhos -->
+  <circle cx="60" cy="80" r="14" fill="#FFFFFF" />
+  <circle cx="84" cy="62" r="14" fill="#FFFFFF" />
+  <circle cx="108" cy="62" r="14" fill="#FFFFFF" />
+  <circle cx="132" cy="80" r="14" fill="#FFFFFF" />
+</svg>

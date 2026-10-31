@@ -1,0 +1,41 @@
+{
+  "name": "Patinhas — Adoção & Resgate Animal",
+  "short_name": "Patinhas",
+  "description": "Plataforma inteligente de adoção consciente de cães e gatos, lares temporários e feiras de acolhimento.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#EDEDEB",
+  "theme_color": "#FF7043",
+  "categories": ["lifestyle", "social", "utilities"],
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Explorar Pets",
+      "short_name": "Pets",
+      "description": "Encontre cães e gatos disponíveis para adoção",
+      "url": "/?tab=explore",
+      "icons": [{ "src": "/icons/icon-192x192.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Perdidos & Achados",
+      "short_name": "Perdidos",
+      "description": "Ajude a reencontrar animais perdidos na sua região",
+      "url": "/?view=lost-found",
+      "icons": [{ "src": "/icons/icon-192x192.svg", "sizes": "192x192" }]
+    }
+  ]
+}
