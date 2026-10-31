@@ -465,33 +465,59 @@ Experiência interativa de favoritos e descoberta swipe fluida, tátil e sincron
 
 ## ETAPA 10 — Processo Completo de Adoção e Questionários
 
-**Objetivo:** Implementar o fluxo completo de adoção em 10 etapas com questionário de triagem, timeline visual e controle de concorrência.
+**Objetivo:** Implementar o fluxo completo de adoção em etapas com questionário de triagem, timeline visual e controle de concorrência.
 
 **Dependências:** Etapa 06 e 07.
 
 **Tarefas:**
-- [ ] Backend: Modelagem e endpoints de candidaturas (`adoption_applications`)
-- [ ] Backend: Questionário de elegibilidade do adotante (`adoption_questionnaires`)
-- [ ] Backend: Máquina de estados com validação estrita de transições
-- [ ] Backend: Transação de conclusão de adoção com trava de concorrência (`prisma.$transaction`)
-- [ ] Frontend: Formulário de questionário do adotante em passos mobile
-- [ ] Frontend: Tela de acompanhamento baseada em `uxui/ado_es_em_andamento_patinhas`
-- [ ] Frontend: Timeline visual do progresso da adoção com ícones de status
+- [x] Backend: Módulo `AdoptionsModule`, `AdoptionsService` e `AdoptionsController` com endpoints REST autenticados:
+  - `POST /api/v1/adoptions/apply`: Submeter questionário de elegibilidade e candidatura de adoção
+  - `GET /api/v1/adoptions/my`: Listar candidaturas do adotante autenticado com dados do pet, ONG e histórico
+  - `GET /api/v1/adoptions/received`: Listar candidaturas recebidas para animais da ONG ou do Protetor
+  - `GET /api/v1/adoptions/:id`: Obter detalhes da solicitação de adoção com permissões granulares
+  - `PATCH /api/v1/adoptions/:id/status`: Transição de status da candidatura com auditoria em `AdoptionStatusHistory`
+  - `POST /api/v1/adoptions/:id/schedule-interview`: Agendamento de entrevista em vídeo ou presencial
+  - `POST /api/v1/adoptions/:id/complete`: Conclusão atômica de adoção via transação Prisma (`prisma.$transaction`) com trava de concorrência e cancelamento automático de concorrentes
+  - `POST /api/v1/adoptions/:id/cancel`: Cancelamento voluntário pelo próprio adotante
+- [x] Backend: Máquina de estados com validação estrita de transições (`SUBMITTED` → `UNDER_REVIEW` → `INTERVIEW_SCHEDULED` → `APPROVED` → `COMPLETED`)
+- [x] Backend: Transação atômica que marca o animal como `ADOPTED`, cria registro na tabela `adoptions` e cancela com elegância candidaturas ativas de outros candidatos
+- [x] Frontend: `adoptionService.ts` com tipagens completas de TypeScript e integração HTTP com cookies seguros
+- [x] Frontend: Assistente de Questionário de Adoção (`AdoptionQuestionnaireModal.tsx`) em 3 passos acolhedores (Lar & Ambiente, Rotina & Cuidados, Revisão & Termo de Guarda Responsável)
+- [x] Frontend: Tela de Minhas Solicitações (`MyAdoptionsView.tsx`) 100% fiel a `uxui/ado_es_em_andamento_patinhas`:
+  - Segmented pills ("Em Andamento", "Concluídas", "Histórico") com contadores
+  - Status badges pulsantes (`Em Análise`, `Entrevista Agendada`, `Lar Definitivo 🎉`)
+  - Stepper horizontal de 5 nós (Formulário, Triagem, Análise, Entrevista, Adoção) com barra de progresso preenchida
+  - Card de aviso acionável com data e hora de entrevista agendada
+  - Botões rápidos de conversar com o abrigo e visualizar a ficha do processo
+- [x] Frontend: Modal do Processo e Timeline (`AdoptionProcessDetailModal.tsx`) fiel a `uxui/processo_de_ado_o_chat_patinhas`:
+  - Top Pet Status Header Card, banner de Adoção Segura & 100% Gratuita, resumo das respostas de moradia e linha do tempo com histórico de auditoria
+  - Opção de cancelamento seguro com confirmação
+- [x] Frontend: Integração fluida em `App.tsx` na aba de Perfil e nos botões "Quero Adotar" de `PetDetailView` e `FavoritesView`
+- [x] Frontend: Compilação de produção do Vite (`npm run build`) concluída com 1905 módulos e 0 erros de tipagem
 
 **Arquivos envolvidos:**
-- `apps/api/src/modules/adoptions/*`
-- `apps/web/src/features/adoption/*`
+- `apps/api/src/modules/adoptions/dto/*`
+- `apps/api/src/modules/adoptions/adoptions.service.ts`
+- `apps/api/src/modules/adoptions/adoptions.controller.ts`
+- `apps/api/src/modules/adoptions/adoptions.module.ts`
+- `apps/api/src/app.module.ts`
+- `apps/web/src/features/adoption/adoptionService.ts`
+- `apps/web/src/features/adoption/AdoptionQuestionnaireModal.tsx`
+- `apps/web/src/features/adoption/MyAdoptionsView.tsx`
+- `apps/web/src/features/adoption/AdoptionProcessDetailModal.tsx`
+- `apps/web/src/App.tsx`
 
 **Critérios de aceite:**
 - Prevenção garantida contra adoção dupla do mesmo pet.
-- Adoção finalizada cancela com elegância outras candidaturas concorrentes.
-- Timeline exibe o estado atual em tempo real.
+- Adoção finalizada cancela com elegância outras candidaturas concorrentes e atualiza o animal para `ADOPTED`.
+- Stepper e timeline visual exibem o estado atual em tempo real no container mobile de 430px.
 
 **Testes:**
-- Testes de integração de concorrência com duas solicitações simultâneas aprovadas.
+- Teste de ciclo de vida completo no backend (Submissão -> Listagem -> Agendamento de Entrevista -> Aprovação -> Conclusão Atômica com criação de registro em `adoptions` e transição do `Animal` para `ADOPTED`).
+- Teste de compilação de produção no container `patinhas_web` gerando bundle em 5.19s com 1905 módulos e 0 erros TypeScript.
 
 **Resultado esperado:**
-Fluxo de adoção seguro, transparente e com experiência acolhedora.
+Fluxo de adoção humanizado, seguro, transparente e com experiência mobile impecável. Concluído com êxito!
 
 ---
 

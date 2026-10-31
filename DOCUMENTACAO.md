@@ -500,7 +500,7 @@ Todo o sistema é orquestrado via `docker-compose.yml`. O desenvolvedor não pre
 
 ## 17. MÓDULOS IMPLEMENTADOS (REGISTRO DE PROGRESSO)
 
-### 17.1 Módulos Concluídos (Etapas 00 a 09)
+### 17.1 Módulos Concluídos (Etapas 00 a 10)
 - **Etapa 00 a 02 (Infraestrutura e Banco):** Monorepo PNPM/Turbo, Docker com 6 serviços ativos, Schema Prisma com 36+ entidades, migrations PostGIS com índices espaciais GIST e seed Argon2id.
 - **Etapa 03 (Design System):** `MobileAppShell` (max 430px), `FloatingBottomNav` (5 abas), botões, cards, bottom sheets e feedback visual `Warm Paws`.
 - **Etapa 04 a 05 (Auth, Usuários e ONGs):** JWT em cookies HttpOnly, Argon2id, Storage MinIO S3, edição de perfil, gestão de ONGs e membros.
@@ -508,5 +508,6 @@ Todo o sistema é orquestrado via `docker-compose.yml`. O desenvolvedor não pre
 - **Etapa 07 (Home e Busca Avançada):** `HomeView` Bento, `ExploreView` em grid de 2 colunas, filtros avançados em Bottom Sheet e histórias felizes de adoção.
 - **Etapa 08 (Mapa e Geolocalização):** MapLibre GL JS, endpoint PostGIS `ST_DWithin` no formato GeoJSON FeatureCollection (RFC 7946), marcador "Você" pulsante e preview cards.
 - **Etapa 09 (Favoritos e Modo Descoberta):** `FavoritesModule` no NestJS (`GET /favorites`, `GET /favorites/ids`, `POST /favorites/:id`, `DELETE /favorites/:id`), tela de favoritos com abas e filtros, e `DiscoveryModeModal` (Swipe estilo Tinder com Framer Motion, badges "QUERO ADOTAR" e "DEPOIS", super like e ações táteis).
+- **Etapa 10 (Processo de Adoção e Questionários):** `AdoptionsModule` no NestJS com máquina de estados rigorosa (`SUBMITTED` → `UNDER_REVIEW` → `INTERVIEW_SCHEDULED` → `APPROVED` → `COMPLETED`), agendamento de entrevistas, conclusão atômica com trava de concorrência (`prisma.$transaction`) que marca o pet como `ADOPTED` e encerra candidaturas concorrentes; `AdoptionQuestionnaireModal` em 3 passos acolhedores (Lar, Rotina e Compromisso de Guarda Responsável); `MyAdoptionsView` com Stepper visual de 5 etapas baseado em `uxui/ado_es_em_andamento_patinhas`; e `AdoptionProcessDetailModal` com timeline detalhada de auditoria.
 
 

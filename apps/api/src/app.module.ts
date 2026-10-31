@@ -9,6 +9,7 @@ import { OrganizationsModule } from './modules/organizations/organizations.modul
 import { AnimalsModule } from './modules/animals/animals.module';
 import { GeoModule } from './modules/geo/geo.module';
 import { FavoritesModule } from './modules/favorites/favorites.module';
+import { AdoptionsModule } from './modules/adoptions/adoptions.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { FavoritesModule } from './modules/favorites/favorites.module';
     AnimalsModule,
     GeoModule,
     FavoritesModule,
+    AdoptionsModule,
   ],
   controllers: [AppController],
   providers: [],

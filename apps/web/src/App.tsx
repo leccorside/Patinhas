@@ -17,6 +17,8 @@ import {
   User,
   Edit3,
   HelpCircle,
+  ChevronRight,
+  ClipboardList,
 } from 'lucide-react';
 import { useAuthStore } from './store/authStore';
 import { LoginView } from './features/auth/LoginView';
@@ -34,6 +36,10 @@ import { FilterState, AdvancedFilterSheet } from './features/explore/AdvancedFil
 import { MapView } from './features/map/MapView';
 import { FavoritesView } from './features/favorites/FavoritesView';
 import { DiscoveryModeModal } from './features/discovery/DiscoveryModeModal';
+import { AdoptionQuestionnaireModal } from './features/adoption/AdoptionQuestionnaireModal';
+import { MyAdoptionsView } from './features/adoption/MyAdoptionsView';
+import { AdoptionProcessDetailModal } from './features/adoption/AdoptionProcessDetailModal';
+import { AdoptionApplication } from './features/adoption/adoptionService';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<NavTabId>('home');
@@ -56,10 +62,13 @@ export function App() {
   // Visualização Detalhada do Pet (Fidelidade UX/UI)
   const [detailedPet, setDetailedPet] = useState<Animal | null>(null);
 
-  // Modais
+  // Modais e Fluxo de Adoção (Etapa 10)
   const [isCreatePetOpen, setIsCreatePetOpen] = useState(false);
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const [isAdoptDialogOpen, setIsAdoptDialogOpen] = useState(false);
+  const [isAdoptionQuestionnaireOpen, setIsAdoptionQuestionnaireOpen] = useState(false);
+  const [isMyAdoptionsOpen, setIsMyAdoptionsOpen] = useState(false);
+  const [selectedApplicationForDetail, setSelectedApplicationForDetail] = useState<AdoptionApplication | null>(null);
   const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [isCreateOrgOpen, setIsCreateOrgOpen] = useState(false);
@@ -199,9 +208,28 @@ export function App() {
           animal={detailedPet}
           onBack={() => setDetailedPet(null)}
           onAdoptClick={(animal) => {
+            if (!isAuthenticated) {
+              setDetailedPet(null);
+              setActiveTab('profile');
+              showToast(`Faça login para adotar ${animal.name}! 🐾`, 'info');
+              return;
+            }
             setSelectedPet(animal);
-            setIsAdoptDialogOpen(true);
+            setIsAdoptionQuestionnaireOpen(true);
           }}
+        />
+
+        {/* Modal de Questionário de Adoção (Etapa 10) */}
+        <AdoptionQuestionnaireModal
+          isOpen={isAdoptionQuestionnaireOpen}
+          onClose={() => setIsAdoptionQuestionnaireOpen(false)}
+          animal={selectedPet || detailedPet}
+          onSuccess={(appId) => {
+            setDetailedPet(null);
+            setIsMyAdoptionsOpen(true);
+            setActiveTab('profile');
+          }}
+          showToast={showToast}
         />
 
         {/* Dialog Modal de Interesse no Pet */}
@@ -347,8 +375,13 @@ export function App() {
             onRemoveFavorite={(id, e) => handleToggleFavorite(id, e)}
             onOpenDiscoveryMode={() => setIsDiscoveryModeOpen(true)}
             onAdoptClick={(animal) => {
+              if (!isAuthenticated) {
+                setActiveTab('profile');
+                showToast(`Faça login para solicitar a adoção de ${animal.name}! 🐾`, 'info');
+                return;
+              }
               setSelectedPet(animal);
-              setIsAdoptDialogOpen(true);
+              setIsAdoptionQuestionnaireOpen(true);
             }}
             showToast={showToast}
           />
@@ -374,8 +407,24 @@ export function App() {
                   showToast={showToast}
                 />
               )
+            ) : isMyAdoptionsOpen ? (
+              <div className="space-y-3">
+                <button
+                  onClick={() => setIsMyAdoptionsOpen(false)}
+                  className="flex items-center gap-1.5 text-xs font-bold text-primary px-1 hover:underline"
+                >
+                  ← Voltar ao Meu Perfil
+                </button>
+                <MyAdoptionsView
+                  onSelectApplication={(app) => setSelectedApplicationForDetail(app)}
+                  onOpenChatWithHost={(hostId, petName) =>
+                    showToast(`Canal de atendimento aberto para ${petName}! 🐾`, 'info')
+                  }
+                  showToast={showToast}
+                />
+              </div>
             ) : (
-              <div className="space-y-5">
+              <div className="space-y-4">
                 {/* Card de Perfil Resumido */}
                 <div className="relative overflow-hidden rounded-3xl bg-white p-5 shadow-sm border border-neutral-100">
                   <div className="flex items-center gap-4">
@@ -430,6 +479,30 @@ export function App() {
                     </p>
                   )}
                 </div>
+
+                {/* Banner de Minhas Solicitações de Adoção (Etapa 10) */}
+                <button
+                  onClick={() => setIsMyAdoptionsOpen(true)}
+                  className="flex w-full items-center justify-between p-4 bg-gradient-to-r from-primary/10 via-amber-50 to-secondary/10 rounded-3xl border border-primary/20 shadow-sm text-left hover:opacity-95 transition-all group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-2xl bg-primary text-white flex items-center justify-center text-xl font-bold shadow-md shadow-primary/30 group-hover:scale-105 transition-transform">
+                      🐾
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-extrabold text-sm text-charcoal block">
+                          Minhas Solicitações de Adoção
+                        </span>
+                        <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
+                      </div>
+                      <span className="text-[11px] text-charcoal-muted">
+                        Acompanhe etapas, triagem e entrevistas
+                      </span>
+                    </div>
+                  </div>
+                  <ChevronRight size={18} className="text-primary group-hover:translate-x-0.5 transition-transform" />
+                </button>
 
                 {/* Ações Rápidas de Gestão */}
                 <div className="grid grid-cols-2 gap-3">
@@ -567,6 +640,29 @@ export function App() {
         onSelectAnimal={(animal) => {
           setIsDiscoveryModeOpen(false);
           setDetailedPet(animal);
+        }}
+        showToast={showToast}
+      />
+
+      {/* Modal de Questionário de Adoção (Etapa 10) */}
+      <AdoptionQuestionnaireModal
+        isOpen={isAdoptionQuestionnaireOpen}
+        onClose={() => setIsAdoptionQuestionnaireOpen(false)}
+        animal={selectedPet}
+        onSuccess={(appId) => {
+          setIsMyAdoptionsOpen(true);
+          setActiveTab('profile');
+        }}
+        showToast={showToast}
+      />
+
+      {/* Modal de Detalhes e Timeline do Processo (Etapa 10) */}
+      <AdoptionProcessDetailModal
+        isOpen={!!selectedApplicationForDetail}
+        application={selectedApplicationForDetail}
+        onClose={() => setSelectedApplicationForDetail(null)}
+        onCancelSuccess={() => {
+          // Recarrega se necessário
         }}
         showToast={showToast}
       />
