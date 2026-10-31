@@ -1,0 +1,824 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [postgis, uuidOssp(map: "uuid-ossp")]
+}
+
+// ==============================================================================
+// ENUMS DO DOMÍNIO
+// ==============================================================================
+
+enum UserRole {
+  ADOPTER
+  PROTECTOR
+  SHELTER_MEMBER
+  MASTER_ADMIN
+}
+
+enum UserStatus {
+  PENDING_VERIFICATION
+  ACTIVE
+  SUSPENDED
+}
+
+enum OrganizationVerificationStatus {
+  UNVERIFIED
+  PENDING_APPROVAL
+  VERIFIED
+  REJECTED
+}
+
+enum OrganizationMemberRole {
+  OWNER
+  ADMIN
+  VOLUNTEER
+}
+
+enum AnimalSpecies {
+  DOG
+  CAT
+  OTHER
+}
+
+enum AnimalSex {
+  MALE
+  FEMALE
+}
+
+enum AnimalSize {
+  SMALL
+  MEDIUM
+  LARGE
+  GIANT
+}
+
+enum AnimalAgeUnit {
+  MONTHS
+  YEARS
+}
+
+enum EnergyLevel {
+  LOW
+  MODERATE
+  HIGH
+  VERY_HIGH
+}
+
+enum AnimalStatus {
+  DRAFT
+  PENDING_REVIEW
+  AVAILABLE
+  IN_ADOPTION
+  ADOPTED
+  UNAVAILABLE
+  ARCHIVED
+}
+
+enum HousingType {
+  HOUSE
+  APARTMENT
+  FARM_OR_RANCH
+  OTHER
+}
+
+enum AdoptionApplicationStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  INTERVIEW_SCHEDULED
+  APPROVED
+  REJECTED
+  CANCELLED
+  COMPLETED
+}
+
+enum LostFoundType {
+  LOST
+  FOUND
+}
+
+enum LostFoundStatus {
+  OPEN
+  REUNITED
+  CLOSED
+}
+
+enum ReportTargetType {
+  ANIMAL
+  USER
+  ORGANIZATION
+  MESSAGE
+}
+
+enum ReportStatus {
+  PENDING
+  INVESTIGATING
+  RESOLVED
+  DISMISSED
+}
+
+enum NotificationType {
+  NEW_MESSAGE
+  NEW_APPLICATION
+  APPLICATION_APPROVED
+  APPLICATION_REJECTED
+  INTERVIEW_SCHEDULED
+  FAVORITE_ADOPTED
+  NEW_NEARBY_ANIMAL
+  PET_LOST_ALERT
+  EVENT_REMINDER
+  POST_ADOPTION_CHECKLIST
+  SYSTEM_ANNOUNCEMENT
+}
+
+// ==============================================================================
+// 1. USUÁRIOS, AUTENTICAÇÃO E PERFIS
+// ==============================================================================
+
+model User {
+  id                   String     @id @default(uuid())
+  email                String     @unique
+  passwordHash         String     @map("password_hash")
+  role                 UserRole   @default(ADOPTER)
+  status               UserStatus @default(PENDING_VERIFICATION)
+  emailVerifiedAt      DateTime?  @map("email_verified_at")
+  verificationToken    String?    @map("verification_token")
+  resetPasswordToken   String?    @map("reset_password_token")
+  resetPasswordExpires DateTime?  @map("reset_password_expires")
+  createdAt            DateTime   @default(now()) @map("created_at")
+  updatedAt            DateTime   @updatedAt @map("updated_at")
+  deletedAt            DateTime?  @map("deleted_at")
+
+  profile                 UserProfile?
+  sessions                UserSession[]
+  memberships             OrganizationMember[]
+  animalsProtected        Animal[]                 @relation("ProtectorAnimals")
+  adoptionApplications    AdoptionApplication[]    @relation("AdopterApplications")
+  statusChangesMade       AdoptionStatusHistory[]  @relation("StatusChangedBy")
+  conversationsAsAdopter  Conversation[]           @relation("AdopterConversations")
+  conversationsAsHost     Conversation[]           @relation("HostConversations")
+  messagesSent            Message[]
+  favorites               Favorite[]
+  savedSearches           SavedSearch[]
+  notifications           Notification[]
+  notificationPreferences NotificationPreference?
+  pushSubscriptions       PushSubscription[]
+  fosterProfile           FosterProfile?
+  lostFoundReports        LostFoundReport[]
+  reportsSubmitted        Report[]                 @relation("ReporterUser")
+  moderationActionsTaken  ModerationAction[]       @relation("ModeratorActions")
+  auditLogs               AuditLog[]
+
+  @@map("users")
+}
+
+model UserProfile {
+  id             String                                 @id @default(uuid())
+  userId         String                                 @unique @map("user_id")
+  fullName       String                                 @map("full_name")
+  phone          String?
+  birthDate      DateTime?                              @map("birth_date")
+  documentNumber String?                                @map("document_number")
+  avatarUrl      String?                                @map("avatar_url")
+  bio            String?
+  addressStreet  String?                                @map("address_street")
+  addressNumber  String?                                @map("address_number")
+  addressCity    String?                                @map("address_city")
+  addressState   String?                                @map("address_state")
+  postalCode     String?                                @map("postal_code")
+  latitude       Float?
+  longitude      Float?
+  locationGeom   Unsupported("geometry(Point, 4326)")?  @map("location_geom")
+  createdAt      DateTime                               @default(now()) @map("created_at")
+  updatedAt      DateTime                               @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([addressCity, addressState])
+  @@map("user_profiles")
+}
+
+model UserSession {
+  id               String    @id @default(uuid())
+  userId           String    @map("user_id")
+  refreshTokenHash String    @map("refresh_token_hash")
+  userAgent        String?   @map("user_agent")
+  ipAddress        String?   @map("ip_address")
+  expiresAt        DateTime  @map("expires_at")
+  revokedAt        DateTime? @map("revoked_at")
+  createdAt        DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("user_sessions")
+}
+
+// ==============================================================================
+// 2. ORGANIZAÇÕES (ONGS E ABRIGOS)
+// ==============================================================================
+
+model Organization {
+  id               String                         @id @default(uuid())
+  name             String
+  tradeName        String?                        @map("trade_name")
+  cnpj             String?                        @unique
+  email            String                         @unique
+  phone            String?
+  whatsapp         String?
+  bio              String?
+  logoUrl          String?                        @map("logo_url")
+  bannerUrl        String?                        @map("banner_url")
+  websiteUrl       String?                        @map("website_url")
+  instagram        String?
+  verifiedStatus   OrganizationVerificationStatus @default(UNVERIFIED) @map("verified_status")
+  verifiedAt       DateTime?                      @map("verified_at")
+  addressStreet    String?                        @map("address_street")
+  addressNumber    String?                        @map("address_number")
+  addressCity      String                         @map("address_city")
+  addressState     String                         @map("address_state")
+  postalCode       String?                        @map("postal_code")
+  latitude         Float?
+  longitude        Float?
+  locationGeom     Unsupported("geometry(Point, 4326)")? @map("location_geom")
+  createdAt        DateTime                       @default(now()) @map("created_at")
+  updatedAt        DateTime                       @updatedAt @map("updated_at")
+  deletedAt        DateTime?                      @map("deleted_at")
+
+  members          OrganizationMember[]
+  animals          Animal[]
+  events           AdoptionEvent[]
+  campaigns        Campaign[]
+  fosterRequests   FosterRequest[]
+
+  @@index([addressCity, addressState])
+  @@map("organizations")
+}
+
+model OrganizationMember {
+  id             String                 @id @default(uuid())
+  organizationId String                 @map("organization_id")
+  userId         String                 @map("user_id")
+  role           OrganizationMemberRole @default(VOLUNTEER)
+  createdAt      DateTime               @default(now()) @map("created_at")
+  updatedAt      DateTime               @updatedAt @map("updated_at")
+
+  organization   Organization           @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, userId])
+  @@map("organization_members")
+}
+
+// ==============================================================================
+// 3. ANIMAIS E HISTÓRICO MÉDICO
+// ==============================================================================
+
+model Animal {
+  id                      String         @id @default(uuid())
+  organizationId          String?        @map("organization_id")
+  protectorId             String?        @map("protector_id")
+  name                    String
+  species                 AnimalSpecies  @default(DOG)
+  breed                   String?
+  ageApproximate          Int            @map("age_approximate")
+  ageUnit                 AnimalAgeUnit  @default(YEARS) @map("age_unit")
+  sex                     AnimalSex
+  size                    AnimalSize     @default(MEDIUM)
+  weightKg                Float?         @map("weight_kg")
+  coatColor               String?        @map("coat_color")
+  description             String
+  adoptionRequirements    String?        @map("adoption_requirements")
+  status                  AnimalStatus   @default(AVAILABLE)
+  isSpecialNeeds          Boolean        @default(false) @map("is_special_needs")
+  specialNeedsDescription String?        @map("special_needs_description")
+  compatibilityDogs       Boolean        @default(true) @map("compatibility_dogs")
+  compatibilityCats       Boolean        @default(true) @map("compatibility_cats")
+  compatibilityChildren   Boolean        @default(true) @map("compatibility_children")
+  energyLevel             EnergyLevel    @default(MODERATE) @map("energy_level")
+  city                    String
+  state                   String
+  latitude                Float?
+  longitude               Float?
+  locationGeom            Unsupported("geometry(Point, 4326)")? @map("location_geom")
+  viewsCount              Int            @default(0) @map("views_count")
+  createdAt               DateTime       @default(now()) @map("created_at")
+  updatedAt               DateTime       @updatedAt @map("updated_at")
+  deletedAt               DateTime?      @map("deleted_at")
+
+  organization            Organization?  @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  protector               User?          @relation("ProtectorAnimals", fields: [protectorId], references: [id], onDelete: SetNull)
+
+  photos                  AnimalPhoto[]
+  videos                  AnimalVideo[]
+  healthRecord            AnimalHealthRecord?
+  traits                  AnimalTrait[]
+  adoptionApplications    AdoptionApplication[]
+  conversations           Conversation[]
+  favorites               Favorite[]
+  adoption                Adoption?
+
+  @@index([status, species, city, state])
+  @@index([organizationId])
+  @@index([protectorId])
+  @@map("animals")
+}
+
+model AnimalPhoto {
+  id           String   @id @default(uuid())
+  animalId     String   @map("animal_id")
+  url          String
+  thumbnailUrl String?  @map("thumbnail_url")
+  displayOrder Int      @default(0) @map("display_order")
+  isCover      Boolean  @default(false) @map("is_cover")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  animal Animal @relation(fields: [animalId], references: [id], onDelete: Cascade)
+
+  @@index([animalId])
+  @@map("animal_photos")
+}
+
+model AnimalVideo {
+  id              String   @id @default(uuid())
+  animalId        String   @map("animal_id")
+  url             String
+  durationSeconds Int?     @map("duration_seconds")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  animal Animal @relation(fields: [animalId], references: [id], onDelete: Cascade)
+
+  @@index([animalId])
+  @@map("animal_videos")
+}
+
+model AnimalHealthRecord {
+  id                 String   @id @default(uuid())
+  animalId           String   @unique @map("animal_id")
+  isVaccinated       Boolean  @default(false) @map("is_vaccinated")
+  vaccinationDetails String?  @map("vaccination_details")
+  isNeutered         Boolean  @default(false) @map("is_neutered")
+  isDewormed         Boolean  @default(false) @map("is_dewormed")
+  medicalNotes       String?  @map("medical_notes")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  animal Animal @relation(fields: [animalId], references: [id], onDelete: Cascade)
+
+  @@map("animal_health_records")
+}
+
+model AnimalTrait {
+  id        String   @id @default(uuid())
+  animalId  String   @map("animal_id")
+  name      String   // Ex: "Dócil", "Brincalhão", "Calmo", "Cão de guarda"
+  createdAt DateTime @default(now()) @map("created_at")
+
+  animal Animal @relation(fields: [animalId], references: [id], onDelete: Cascade)
+
+  @@index([animalId])
+  @@map("animal_traits")
+}
+
+// ==============================================================================
+// 4. PROCESSO DE ADOÇÃO E QUESTIONÁRIOS
+// ==============================================================================
+
+model AdoptionApplication {
+  id              String                    @id @default(uuid())
+  animalId        String                    @map("animal_id")
+  adopterId       String                    @map("adopter_id")
+  currentStatus   AdoptionApplicationStatus @default(SUBMITTED) @map("current_status")
+  rejectionReason String?                   @map("rejection_reason")
+  interviewDate   DateTime?                 @map("interview_date")
+  createdAt       DateTime                  @default(now()) @map("created_at")
+  updatedAt       DateTime                  @updatedAt @map("updated_at")
+
+  animal         Animal                  @relation(fields: [animalId], references: [id], onDelete: Cascade)
+  adopter        User                    @relation("AdopterApplications", fields: [adopterId], references: [id], onDelete: Cascade)
+  questionnaire  AdoptionQuestionnaire?
+  statusHistory  AdoptionStatusHistory[]
+  adoption       Adoption?
+
+  @@index([animalId, adopterId])
+  @@index([currentStatus])
+  @@map("adoption_applications")
+}
+
+model AdoptionQuestionnaire {
+  id                   String      @id @default(uuid())
+  applicationId        String      @unique @map("application_id")
+  housingType          HousingType @default(HOUSE) @map("housing_type")
+  isRented             Boolean     @default(false) @map("is_rented")
+  hasOutdoorSpace      Boolean     @default(false) @map("has_outdoor_space")
+  hasNettingScreens    Boolean     @default(false) @map("has_netting_screens")
+  familyAgreement      Boolean     @default(true) @map("family_agreement")
+  householdPeopleCount Int         @default(1) @map("household_people_count")
+  hasOtherPets         Boolean     @default(false) @map("has_other_pets")
+  otherPetsDetails     String?     @map("other_pets_details")
+  monthlyBudgetBrl     Float?      @map("monthly_budget_brl")
+  routineHoursAlone    Int?        @map("routine_hours_alone")
+  adopterExperience    String?     @map("adopter_experience")
+  createdAt            DateTime    @default(now()) @map("created_at")
+  updatedAt            DateTime    @updatedAt @map("updated_at")
+
+  application AdoptionApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  answers     AdoptionAnswer[]
+
+  @@map("adoption_questionnaires")
+}
+
+model AdoptionAnswer {
+  id              String   @id @default(uuid())
+  questionnaireId String   @map("questionnaire_id")
+  questionKey     String   @map("question_key")
+  questionText    String   @map("question_text")
+  answerValue     String   @map("answer_value")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  questionnaire AdoptionQuestionnaire @relation(fields: [questionnaireId], references: [id], onDelete: Cascade)
+
+  @@index([questionnaireId])
+  @@map("adoption_answers")
+}
+
+model AdoptionStatusHistory {
+  id              String                    @id @default(uuid())
+  applicationId   String                    @map("application_id")
+  changedByUserId String                    @map("changed_by_user_id")
+  previousStatus  AdoptionApplicationStatus @map("previous_status")
+  newStatus       AdoptionApplicationStatus @map("new_status")
+  observation     String?
+  createdAt       DateTime                  @default(now()) @map("created_at")
+
+  application   AdoptionApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  changedByUser User                @relation("StatusChangedBy", fields: [changedByUserId], references: [id], onDelete: Cascade)
+
+  @@index([applicationId])
+  @@map("adoption_status_history")
+}
+
+model Adoption {
+  id            String    @id @default(uuid())
+  animalId      String    @unique @map("animal_id")
+  applicationId String    @unique @map("application_id")
+  adopterId     String    @map("adopter_id")
+  completedAt   DateTime  @default(now()) @map("completed_at")
+  adoptionTermsSigned Boolean @default(true) @map("adoption_terms_signed")
+  termsDocumentUrl    String? @map("terms_document_url")
+  notes               String?
+
+  animal      Animal              @relation(fields: [animalId], references: [id], onDelete: Cascade)
+  application AdoptionApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@map("adoptions")
+}
+
+// ==============================================================================
+// 5. CHAT E MENSAGENS EM TEMPO REAL
+// ==============================================================================
+
+model Conversation {
+  id            String   @id @default(uuid())
+  animalId      String   @map("animal_id")
+  adopterId     String   @map("adopter_id")
+  hostUserId    String   @map("host_user_id") // Protetor ou membro da ONG responsável
+  lastMessageAt DateTime @default(now()) @map("last_message_at")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  animal   Animal    @relation(fields: [animalId], references: [id], onDelete: Cascade)
+  adopter  User      @relation("AdopterConversations", fields: [adopterId], references: [id], onDelete: Cascade)
+  host     User      @relation("HostConversations", fields: [hostUserId], references: [id], onDelete: Cascade)
+  messages Message[]
+
+  @@unique([animalId, adopterId])
+  @@index([adopterId])
+  @@index([hostUserId])
+  @@map("conversations")
+}
+
+model Message {
+  id             String    @id @default(uuid())
+  conversationId String    @map("conversation_id")
+  senderId       String    @map("sender_id")
+  content        String
+  attachmentUrl  String?   @map("attachment_url")
+  isRead         Boolean   @default(false) @map("is_read")
+  readAt         DateTime? @map("read_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  conversation Conversation        @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender       User                @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  attachments  MessageAttachment[]
+
+  @@index([conversationId, createdAt])
+  @@map("messages")
+}
+
+model MessageAttachment {
+  id        String   @id @default(uuid())
+  messageId String   @map("message_id")
+  url       String
+  fileType  String   @map("file_type")
+  fileSize  Int?     @map("file_size")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@map("message_attachments")
+}
+
+// ==============================================================================
+// 6. FAVORITOS E BUSCAS SALVAS
+// ==============================================================================
+
+model Favorite {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  animalId  String   @map("animal_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  animal Animal @relation(fields: [animalId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, animalId])
+  @@index([userId])
+  @@map("favorites")
+}
+
+model SavedSearch {
+  id           String   @id @default(uuid())
+  userId       String   @map("user_id")
+  name         String
+  filtersJson  String   @map("filters_json") // Armazenamento JSON dos critérios selecionados
+  notifyNew    Boolean  @default(true) @map("notify_new")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("saved_searches")
+}
+
+// ==============================================================================
+// 7. NOTIFICAÇÕES E PUSH (VAPID)
+// ==============================================================================
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String           @map("user_id")
+  type      NotificationType
+  title     String
+  body      String
+  actionUrl String?          @map("action_url")
+  isRead    Boolean          @default(false) @map("is_read")
+  readAt    DateTime?        @map("read_at")
+  createdAt DateTime         @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead])
+  @@map("notifications")
+}
+
+model NotificationPreference {
+  id                 String  @id @default(uuid())
+  userId             String  @unique @map("user_id")
+  emailMessages      Boolean @default(true) @map("email_messages")
+  pushMessages       Boolean @default(true) @map("push_messages")
+  emailStatusChange  Boolean @default(true) @map("email_status_change")
+  pushStatusChange   Boolean @default(true) @map("push_status_change")
+  emailRecommendations Boolean @default(true) @map("email_recommendations")
+  pushRecommendations  Boolean @default(true) @map("push_recommendations")
+  quietHoursEnabled  Boolean @default(false) @map("quiet_hours_enabled")
+  quietHoursStart    String? @map("quiet_hours_start") // ex: "22:00"
+  quietHoursEnd      String? @map("quiet_hours_end")   // ex: "08:00"
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notification_preferences")
+}
+
+model PushSubscription {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  userAgent String?  @map("user_agent")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("push_subscriptions")
+}
+
+// ==============================================================================
+// 8. LARES TEMPORÁRIOS E EVENTOS DE ADOÇÃO
+// ==============================================================================
+
+model FosterProfile {
+  id                  String   @id @default(uuid())
+  userId              String   @unique @map("user_id")
+  capacityPets        Int      @default(1) @map("capacity_pets")
+  acceptedSpecies     String   @default("DOG,CAT") @map("accepted_species")
+  hasQuarantineSpace  Boolean  @default(false) @map("has_quarantine_space")
+  isAvailable         Boolean  @default(true) @map("is_available")
+  experienceDetails   String?  @map("experience_details")
+  city                String
+  state               String
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fosterRequests FosterRequest[]
+
+  @@map("foster_profiles")
+}
+
+model FosterRequest {
+  id              String       @id @default(uuid())
+  fosterProfileId String       @map("foster_profile_id")
+  organizationId  String       @map("organization_id")
+  petDetails      String       @map("pet_details")
+  startDate       DateTime     @map("start_date")
+  estimatedDays   Int          @map("estimated_days")
+  status          String       @default("PENDING") // PENDING, ACCEPTED, DECLINED, COMPLETED
+  createdAt       DateTime     @default(now()) @map("created_at")
+
+  fosterProfile FosterProfile @relation(fields: [fosterProfileId], references: [id], onDelete: Cascade)
+  organization  Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@map("foster_requests")
+}
+
+model AdoptionEvent {
+  id             String                                @id @default(uuid())
+  organizationId String                                @map("organization_id")
+  title          String
+  description    String
+  eventDate      DateTime                              @map("event_date")
+  startTime      String                                @map("start_time")
+  endTime        String                                @map("end_time")
+  locationName   String                                @map("location_name")
+  addressStreet  String                                @map("address_street")
+  city           String
+  state          String
+  latitude       Float?
+  longitude      Float?
+  locationGeom   Unsupported("geometry(Point, 4326)")? @map("location_geom")
+  bannerUrl      String?                               @map("banner_url")
+  createdAt      DateTime                              @default(now()) @map("created_at")
+  updatedAt      DateTime                              @updatedAt @map("updated_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([city, state, eventDate])
+  @@map("adoption_events")
+}
+
+// ==============================================================================
+// 9. ANIMAIS PERDIDOS E ACHADOS
+// ==============================================================================
+
+model LostFoundReport {
+  id               String                                @id @default(uuid())
+  userId           String                                @map("user_id")
+  type             LostFoundType                         @default(LOST)
+  petName          String?                               @map("pet_name")
+  species          AnimalSpecies                         @default(DOG)
+  breed            String?
+  color            String
+  distinctiveMarks String?                               @map("distinctive_marks")
+  photoUrl         String                                @map("photo_url")
+  lastSeenDate     DateTime                              @map("last_seen_date")
+  city             String
+  state            String
+  addressRef       String?                               @map("address_ref")
+  latitude         Float?
+  longitude        Float?
+  locationGeom     Unsupported("geometry(Point, 4326)")? @map("location_geom")
+  contactPhone     String                                @map("contact_phone")
+  rewardDetails    String?                               @map("reward_details")
+  status           LostFoundStatus                       @default(OPEN)
+  createdAt        DateTime                              @default(now()) @map("created_at")
+  updatedAt        DateTime                              @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([type, status, city, state])
+  @@map("lost_found_reports")
+}
+
+// ==============================================================================
+// 10. MODERAÇÃO, DENÚNCIAS E SEGURANÇA
+// ==============================================================================
+
+model Report {
+  id              String           @id @default(uuid())
+  reporterId      String           @map("reporter_id")
+  targetType      ReportTargetType @map("target_type")
+  targetId        String           @map("target_id")
+  reason          String
+  details         String?
+  status          ReportStatus     @default(PENDING)
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+
+  reporter User               @relation("ReporterUser", fields: [reporterId], references: [id], onDelete: Cascade)
+  actions  ModerationAction[]
+
+  @@index([targetType, targetId])
+  @@index([status])
+  @@map("reports")
+}
+
+model ModerationAction {
+  id          String   @id @default(uuid())
+  reportId    String?  @map("report_id")
+  moderatorId String   @map("moderator_id")
+  actionTaken String   @map("action_taken") // Ex: "ACCOUNT_SUSPENDED", "ANIMAL_REMOVED", "DISMISSED"
+  notes       String?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  report    Report? @relation(fields: [reportId], references: [id], onDelete: SetNull)
+  moderator User    @relation("ModeratorActions", fields: [moderatorId], references: [id], onDelete: Cascade)
+
+  @@map("moderation_actions")
+}
+
+// ==============================================================================
+// 11. CAMPANHAS, EDUCAÇÃO, AUDITORIA E SISTEMA
+// ==============================================================================
+
+model Campaign {
+  id             String       @id @default(uuid())
+  organizationId String       @map("organization_id")
+  title          String
+  description    String
+  goalAmountBrl  Float        @map("goal_amount_brl")
+  raisedAmountBrl Float       @default(0) @map("raised_amount_brl")
+  pixKey         String?      @map("pix_key")
+  imageUrl       String?      @map("image_url")
+  isActive       Boolean      @default(true) @map("is_active")
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, isActive])
+  @@map("campaigns")
+}
+
+model EducationalArticle {
+  id           String    @id @default(uuid())
+  title        String
+  slug         String    @unique
+  summary      String
+  content      String
+  category     String    // Ex: "Saúde", "Comportamento", "Primeiros Passos", "Adaptação"
+  coverUrl     String?   @map("cover_url")
+  readTimeMin  Int       @default(3) @map("read_time_min")
+  isPublished  Boolean   @default(true) @map("is_published")
+  publishedAt  DateTime? @map("published_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  @@index([category, isPublished])
+  @@map("educational_articles")
+}
+
+model AuditLog {
+  id           String   @id @default(uuid())
+  userId       String?  @map("user_id")
+  action       String
+  resourceType String   @map("resource_type")
+  resourceId   String?  @map("resource_id")
+  ipAddress    String?  @map("ip_address")
+  userAgent    String?  @map("user_agent")
+  metadataJson String?  @map("metadata_json")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([action, resourceType])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+model SystemSetting {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  value       String
+  description String?
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("system_settings")
+}
+

@@ -92,29 +92,36 @@ Ambiente Docker completo rodando sem requerer Node.js ou banco instalados no hos
 **Dependências:** Etapa 01.
 
 **Tarefas:**
-- [ ] Inicializar Prisma em `apps/api`
-- [ ] Habilitar extensão PostGIS no PostgreSQL via script de init
-- [ ] Modelar schema Prisma com as 36+ entidades definidas na documentação
-- [ ] Configurar tipos espaciais para coordenadas (`location_geom`)
-- [ ] Criar índices para chaves estrangeiras e buscas frequentes
-- [ ] Gerar primeira migration (`0001_initial_schema`)
-- [ ] Criar script de seed (`seed.ts`) com dados de teste: categorias, permissões, administrador Master, ONGs exemplo e animais demonstrativos
+- [x] Inicializar Prisma em `apps/api`
+- [x] Habilitar extensão PostGIS e UUID no PostgreSQL
+- [x] Modelar schema Prisma com as 36+ entidades definidas na documentação
+- [x] Configurar tipos espaciais para coordenadas (`location_geom`) e campos latitude/longitude
+- [x] Criar 5 índices espaciais GIST para buscas por proximidade (animals, organizations, profiles, etc.)
+- [x] Gerar e aplicar primeira migration versionada (`20261031000000_init`)
+- [x] Criar script de seed (`seed.ts`) com dados reais: Master Admin, ONGs, protetores, adotantes e animais demonstrativos (Charlie, Luna, Thor, Mel) com Argon2id
+- [x] Criar `PrismaService` e `PrismaModule` integrados globalmente à API NestJS
 
 **Arquivos envolvidos:**
 - `apps/api/prisma/schema.prisma`
-- `apps/api/prisma/migrations/*`
+- `apps/api/prisma/migrations/20261031000000_init/migration.sql`
 - `apps/api/prisma/seed.ts`
+- `apps/api/src/database/prisma.service.ts`
+- `apps/api/src/database/prisma.module.ts`
+- `apps/api/src/app.module.ts`, `apps/api/src/app.controller.ts`
 
 **Critérios de aceite:**
 - Migration executada sem erros no container PostgreSQL.
-- Seed populando banco com dados coerentes.
-- Prisma Studio ou cliente conectando normalmente.
+- Seed populando banco com dados coerentes e hashes Argon2id.
+- Índices espaciais GIST criados no PostgreSQL.
+- Endpoint `/api/v1/health` reportando `"database": "connected"` e métricas do banco.
+- Endpoint `/api/v1/animals/demo` servindo dados reais para o frontend.
 
 **Testes:**
-- Execução de consulta de teste via Prisma Client verificando inserção e relacionamentos.
+- Teste de consulta geoespacial PostGIS (`ST_Distance` ordenando animais por km a partir do centro de SP).
+- Teste de integração HTTP com Prisma no NestJS retornando animais com fotos, traits e organização.
 
 **Resultado esperado:**
-Banco de dados estruturado, seguro e com dados de exemplo para desenvolvimento.
+Banco de dados estruturado, seguro, com dados de exemplo e cálculo geoespacial ativo. Concluído com êxito!
 
 ---
 

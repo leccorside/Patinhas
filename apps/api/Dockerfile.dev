@@ -2,8 +2,8 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Instala dependências de compilação nativa para alpine (argon2, etc.)
-RUN apk add --no-cache python3 make g++ postgresql-client
+# Instala dependências de compilação nativa para alpine (argon2, openssl para prisma, etc.)
+RUN apk add --no-cache python3 make g++ postgresql-client openssl
 
 # Copia arquivos de configuração do monorepo
 COPY package*.json ./

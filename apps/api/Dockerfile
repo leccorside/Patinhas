@@ -3,7 +3,7 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-RUN apk add --no-cache python3 make g++
+RUN apk add --no-cache python3 make g++ openssl
 
 COPY package*.json ./
 COPY packages/ ./packages/
@@ -19,7 +19,7 @@ FROM node:20-alpine AS runner
 
 WORKDIR /app
 
-RUN apk add --no-cache postgresql-client
+RUN apk add --no-cache postgresql-client openssl
 
 ENV NODE_ENV=production
 

@@ -1,15 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, Compass, MapPin, User, Home, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Heart, Compass, MapPin, User, Home, Sparkles, CheckCircle2, ShieldCheck, MapPinned } from 'lucide-react';
+
+interface AnimalPhoto {
+  id: string;
+  url: string;
+  thumbnailUrl?: string;
+  isCover: boolean;
+}
+
+interface AnimalTrait {
+  id: string;
+  name: string;
+}
+
+interface AnimalDemo {
+  id: string;
+  name: string;
+  species: string;
+  breed: string;
+  ageApproximate: number;
+  ageUnit: string;
+  sex: string;
+  size: string;
+  city: string;
+  state: string;
+  photos: AnimalPhoto[];
+  traits: AnimalTrait[];
+  organization?: { name: string; verifiedStatus: string } | null;
+}
 
 export function App() {
   const [activeTab, setActiveTab] = useState('home');
-  const [apiStatus, setApiStatus] = useState<string>('Verificando conexão...');
+  const [animals, setAnimals] = useState<AnimalDemo[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:3333/api/v1/health')
+    fetch('http://localhost:3333/api/v1/animals/demo')
       .then((res) => res.json())
-      .then((data) => setApiStatus(data.status === 'ok' ? 'Conectado à API' : 'Erro na API'))
-      .catch(() => setApiStatus('API offline ou inicializando'));
+      .then((data) => {
+        setAnimals(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Erro ao buscar animais:', err);
+        setLoading(false);
+      });
   }, []);
 
   return (
@@ -37,50 +72,99 @@ export function App() {
             <span className="text-2xl">🐾</span>
             <div>
               <h1 className="text-lg font-extrabold tracking-tight text-[#263238]">Patinhas</h1>
-              <p className="text-xs text-[#78909C]">Adoção de Animais</p>
+              <p className="text-xs text-[#78909C]">Adoção Responsável</p>
             </div>
           </div>
           <span className="flex items-center gap-1.5 rounded-full bg-[#E3F0F8] px-3 py-1 text-xs font-semibold text-[#006a63]">
             <CheckCircle2 size={13} className="text-[#4DB6AC]" />
-            v1.0.0
+            PostGIS Ativo
           </span>
         </header>
 
         {/* Conteúdo Central Scrollável */}
-        <main className="flex-1 px-5 pb-24 pt-2">
-          {/* Card de Boas-vindas Warm Paws */}
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#FF8A65] to-[#FF7043] p-6 text-white shadow-[0px_8px_20px_rgba(255,112,67,0.35)]">
+        <main className="flex-1 px-5 pb-24 pt-1">
+          {/* Hero Banner Warm Paws */}
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#FF8A65] to-[#FF7043] p-5 text-white shadow-[0px_8px_20px_rgba(255,112,67,0.35)]">
             <div className="relative z-10">
-              <div className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-medium backdrop-blur-sm">
-                <Sparkles size={14} />
-                Ambiente Docker Pronto
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-0.5 text-[11px] font-medium backdrop-blur-sm">
+                <Sparkles size={13} />
+                Banco de Dados & Seeds Ativos
               </div>
-              <h2 className="mt-3 text-2xl font-bold leading-tight">
-                Encontre seu novo melhor amigo
+              <h2 className="mt-2 text-xl font-bold leading-tight">
+                Encontre seu novo companheiro
               </h2>
-              <p className="mt-1 text-sm text-white/90">
-                Plataforma com visual mobile permanente e infraestrutura conteinerizada.
+              <p className="mt-1 text-xs text-white/90">
+                Conectando você a animais resgatados por ONGs e protetores verificados.
               </p>
             </div>
           </div>
 
-          {/* Status da Infraestrutura */}
-          <div className="mt-6 rounded-2xl bg-white p-4 shadow-[0px_4px_16px_rgba(38,50,56,0.05)]">
-            <h3 className="text-sm font-bold text-[#263238]">Status da Infraestrutura</h3>
-            <div className="mt-3 space-y-2 text-xs">
-              <div className="flex items-center justify-between">
-                <span className="text-[#78909C]">Frontend React Vite</span>
-                <span className="font-semibold text-[#2E7D32]">Rodando (Porta 3000)</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-[#78909C]">Backend NestJS</span>
-                <span className="font-semibold text-[#FF7043]">{apiStatus}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-[#78909C]">Layout Mobile Container</span>
-                <span className="font-semibold text-[#4DB6AC]">Ativo (Máx 430px)</span>
-              </div>
+          {/* Seção de Animais Próximos (Dados reais vindos do PostgreSQL + Prisma) */}
+          <div className="mt-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-base font-bold text-[#263238]">Próximos de Você</h3>
+              <span className="text-xs font-semibold text-[#FF7043]">Ver todos</span>
             </div>
+
+            {loading ? (
+              <div className="mt-4 flex justify-center py-8">
+                <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#FF7043] border-t-transparent"></div>
+              </div>
+            ) : (
+              <div className="mt-3 space-y-4">
+                {animals.map((pet) => (
+                  <div
+                    key={pet.id}
+                    className="overflow-hidden rounded-3xl bg-white shadow-[0px_4px_16px_rgba(38,50,56,0.06)] transition-all hover:shadow-[0px_8px_24px_rgba(38,50,56,0.1)]"
+                  >
+                    <div className="relative h-48 w-full">
+                      <img
+                        src={pet.photos[0]?.url || 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=800&q=80'}
+                        alt={pet.name}
+                        className="h-full w-full object-cover"
+                      />
+                      <button className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[#FF7043] shadow-md backdrop-blur-sm transition-transform active:scale-90">
+                        <Heart size={18} />
+                      </button>
+                      <div className="absolute bottom-3 left-3 flex items-center gap-1 rounded-full bg-[#263238]/70 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
+                        <MapPinned size={12} className="text-[#4DB6AC]" />
+                        {pet.city}, {pet.state}
+                      </div>
+                    </div>
+
+                    <div className="p-4">
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-lg font-bold text-[#263238]">{pet.name}</h4>
+                        <span className="rounded-full bg-[#FFF3E0] px-2.5 py-0.5 text-xs font-bold text-[#FF7043]">
+                          {pet.ageApproximate} {pet.ageUnit === 'MONTHS' ? 'meses' : 'anos'}
+                        </span>
+                      </div>
+
+                      <p className="mt-0.5 text-xs text-[#78909C]">{pet.breed}</p>
+
+                      {/* Chips de Características */}
+                      <div className="mt-3 flex flex-wrap gap-1.5">
+                        {pet.traits?.slice(0, 3).map((trait) => (
+                          <span
+                            key={trait.id}
+                            className="rounded-full bg-[#E3F0F8] px-2.5 py-1 text-[10px] font-semibold text-[#006a63]"
+                          >
+                            {trait.name}
+                          </span>
+                        ))}
+                      </div>
+
+                      {pet.organization && (
+                        <div className="mt-3 flex items-center gap-1.5 border-t border-gray-100 pt-2.5 text-[11px] text-[#78909C]">
+                          <ShieldCheck size={14} className="text-[#4DB6AC]" />
+                          <span>{pet.organization.name}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </main>
 
@@ -144,4 +228,3 @@ export function App() {
 }
 
 export default App;
-
