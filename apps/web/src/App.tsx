@@ -58,6 +58,7 @@ import { FosterVolunteerModal } from './features/foster/FosterVolunteerModal';
 import { EventsView } from './features/events/EventsView';
 import { CreateEventModal } from './features/events/CreateEventModal';
 import { CampaignsView } from './features/campaigns/CampaignsView';
+import { PostAdoptionView } from './features/education/PostAdoptionView';
 import { Building2 } from 'lucide-react';
 
 export function App() {
@@ -130,6 +131,9 @@ export function App() {
 
   // Campanhas de Doação e Apoio (Etapa 20)
   const [isCampaignsOpen, setIsCampaignsOpen] = useState(false);
+
+  // Acompanhamento Pós-Adoção e Guia Educativo (Etapa 21)
+  const [isPostAdoptionOpen, setIsPostAdoptionOpen] = useState(false);
 
   // Toast
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -522,6 +526,11 @@ export function App() {
                   showToast={showToast}
                 />
               )
+            ) : isPostAdoptionOpen ? (
+              <PostAdoptionView
+                onBack={() => setIsPostAdoptionOpen(false)}
+                showToast={showToast}
+              />
             ) : isCampaignsOpen ? (
               <CampaignsView onBack={() => setIsCampaignsOpen(false)} />
             ) : isEventsOpen ? (
@@ -789,6 +798,32 @@ export function App() {
                     </div>
                   </div>
                   <ChevronRight size={18} className="text-rose-600 group-hover:translate-x-0.5 transition-transform" />
+                </button>
+
+                {/* Banner de Pós-Adoção e Guia Educativo (Etapa 21) */}
+                <button
+                  onClick={() => setIsPostAdoptionOpen(true)}
+                  className="flex w-full items-center justify-between p-4 bg-gradient-to-r from-emerald-50 via-teal-50 to-cyan-100/40 rounded-3xl border border-emerald-200/70 shadow-sm text-left hover:border-emerald-300 transition-all group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-600 text-white flex items-center justify-center text-xl font-bold shadow-md shadow-emerald-500/30 group-hover:scale-105 transition-transform">
+                      📖
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-extrabold text-sm text-[#263238] block">
+                          Pós-Adoção & Guia Educativo
+                        </span>
+                        <span className="text-[10px] bg-emerald-600 text-white font-bold px-1.5 py-0.5 rounded-full">
+                          Checklist
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-[#78909C]">
+                        Checklists de 15, 30 e 90 dias, dicas de adaptação e saúde
+                      </span>
+                    </div>
+                  </div>
+                  <ChevronRight size={18} className="text-emerald-700 group-hover:translate-x-0.5 transition-transform" />
                 </button>
 
                 {/* Banner de Painel da ONG e Protetor (Etapa 14) */}

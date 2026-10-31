@@ -19,6 +19,7 @@ import { LostFoundModule } from './modules/lost-found/lost-found.module';
 import { FosterModule } from './modules/foster/foster.module';
 import { EventsModule } from './modules/events/events.module';
 import { CampaignsModule } from './modules/campaigns/campaigns.module';
+import { EducationModule } from './modules/education/education.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { CampaignsModule } from './modules/campaigns/campaigns.module';
     FosterModule,
     EventsModule,
     CampaignsModule,
+    EducationModule,
   ],
   controllers: [AppController],
   providers: [],

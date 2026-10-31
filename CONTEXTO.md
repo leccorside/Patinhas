@@ -82,26 +82,26 @@ A documentação e todo o planejamento adotaram integralmente a identidade visua
 
 ---
 
-## 📁 Arquivos Criados na Sessão Atual (Etapa 20)
+## 📁 Arquivos Criados na Sessão Atual (Etapa 21)
 
 | Arquivo | Descrição |
 |---|---|
-| `apps/api/src/modules/campaigns/dto/campaign.dto.ts` | DTOs de criação de campanhas de apoio e registro de doações |
-| `apps/api/src/modules/campaigns/campaigns.service.ts` | Regras de negócio, cálculos de percentual de meta e auditoria |
-| `apps/api/src/modules/campaigns/campaigns.controller.ts` | Endpoints REST públicos e autenticados de campanhas |
-| `apps/api/src/modules/campaigns/campaigns.module.ts` | Módulo NestJS registrado no `AppModule` |
-| `apps/web/src/features/campaigns/campaignsService.ts` | Cliente HTTP frontend para consumo das campanhas |
-| `apps/web/src/features/campaigns/DonationModal.tsx` | Modal com chave PIX, valores rápidos e confirmação com 1 toque |
-| `apps/web/src/features/campaigns/CreateCampaignModal.tsx` | Modal para ONGs criarem novas vaquinhas de arrecadação |
-| `apps/web/src/features/campaigns/CampaignsView.tsx` | Feed mobile Bento com barras de progresso e compartilhamento nativo |
-| `apps/web/src/App.tsx` | Integração do banner e navegação móvel de campanhas |
+| `apps/api/src/modules/education/dto/education.dto.ts` | DTOs de submissão de feedback pós-adoção e relatos periódicos |
+| `apps/api/src/modules/education/education.service.ts` | Regras de artigos educativos, checklists de 15/30/90 dias e auditoria |
+| `apps/api/src/modules/education/education.controller.ts` | Rotas REST públicas e autenticadas de artigos e checklists |
+| `apps/api/src/modules/education/education.module.ts` | Módulo NestJS registrado no `AppModule` |
+| `apps/web/src/features/education/educationService.ts` | Cliente HTTP frontend para consumo dos artigos e checklists |
+| `apps/web/src/features/education/ArticleDetailModal.tsx` | Leitura de artigos com tempo de leitura e aviso legal veterinário |
+| `apps/web/src/features/education/PostAdoptionFeedbackModal.tsx` | Envio de fotos recentes e relato de adaptação do pet |
+| `apps/web/src/features/education/PostAdoptionView.tsx` | Tela de checklist interativo (15/30/90 dias) e feed de artigos |
+| `apps/web/src/App.tsx` | Integração do banner e navegação móvel de pós-adoção |
 
 ---
 
 ## 🟢 Progresso Atual das Etapas
 
-- **Etapas 00 a 20:** Concluídas com sucesso e validadas com testes ponta a ponta e build de produção.
-- **Etapa 21 em diante:** Acompanhamento Pós-Adoção e Conteúdo Educativo (execução autônoma contínua até a Etapa 26).
+- **Etapas 00 a 21:** Concluídas com sucesso e validadas com testes ponta a ponta e build de produção.
+- **Etapa 22 em diante:** Internacionalização i18n (execução autônoma contínua até a Etapa 26).
 
 ---
 

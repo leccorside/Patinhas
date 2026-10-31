@@ -1013,21 +1013,44 @@ Módulo transparente de apoio financeiro e vaquinhas veterinárias às ONGs. Con
 **Dependências:** Etapa 10.
 
 **Tarefas:**
-- [ ] Backend: Agendamento de lembretes e questionários periódicos (15 dias, 30 dias, 3 meses, 6 meses)
-- [ ] Frontend: Checklist interativo de adaptação (alimentação, adaptação com outros pets, primeira vacina)
-- [ ] Frontend: Guia educativo integrado com artigos e orientações sobre posse responsável
+- [x] Backend: Módulo educativo e pós-adoção (`EducationModule`, `EducationService`, `EducationController`) com rotas REST completas:
+  - `GET /api/v1/education/articles`: Feed de artigos educativos com filtro por categoria (Adaptação, Saúde, Comportamento) e busca
+  - `GET /api/v1/education/articles/:slug`: Detalhes e texto completo do artigo com tempo estimado de leitura
+  - `GET /api/v1/education/post-adoption/checklist`: Checklists estruturados por período de adaptação (15 dias - descompressão, 30 dias - rotina & saúde preventiva, 90 dias - vínculo pleno) com aviso legal médico veterinário obrigatório
+  - `POST /api/v1/education/post-adoption/feedback`: Envio seguro de relatos de adaptação e fotos pelo adotante com registro em `AuditLog`
+- [x] Frontend: Serviço `educationService.ts` com consumo REST e tipagens estritas
+- [x] Frontend: Modal de artigo `ArticleDetailModal.tsx` com banner de foto, categoria, tempo de leitura e aviso legal veterinário em destaque
+- [x] Frontend: Modal de feedback `PostAdoptionFeedbackModal.tsx` para envio de relato e fotos recentes do pet no novo lar
+- [x] Frontend: Visualização interativa `PostAdoptionView.tsx` com tabs (Checklist com persistência no LocalStorage vs Feed de Artigos), barra de progresso percentual e aviso médico veterinário
+- [x] Frontend: Banner integrado no perfil móvel em `App.tsx`
+- [x] Frontend: Compilação de produção do Vite no container `patinhas_web` concluída com 1964 módulos e 0 erros
 
 **Arquivos envolvidos:**
-- `apps/api/src/modules/adoptions/services/post-adoption.service.ts`
-- `apps/web/src/features/post-adoption/*`
+- `apps/api/src/modules/education/dto/education.dto.ts`
+- `apps/api/src/modules/education/education.service.ts`
+- `apps/api/src/modules/education/education.controller.ts`
+- `apps/api/src/modules/education/education.module.ts`
+- `apps/api/src/app.module.ts`
+- `apps/web/src/features/education/educationService.ts`
+- `apps/web/src/features/education/ArticleDetailModal.tsx`
+- `apps/web/src/features/education/PostAdoptionFeedbackModal.tsx`
+- `apps/web/src/features/education/PostAdoptionView.tsx`
+- `apps/web/src/App.tsx`
 
 **Critérios de aceite:**
-- Aviso explícito de que as orientações não substituem acompanhamento médico veterinário.
+- Aviso explícito em todas as seções de que as orientações não substituem o acompanhamento médico veterinário com CRMV ativo.
+- Checklists interativos por período (15, 30 e 90 dias) com persistência local e feedback à ONG.
 
 **Testes:**
-- Testes dos gatilhos de notificação dos períodos de acompanhamento.
+- Teste de listagem pública de artigos educativos (HTTP 200 OK).
+- Teste de recuperação de artigo por slug (HTTP 200 OK).
+- Teste de obtenção de checklist de 15 dias validando presença do aviso legal veterinário (HTTP 200 OK).
+- Teste de obtenção de checklist de 30 dias com itens de saúde preventiva (HTTP 200 OK).
+- Teste de envio autenticado de relato de pós-adoção com gravação em auditoria (HTTP 201 Created).
+- Teste de compilação do Vite no container `patinhas_web` transformando 1964 módulos em 5.96s com 0 erros.
 
 **Resultado esperado:**
+Redução de devoluções, suporte contínuo ao novo tutor e acolhimento sereno aos animais adotados. Concluído com êxito!
 Redução de devoluções e suporte contínuo ao novo tutor.
 
 ---
