@@ -80,3 +80,4 @@ export class CreateEventDto {
   @IsString()
   bannerUrl?: string;
 }
+

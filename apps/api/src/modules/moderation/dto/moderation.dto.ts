@@ -49,3 +49,4 @@ export class ResolveReportDto {
   @MaxLength(500)
   notes?: string;
 }
+

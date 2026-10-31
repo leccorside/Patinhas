@@ -355,3 +355,4 @@ export const PostAdoptionView: React.FC<PostAdoptionViewProps> = ({
     </div>
   );
 };
+

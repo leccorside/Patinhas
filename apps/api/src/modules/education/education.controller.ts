@@ -54,3 +54,4 @@ export class EducationController {
     return this.educationService.submitFeedback(user.id, dto);
   }
 }
+

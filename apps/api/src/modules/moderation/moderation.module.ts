@@ -8,3 +8,4 @@ import { ModerationController } from './moderation.controller';
   exports: [ModerationService],
 })
 export class ModerationModule {}
+

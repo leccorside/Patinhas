@@ -250,3 +250,4 @@ export const CreateLostFoundModal: React.FC<CreateLostFoundModalProps> = ({
     </div>
   );
 };
+

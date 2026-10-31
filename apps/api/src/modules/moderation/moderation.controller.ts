@@ -72,3 +72,4 @@ export class ModerationController {
     return this.moderationService.getModerationActions(limit ? parseInt(limit, 10) : 30);
   }
 }
+

@@ -409,3 +409,4 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ notif, onRead, onAc
     </article>
   );
 };
+

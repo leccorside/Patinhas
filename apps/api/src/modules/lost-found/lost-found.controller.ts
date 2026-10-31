@@ -66,3 +66,4 @@ export class LostFoundController {
     return this.lostFoundService.remove(id, user.id, user.role);
   }
 }
+

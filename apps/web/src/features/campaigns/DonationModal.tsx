@@ -177,3 +177,4 @@ export const DonationModal: React.FC<DonationModalProps> = ({
     </div>
   );
 };
+

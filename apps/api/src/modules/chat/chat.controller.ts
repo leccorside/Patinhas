@@ -73,3 +73,4 @@ export class ChatController {
     return this.storageService.uploadFile(file, 'chat');
   }
 }
+

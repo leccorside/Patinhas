@@ -239,3 +239,4 @@ export const EventsView: React.FC<EventsViewProps> = ({
     </div>
   );
 };
+

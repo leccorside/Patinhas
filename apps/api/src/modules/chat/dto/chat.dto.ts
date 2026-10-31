@@ -19,3 +19,4 @@ export class SendMessageDto {
   @IsString()
   attachmentUrl?: string;
 }
+

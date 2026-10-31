@@ -10,3 +10,4 @@ import { PrismaModule } from '../../database/prisma.module';
   exports: [EducationService],
 })
 export class EducationModule {}
+

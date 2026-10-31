@@ -74,3 +74,4 @@ export class UpdateNotificationPreferencesDto {
   @IsString()
   quietHoursEnd?: string;
 }
+

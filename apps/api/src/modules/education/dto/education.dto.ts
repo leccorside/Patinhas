@@ -27,3 +27,4 @@ export class SubmitFollowUpFeedbackDto {
   @IsString()
   challenges?: string;
 }
+

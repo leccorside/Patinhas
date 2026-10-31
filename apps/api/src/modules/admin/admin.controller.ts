@@ -86,3 +86,4 @@ export class AdminController {
     return this.adminService.getAuditLogs(limit ? parseInt(limit, 10) : 30);
   }
 }
+

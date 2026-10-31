@@ -128,3 +128,4 @@ powershell -ExecutionPolicy Bypass -File C:\caminho\patinhas\scripts\backup-db.p
 - [x] Logs de auditoria gravados na tabela `audit_logs` para todas as ações administrativas.
 - [x] Termos de adoção assinados e registrados com consentimento explícito.
 - [x] Suíte de 13 testes automatizados executada e 100% aprovada.
+

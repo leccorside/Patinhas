@@ -55,3 +55,4 @@ export class RegisterDonationDto {
   @MaxLength(80)
   donorName?: string;
 }
+

@@ -61,3 +61,4 @@ export class EventsController {
     return this.eventsService.remove(id, user.id, user.role);
   }
 }
+

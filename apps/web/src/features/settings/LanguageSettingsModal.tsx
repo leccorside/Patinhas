@@ -153,3 +153,4 @@ export const LanguageSettingsModal: React.FC<LanguageSettingsModalProps> = ({
     </div>
   );
 };
+

@@ -206,3 +206,4 @@ export class LostFoundService {
     return { message: 'Relato excluído com sucesso.' };
   }
 }
+

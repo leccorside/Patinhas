@@ -74,3 +74,4 @@ export class CreateFosterRequestDto {
   @Min(1)
   estimatedDays: number;
 }
+

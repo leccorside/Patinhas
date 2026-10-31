@@ -79,3 +79,4 @@ export class CampaignsController {
     return this.campaignsService.remove(id, user.id, user.role);
   }
 }
+

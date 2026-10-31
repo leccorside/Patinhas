@@ -287,3 +287,4 @@ export const LostFoundView: React.FC<LostFoundViewProps> = ({
     </div>
   );
 };
+

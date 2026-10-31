@@ -158,3 +158,4 @@ export class EventsService {
     return { message: 'Evento de adoção removido com sucesso.' };
   }
 }
+

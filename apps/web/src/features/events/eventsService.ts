@@ -84,3 +84,4 @@ export const eventsService = {
     return data;
   },
 };
+

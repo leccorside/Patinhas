@@ -26,3 +26,4 @@ echo "🧹 Removendo backups com mais de 7 dias..."
 find "${BACKUP_DIR}" -name "patinhas_backup_*.sql.gz" -mtime +7 -exec rm {} \;
 
 echo "🎉 Procedimento finalizado com êxito."
+
