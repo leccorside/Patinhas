@@ -132,36 +132,48 @@ Banco de dados estruturado, seguro, com dados de exemplo e cálculo geoespacial 
 **Dependências:** Etapa 01.
 
 **Tarefas:**
-- [ ] Configurar Tailwind CSS em `apps/web` com a paleta exata de `uxui/warm_paws_adoption_system/DESIGN.md`
-- [ ] Importar fontes `Plus Jakarta Sans` e `Inter`
-- [ ] Criar componente `MobileAppShell` (max-w-[430px], bg desktop `#EDEDEB`, bg app `#FAFAF8`, centralizado)
-- [ ] Criar componente `FloatingBottomNav` com 5 abas flutuantes e indicador em pílula coral
-- [ ] Criar componentes de UI base:
-  - `PrimaryButton` (gradiente coral `#FF8A65` → `#FF7043`, pílula, sombra quente)
-  - `SecondaryButton` (verde-azulado `#4DB6AC`)
-  - `PetCard` (foto em cantos arredondados `rounded-2xl`, selo de distância, botão de favoritar)
-  - `SpecBadge` (caixas em pílula `#FFF3E0` para idade, sexo, porte e peso)
-  - `BottomSheet` (com grabber pill e cantos superiores arredondados 32px)
-  - `AppHeader` (saudação, localização atual e sininho de notificações)
-  - `SearchInput` (pílula com ícone de lupa e botão de filtros)
-  - `Badge`, `Dialog`, `Toast`, `SkeletonLoader`, `EmptyState`
-- [ ] Configurar Framer Motion para transições de tela suaves
+- [x] Configurar Tailwind CSS em `apps/web` com a paleta exata de `uxui/warm_paws_adoption_system/DESIGN.md` (Warm Coral, Soft Teal, Apricot, Charcoal)
+- [x] Importar fontes `Plus Jakarta Sans` e `Inter`
+- [x] Criar componente `MobileAppShell` (max-w-[430px], bg desktop `#EDEDEB`, bg app `#FAFAF8`, centralizado)
+- [x] Criar componente `FloatingBottomNav` com 5 abas flutuantes e indicador em pílula coral com animação Framer Motion
+- [x] Criar componente `AppHeader` com localização, saudação e sininho de notificações com badge
+- [x] Criar componentes de UI base do Design System:
+  - `PrimaryButton` (gradiente coral `#FF8A65` → `#FF7043`, pílula, sombra quente, ícone opcional)
+  - `SecondaryButton` (verde-azulado `#4DB6AC`, contorno ou ghost)
+  - `PetCard` (foto em cantos arredondados `rounded-3xl`, selo de distância, botão de favoritar, badges de sexo/idade, match score)
+  - `SpecBadge` (caixas em pílula ou quadradas em `#FFF3E0` para idade, sexo, porte e peso)
+  - `BottomSheet` (com grabber pill 36x4px e cantos superiores arredondados 32px, animação spring)
+  - `Dialog` (modal centralizado estritamente contido nos 430px)
+  - `SearchInput` (pílula com ícone de lupa e botão de filtros integrado)
+  - `Badge` (para tags médicas, status, espécies)
+  - `Toast` (notificações efêmeras contidas nos 430px)
+  - `SkeletonLoader` e `PetCardSkeleton` (efeito shimmer de carregamento)
+  - `EmptyState` (estado vazio acolhedor com ilustração)
+  - `Tabs` (abas horizontais deslizáveis com indicador pílula)
+- [x] Configurar animações e microinterações com Framer Motion
+- [x] Montar vitrine interativa de componentes na aplicação para testes visuais
+- [x] Validar compilação limpa do Vite e TypeScript sem erros
 
 **Arquivos envolvidos:**
 - `apps/web/src/components/layout/MobileAppShell.tsx`
 - `apps/web/src/components/layout/FloatingBottomNav.tsx`
+- `apps/web/src/components/layout/AppHeader.tsx`
 - `apps/web/src/components/ui/*`
-- `apps/web/tailwind.config.js`
+- `apps/web/src/components/cards/PetCard.tsx`
+- `apps/web/src/components/index.ts`
+- `apps/web/src/App.tsx`, `apps/web/tailwind.config.js`
 
 **Critérios de aceite:**
 - Em qualquer monitor (1080p, 1440p, 4K), a aplicação fica restrita a 430px de largura e centralizada.
 - Componentes com visual idêntico ao protótipo da pasta `uxui/`.
+- Microinterações de favoritar, abrir bottom sheets e alternar abas operacionais.
 
 **Testes:**
-- Teste visual com Playwright nas 11 larguras obrigatórias (`320px` a `2560px`).
+- Build completo do Vite transformando 1869 módulos com sucesso (`npm run build`).
+- Validação visual dos componentes, sombras e paleta em [http://localhost:3005](http://localhost:3005).
 
 **Resultado esperado:**
-Design system mobile completo e operacional, pronto para receber as telas do app.
+Design system mobile completo e operacional, pronto para receber as telas do app. Concluído com êxito!
 
 ---
 

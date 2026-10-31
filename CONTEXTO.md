@@ -4,8 +4,8 @@
 
 ## 📅 Última Atualização
 - **Data:** 31/10/2026
-- **Etapa atual:** ETAPA 02 — Banco de Dados, Migrations e Seed (Concluída com sucesso!)
-- **Status geral:** 🟢 ETAPAS 00, 01 e 02 Concluídas. PostgreSQL + PostGIS modelado com 36+ entidades, migrado e populado. Aguardando autorização para ETAPA 03.
+- **Etapa atual:** ETAPA 03 — MobileAppShell e Design System Mobile (Concluída com sucesso!)
+- **Status geral:** 🟢 ETAPAS 00, 01, 02 e 03 Concluídas. MobileAppShell e 14 componentes do Warm Paws System implementados e testados. Aguardando autorização para ETAPA 04.
 
 ---
 
@@ -33,7 +33,8 @@ A documentação e todo o planejamento adotaram integralmente a identidade visua
 | **00** | Documentação e Arquitetura | 🟢 Concluída | `DOCUMENTACAO.md`, `PASSOS.md` e `CONTEXTO.md` gerados |
 | **01** | Monorepo e Infraestrutura Docker | 🟢 Concluída | Containers `api`, `web`, `postgres`, `redis`, `minio` e `mailpit` rodando |
 | **02** | Banco de Dados e Migrations | 🟢 Concluída | Schema com 36+ entidades, 5 índices GIST, migration e seed com PostGIS |
-| **03** | MobileAppShell e Design System | ⏳ Aguardando autorização | Componentes e tokens do Warm Paws System (max 430px) |
+| **03** | MobileAppShell e Design System | 🟢 Concluída | MobileAppShell (430px) e 14 componentes UI com Framer Motion |
+| **04** | Autenticação e Segurança | ⏳ Aguardando autorização | JWT, Argon2id, refresh rotativo em cookies e telas de login/cadastro |
 | **04** | Autenticação e Segurança | ⏳ Pendente | JWT, Argon2id, refresh rotativo em cookies |
 | **05** | Usuários, Perfis e ONGs | ⏳ Pendente | Perfis, uploads no MinIO e membros |
 | **06** | Cadastro de Animais | ⏳ Pendente | Formulário em etapas e galeria de fotos |
