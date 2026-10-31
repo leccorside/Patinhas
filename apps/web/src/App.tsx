@@ -48,6 +48,7 @@ import { NotificationsViewModal } from './features/notifications/NotificationsVi
 import { notificationsService } from './features/notifications/notificationsService';
 import { MatchExplanationModal } from './features/matching/MatchExplanationModal';
 import { ShelterDashboardView } from './features/shelter/ShelterDashboardView';
+import { AdminMasterDashboardView } from './features/admin/AdminMasterDashboardView';
 import { Building2 } from 'lucide-react';
 
 export function App() {
@@ -97,6 +98,9 @@ export function App() {
 
   // Dashboard de ONG e Protetor (Etapa 14)
   const [isShelterDashboardOpen, setIsShelterDashboardOpen] = useState(false);
+
+  // Painel Admin Master (Etapa 15)
+  const [isAdminDashboardOpen, setIsAdminDashboardOpen] = useState(false);
 
   // Toast
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -469,6 +473,8 @@ export function App() {
                   showToast={showToast}
                 />
               )
+            ) : isAdminDashboardOpen ? (
+              <AdminMasterDashboardView onBack={() => setIsAdminDashboardOpen(false)} />
             ) : isShelterDashboardOpen ? (
               <ShelterDashboardView
                 onBack={() => setIsShelterDashboardOpen(false)}
@@ -634,6 +640,34 @@ export function App() {
                   </div>
                   <ChevronRight size={18} className="text-emerald-700 group-hover:translate-x-0.5 transition-transform" />
                 </button>
+
+                {/* Banner de Admin Master (Etapa 15) */}
+                {user?.role === 'MASTER_ADMIN' && (
+                  <button
+                    onClick={() => setIsAdminDashboardOpen(true)}
+                    className="flex w-full items-center justify-between p-4 bg-gradient-to-r from-purple-50 via-indigo-50 to-purple-100/50 rounded-3xl border border-purple-200 shadow-sm text-left hover:border-purple-300 transition-all group"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-11 h-11 rounded-2xl bg-purple-600 text-white flex items-center justify-center text-xl font-bold shadow-md shadow-purple-600/30 group-hover:scale-105 transition-transform">
+                        🛡️
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-extrabold text-sm text-purple-950 block">
+                            Painel Admin Master
+                          </span>
+                          <span className="text-[10px] bg-purple-600 text-white font-extrabold px-1.5 py-0.5 rounded-full">
+                            Global
+                          </span>
+                        </div>
+                        <span className="text-[11px] text-purple-700">
+                          Moderação de ONGs, usuários e logs de auditoria
+                        </span>
+                      </div>
+                    </div>
+                    <ChevronRight size={18} className="text-purple-600 group-hover:translate-x-0.5 transition-transform" />
+                  </button>
+                )}
 
                 {/* Ações Rápidas de Gestão */}
                 <div className="grid grid-cols-2 gap-3">

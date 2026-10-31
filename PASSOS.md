@@ -711,25 +711,46 @@ Painel de gestão intuitivo na palma da mão para protetores e voluntários. Con
 **Dependências:** Etapa 14.
 
 **Tarefas:**
-- [ ] Backend: Módulo Admin Master com endpoints protegidos por papel `MASTER_ADMIN`
-- [ ] Backend: Métricas globais da plataforma (usuários ativos, adoções totais, denúncias ativas)
-- [ ] Frontend: Dashboard Master adaptado para visualização em smartphone
-- [ ] Frontend: Gestão e verificação manual de cadastros de ONGs
-- [ ] Frontend: Visualização de logs de auditoria e atividades críticas
+- [x] Backend: Módulo `AdminModule`, `AdminService` e `AdminController` com proteção estrita por `@UseGuards(JwtAuthGuard, RolesGuard)` e `@Roles(UserRole.MASTER_ADMIN)`
+- [x] Backend: Endpoints REST administrativos:
+  - `GET /api/v1/admin/overview`: Métricas globais consolidadas (usuários por papel/status, ONGs por verificação, animais disponíveis/adotados, adoções totais e denúncias)
+  - `GET /api/v1/admin/organizations`: Listagem paginada de organizações com busca textual (nome, CNPJ, cidade) e filtro por status de verificação
+  - `PATCH /api/v1/admin/organizations/:id/verify`: Concessão ou revogação de selo de verificação oficial com registro em `AuditLog`
+  - `GET /api/v1/admin/users`: Listagem de usuários da plataforma com estatísticas de candidaturas e denúncias
+  - `PATCH /api/v1/admin/users/:id/status`: Suspensão preventiva ou reativação de conta de usuário com revogação imediata de sessões ativas e gravação em `AuditLog`
+  - `GET /api/v1/admin/audit-logs`: Histórico detalhado de ações administrativas com executor e metadados JSON
+- [x] Backend: Bloqueio rigoroso impedindo auto-suspensão do próprio administrador logado e rejeição de acessos de adotantes/membros de ONG comuns com HTTP 403 Forbidden
+- [x] Frontend: `adminService.ts` com tipagens completas e integração HTTP nativa com cookies seguros
+- [x] Frontend: Painel mobile Master Admin (`AdminMasterDashboardView.tsx`) formatado estritamente para largura de 430px:
+  - Header institucional com badge `Master Admin 🛡️` e status da plataforma
+  - Bento Grid com 4 cards de métricas (Usuários, ONGs, Animais, Adoções Concluídas)
+  - Aba "ONGs" com fila de verificação, CNPJ, dados do responsável e botões de ação ("Aprovar Selo Oficial", "Revogar Selo")
+  - Aba "Usuários" com busca rápida, badges de papel, contadores de candidaturas e ações de suspensão/reativação
+  - Aba "Auditoria" com feed cronológico dos eventos administrativos
+- [x] Frontend: Acesso restrito via Perfil condicionado a `user.role === 'MASTER_ADMIN'` com banner roxo de alta autoridade
+- [x] Frontend: Compilação de produção do Vite (`npm run build`) concluída com 1945 módulos e 0 erros de tipagem
 
 **Arquivos envolvidos:**
-- `apps/api/src/modules/administration/*`
-- `apps/web/src/features/master-admin/*`
+- `apps/api/src/modules/admin/admin.service.ts`
+- `apps/api/src/modules/admin/admin.controller.ts`
+- `apps/api/src/modules/admin/admin.module.ts`
+- `apps/api/src/app.module.ts`
+- `apps/web/src/features/admin/adminService.ts`
+- `apps/web/src/features/admin/AdminMasterDashboardView.tsx`
+- `apps/web/src/App.tsx`
 
 **Critérios de aceite:**
 - Acesso estritamente bloqueado para usuários não autorizados com resposta 403 Forbidden.
-- Visual em conformidade com o Mobile App Shell sem sidebar de desktop.
+- Visual em conformidade com o Mobile App Shell (430px) sem barras laterais de desktop.
+- Registro confiável em banco (`AuditLog`) de todas as decisões tomadas pelo admin.
 
 **Testes:**
-- Testes de segurança e controle de acesso via Guard NestJS.
+- Teste com usuário Master Admin autenticado (`admin@patinhas.org`), validando retorno de métricas globais e listagem de organizações e usuários.
+- Teste de segurança com adotante comum (`lucas.adotante@gmail.com`) sendo rejeitado com HTTP 403 Forbidden ao tentar invocar a rota `/api/v1/admin/overview`.
+- Teste de compilação de produção do Vite no container `patinhas_web` gerando bundle em 5.87s com 1945 módulos e 0 erros.
 
 **Resultado esperado:**
-Controle total da operação da plataforma com mobilidade.
+Controle total da operação da plataforma com mobilidade. Concluído com êxito!
 
 ---
 

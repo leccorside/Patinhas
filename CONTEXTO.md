@@ -4,8 +4,8 @@
 
 ## 📅 Última Atualização
 - **Data:** 31/10/2026
-- **Etapa atual:** ETAPA 15 — Admin Master (Painel de Gestão da Plataforma) (Em andamento)
-- **Status geral:** 🟢 ETAPAS 00 a 14 Concluídas com sucesso e commitadas. Execução contínua e autônoma das etapas até a entrega final (Etapa 26).
+- **Etapa atual:** ETAPA 16 — Moderação, Denúncias e Antifraude (Em andamento)
+- **Status geral:** 🟢 ETAPAS 00 a 15 Concluídas com sucesso e commitadas. Execução contínua e autônoma das etapas até a entrega final (Etapa 26).
 
 ---
 
@@ -45,8 +45,8 @@ A documentação e todo o planejamento adotaram integralmente a identidade visua
 | **12** | Notificações Push | 🟢 Concluída | Web Push API, chaves VAPID, Service Worker e central de alertas |
 | **13** | Match Inteligente | 🟢 Concluída | Compatibilidade ponderada tutor-pet em 4 dimensões (Espaço, Rotina, Sociabilidade, Orçamento) |
 | **14** | Dashboard de ONGs | 🟢 Concluída | Métricas, triagem mobile de candidaturas e equipe da ONG |
-| **15** | Admin Master | 🔄 Em andamento | Moderação global da plataforma, verificação de ONGs e auditoria |
-| **16** | Moderação e Antifraude | ⏳ Pendente | Denúncias e suspensão de contas |
+| **15** | Admin Master | 🟢 Concluída | Painel Master mobile, moderação global de ONGs/usuários e auditoria |
+| **16** | Moderação e Antifraude | 🔄 Em andamento | Canal de denúncias, suspensão de infratores e auditoria |
 | **17** | Animais Perdidos e Achados | ⏳ Pendente | Módulo comunitário de busca |
 | **18** | Lar Temporário | ⏳ Pendente | Voluntariado e acolhimento transitório |
 | **19** | Eventos e Feiras | ⏳ Pendente | Calendário de feiras presenciais |
