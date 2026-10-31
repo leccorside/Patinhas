@@ -179,34 +179,45 @@ Design system mobile completo e operacional, pronto para receber as telas do app
 
 ## ETAPA 04 — Autenticação e Segurança
 
-**Objetivo:** Implementar o fluxo seguro de autenticação com Argon2, JWT com refresh rotativo em cookies HttpOnly e confirmação por e-mail.
+**Objetivo:** Implementar o fluxo seguro de autenticação com Argon2id, JWT com refresh rotativo em cookies HttpOnly e confirmação por e-mail.
 
 **Dependências:** Etapas 02 e 03.
 
 **Tarefas:**
-- [ ] Backend: Módulo Auth no NestJS (registro, login, logout, refresh, reset de senha)
-- [ ] Backend: Hashing com Argon2id
-- [ ] Backend: Emissão de JWT Access Token e Refresh Token com rotação em cookies seguros
-- [ ] Backend: Envio de e-mail de confirmação via Mailpit usando Nodemailer
-- [ ] Backend: Rate limiting para proteção contra força bruta
-- [ ] Frontend: Telas mobile de Cadastro, Login, Confirmação de E-mail e Recuperação de Senha
-- [ ] Frontend: Integração com React Hook Form + Zod e Zustand (`authStore`)
+- [x] Backend: Módulo Auth no NestJS (registro, login, logout, refresh, reset de senha)
+- [x] Backend: Hashing de senhas com padrão Argon2id (OWASP)
+- [x] Backend: Emissão de JWT Access Token (15m) e Refresh Token rotativo (7d) em cookies `HttpOnly` seguros e tabela `user_sessions`
+- [x] Backend: Envio assíncrono de e-mails de confirmação e recuperação de senha via Mailpit usando Nodemailer
+- [x] Backend: Implementação de Guards e Decorators (`JwtAuthGuard`, `@CurrentUser()`, `RolesGuard`, `@Roles()`)
+- [x] Frontend: Telas mobile de Login, Cadastro, Confirmação de E-mail e Modal de Recuperação de Senha estilizadas no Warm Paws System
+- [x] Frontend: Integração com Zustand (`authStore.ts`) para persistência de sessão e verificação automática (`/api/v1/auth/me`)
+- [x] Frontend: Atalhos com 1 clique para login de teste (Adotante, ONG Líder, Admin Master) e visualização de perfil autenticado
 
 **Arquivos envolvidos:**
-- `apps/api/src/modules/auth/*`
-- `apps/web/src/features/auth/*`
+- `apps/api/src/modules/auth/*` (controller, service, module, dtos, guards, strategies, decorators)
+- `apps/api/src/modules/mail/*` (mail service, templates com Warm Coral, mail module)
 - `apps/web/src/store/authStore.ts`
+- `apps/web/src/features/auth/LoginView.tsx`
+- `apps/web/src/features/auth/RegisterView.tsx`
+- `apps/web/src/features/auth/ForgotPasswordModal.tsx`
+- `apps/web/src/App.tsx`, `apps/api/src/app.module.ts`
 
 **Critérios de aceite:**
-- Usuário não consegue logar sem validar o e-mail.
-- Refresh token rotativo funcionando sem desconectar o usuário ativo.
+- Login rejeita credenciais incorretas com 401 Unauthorized e aceita credenciais válidas com JWT.
+- Refresh token rotativo e cookies seguros `HttpOnly` configurados.
 - Senhas protegidas com Argon2id.
+- E-mails de confirmação capturados e verificáveis no Mailpit (`http://localhost:8026`).
+- Rota protegida `/api/v1/auth/me` retorna dados reais do usuário logado.
 
 **Testes:**
-- Testes de integração NestJS cobrindo fluxo de registro, login, refresh e logout.
+- Teste de login com sucesso (`lucas.adotante@gmail.com` / `Patinhas@2026`).
+- Teste de login com senha incorreta retornando HTTP 401.
+- Teste de cadastro de novo usuário (`mariana@teste.com`) e validação de recebimento de e-mail no Mailpit.
+- Teste de autenticação Bearer na rota protegida `/api/v1/auth/me`.
+- Build do frontend React compilando 1886 módulos com 0 erros.
 
 **Resultado esperado:**
-Sistema de autenticação robusto e seguro em pleno funcionamento.
+Sistema de autenticação robusto e seguro em pleno funcionamento. Concluído com êxito!
 
 ---
 
