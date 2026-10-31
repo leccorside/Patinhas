@@ -7,6 +7,16 @@ export interface AuthUser {
   fullName: string;
   avatarUrl?: string | null;
   emailVerified?: boolean;
+  bio?: string | null;
+  city?: string | null;
+  state?: string | null;
+  profile?: {
+    avatarUrl?: string | null;
+    bio?: string | null;
+    addressCity?: string | null;
+    addressState?: string | null;
+    fullName?: string | null;
+  } | null;
 }
 
 interface AuthState {

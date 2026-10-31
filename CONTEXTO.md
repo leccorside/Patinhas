@@ -36,8 +36,8 @@ A documentação e todo o planejamento adotaram integralmente a identidade visua
 | **03** | MobileAppShell e Design System | 🟢 Concluída | MobileAppShell (430px) e 14 componentes UI com Framer Motion |
 | **04** | Autenticação e Segurança | 🟢 Concluída | Argon2id, JWT, refresh rotativo, Mailpit, telas de Login/Cadastro/Perfil |
 | **05** | Usuários, Perfis e Organizações | 🟢 Concluída | MinIO S3, edição de perfil, gestão de ONGs com membros e cards |
-| **06** | Cadastro de Animais | ⏳ Aguardando autorização | Formulário em etapas e galeria de fotos |
-| **07** | Home, Busca e Filtros | ⏳ Pendente | Bottom sheets, infinite scroll e categorias |
+| **06** | Cadastro de Animais | 🟢 Concluída | CRUD de animais, Stepper mobile em 6 etapas, PetDetailView e PostGIS |
+| **07** | Home, Busca e Filtros | ⏳ Aguardando autorização | Bottom sheets, infinite scroll e categorias |
 | **08** | Mapa e Geolocalização | ⏳ Pendente | MapLibre GL JS e PostGIS espacial |
 | **09** | Favoritos e Modo Descoberta | ⏳ Pendente | Curtidas, listas e animações |
 | **10** | Processo de Adoção | ⏳ Pendente | Questionário e máquina de estados |
@@ -94,7 +94,7 @@ A documentação e todo o planejamento adotaram integralmente a identidade visua
 
 ## 🔴 Pendências que Precisam de Aprovação do Usuário
 
-1. **Autorização para a ETAPA 06:** Permissão explícita para iniciar a ETAPA 06 — Cadastro e Gestão de Animais (CRUD de pets, formulário assistido em etapas no mobile, upload de múltiplas fotos no MinIO, registros de saúde e PostGIS).
+1. **Autorização para a ETAPA 07:** Permissão explícita para iniciar a ETAPA 07 — Home, Busca e Filtros Avançados (Categorias dinâmicas, Próximos, Urgentes, Histórias inspiradoras, Bottom Sheet de filtros avançados e rolagem infinita).
 
 ---
 

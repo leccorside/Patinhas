@@ -6,6 +6,7 @@ import { MailModule } from './modules/mail/mail.module';
 import { StorageModule } from './modules/storage/storage.module';
 import { UsersModule } from './modules/users/users.module';
 import { OrganizationsModule } from './modules/organizations/organizations.module';
+import { AnimalsModule } from './modules/animals/animals.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { OrganizationsModule } from './modules/organizations/organizations.modul
     AuthModule,
     UsersModule,
     OrganizationsModule,
+    AnimalsModule,
   ],
   controllers: [AppController],
   providers: [],

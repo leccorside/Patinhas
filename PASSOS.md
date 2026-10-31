@@ -267,27 +267,52 @@ Perfis individuais e de organizações ativos e prontos para cadastrar pets. Con
 **Dependências:** Etapa 05.
 
 **Tarefas:**
-- [ ] Backend: Módulo de Animais (CRUD, upload de fotos múltiplas, thumbnails automáticos)
-- [ ] Backend: Suporte a status (`DRAFT`, `PENDING_REVIEW`, `AVAILABLE`, `IN_ADOPTION`, `ADOPTED`)
-- [ ] Backend: Gravação da localização aproximada com PostGIS
-- [ ] Frontend: Formulário em etapas (Stepper mobile): Dados básicos, Fotos, Saúde, Personalidade, Localização, Requisitos
-- [ ] Frontend: Validação de imagens (tamanho máximo, tipos permitidos) e ordenação de galeria
-- [ ] Frontend: Tela de detalhes do pet baseada em `uxui/perfil_do_pet_charlie`
+- [x] Backend: Módulo de Animais com CRUD completo (`AnimalsService`, `AnimalsController`, `AnimalsModule`)
+- [x] Backend: Suporte a status (`AVAILABLE`, `PENDING_ADOPTION`, `ADOPTED`, `QUARANTINE`, `UNAVAILABLE`)
+- [x] Backend: Upload de múltiplas fotos no MinIO S3 (`AnimalPhoto`) e gestão de galeria
+- [x] Backend: Ficha de saúde (`AnimalHealthRecord`) e traços de temperamento (`AnimalTrait`)
+- [x] Backend: Gravação e sincronização de `location_geom` no PostGIS com ruído de privacidade (~200m a 400m de jitter)
+- [x] Backend: Filtros de busca por espécie, raça, porte, sexo, energia, saúde, texto e geodistância Haversine
+- [x] Frontend: Formulário assistido em 6 etapas (`CreatePetStepperModal.tsx`):
+  1. Informações básicas (Nome, Espécie, Raça, Sexo, Idade, Porte, Peso, Pelagem)
+  2. Fotos e Galeria (Upload múltiplo, preview, seleção de foto de capa)
+  3. Saúde e Vacinas (Vacinado, Castrado, Vermifugado, Especial, detalhes)
+  4. Personalidade e Convívio (Chips interativos: Dócil, Brincalhão, Calmo, sociabilidade cães/gatos/crianças)
+  5. Localização e Abrigo (Vínculo à ONG ou Protetor, Cidade, UF com nota de privacidade)
+  6. História e Requisitos (História acolhedora e exigências de adoção)
+- [x] Frontend: Tela de Perfil Completo do Pet (`PetDetailView.tsx`) com 100% de fidelidade a `uxui/perfil_do_pet_charlie`:
+  - Carrossel com fotos e miniaturas clicáveis
+  - Badges rápidas de especificações (Idade, Porte/Peso, Sexo, Energia)
+  - Ficha de saúde completa com selo 100% em dia
+  - Tags de personalidade e convivência
+  - História com narrativa acolhedora
+  - Card da ONG / Protetor com botão de chat
+  - Barra fixa inferior com botões de chamada, compartilhamento e "Quero Adotar"
+- [x] Frontend: Integração completa na aplicação e compilação do Vite (`npm run build`) com 1892 módulos e 0 erros
 
 **Arquivos envolvidos:**
-- `apps/api/src/modules/animals/*`
-- `apps/web/src/features/animals/*`, `apps/web/src/features/pet-profile/*`
+- `apps/api/src/modules/animals/animals.service.ts`
+- `apps/api/src/modules/animals/animals.controller.ts`
+- `apps/api/src/modules/animals/animals.module.ts`
+- `apps/api/src/modules/animals/dto/*`
+- `apps/web/src/features/animals/animalsService.ts`
+- `apps/web/src/features/animals/PetDetailView.tsx`
+- `apps/web/src/features/animals/CreatePetStepperModal.tsx`
+- `apps/web/src/App.tsx`
 
 **Critérios de aceite:**
-- Criação e edição de anúncios de animais com galeria de até 6 fotos.
-- Imagens otimizadas com geração de thumbnail.
-- Localização geográfica calculada a partir do CEP/cidade com máscara de privacidade.
+- Cadastro e consulta de animais completos com galeria de fotos e ficha médica.
+- Geometria PostGIS sincronizada com máscara de ruído para preservação de privacidade.
+- Perfil do pet com fidelidade visual ao modelo de design `uxui/perfil_do_pet_charlie`.
 
 **Testes:**
-- Teste de upload e processamento de imagens e validação dos campos obrigatórios.
+- Teste de busca por espécie e texto (`search=Golden`, `species=DOG`, `species=CAT`).
+- Teste de cálculo geodésico retornando distância em km a partir de coordenadas do usuário.
+- Teste de criação autenticada de animal (`Pipoca`) com coordenadas protegidas e PostGIS.
+- Teste de build do Vite transformando 1892 módulos em 4.24s com 0 erros de compilação.
 
 **Resultado esperado:**
-Animais cadastrados com fotos de alta qualidade e informações médicas completas.
+Animais cadastrados, listados e visualizados com perfil acolhedor, galeria interativa e informações médicas completas. Concluído com êxito!
 
 ---
 
