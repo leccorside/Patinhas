@@ -154,6 +154,40 @@ export const animalsService = {
     return res.json();
   },
 
+  async getFavorites(): Promise<Animal[]> {
+    const res = await fetch(`${API_BASE}/favorites`, {
+      credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Falha ao buscar favoritos.');
+    return res.json();
+  },
+
+  async getFavoriteIds(): Promise<string[]> {
+    const res = await fetch(`${API_BASE}/favorites/ids`, {
+      credentials: 'include',
+    });
+    if (!res.ok) return [];
+    return res.json();
+  },
+
+  async addFavorite(animalId: string): Promise<any> {
+    const res = await fetch(`${API_BASE}/favorites/${animalId}`, {
+      method: 'POST',
+      credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Falha ao favoritar animal.');
+    return res.json();
+  },
+
+  async removeFavorite(animalId: string): Promise<any> {
+    const res = await fetch(`${API_BASE}/favorites/${animalId}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+    if (!res.ok) throw new Error('Falha ao desfavoritar animal.');
+    return res.json();
+  },
+
   async getAnimalById(id: string, userLat?: number, userLon?: number): Promise<Animal> {
     const query = new URLSearchParams();
     if (userLat) query.append('userLat', String(userLat));

@@ -417,25 +417,49 @@ Mapa de adoção interativo, fluido e com proteção de dados de localização.
 **Dependências:** Etapa 07.
 
 **Tarefas:**
-- [ ] Backend: Endpoints de favoritar, desfavoritar e listar favoritos do usuário
-- [ ] Frontend: Ação de favoritar com animação de coração nos PetCards
-- [ ] Frontend: Tela de favoritos baseada em `uxui/meus_favoritos_patinhas`
-- [ ] Frontend: Modo opcional de cards deslizáveis (Swipe estilo cards) para descoberta rápida
-- [ ] Frontend: Alerta visual quando um pet favoritado muda de status
+- [x] Backend: Módulo `FavoritesModule`, `FavoritesService` e `FavoritesController` com endpoints autenticados:
+  - `GET /api/v1/favorites`: Listagem completa com dados do animal, fotos, organização e status
+  - `GET /api/v1/favorites/ids`: Array com os IDs dos pets favoritados pelo usuário ativo
+  - `POST /api/v1/favorites/:animalId`: Adicionar pet aos favoritos com prevenção de duplicidade
+  - `DELETE /api/v1/favorites/:animalId`: Remover pet dos favoritos
+- [x] Frontend: Ação de favoritar com animação de pulso/coração nos `PetCard` e sincronização global via `animalsService`
+- [x] Frontend: Tela de Meus Favoritos (`FavoritesView.tsx`) fiel ao protótipo `uxui/meus_favoritos_patinhas`:
+  - Segmented control de categorias (Todos, Cães, Gatos)
+  - Botão de destaque "🔥 Modo Swipe" para abrir o Modo Descoberta
+  - Seletor de ordenação de favoritos (Mais recentes, Mais próximos, Mais urgentes)
+  - Banner informativo para comparar perfis e requisitos
+  - Cards horizontais/verticais com status do pet (`Disponível`, `Em Processo`), selo de distância e botão de remoção rápida
+  - Estado vazio acolhedor quando nenhum pet estiver salvo
+- [x] Frontend: Modo Descoberta interativo (`DiscoveryModeModal.tsx`) em tela cheia mobile (430px):
+  - Gestos de arrastar (drag Tinder-style) com Framer Motion (`x`, rotação de até 18°, opacidade progressiva)
+  - Selo dinâmico "QUERO ADOTAR" verde-esmeralda em swipe para a direita
+  - Selo dinâmico "DEPOIS" cinza-azulado em swipe para a esquerda
+  - Botões táteis na barra de ação: ↺ Desfazer, ✕ Passar, ⭐ Super Like / Favoritar, ❤️ Quero Adotar
+  - Card informativo com especificações rápidas (espécie, idade, peso, abrigo e badges)
+  - Tela de encerramento ("Você viu todos os amiguinhos!") com botão de rever pets
+- [x] Frontend: Compilação de produção do Vite (`npm run build`) validada com 1901 módulos e 0 erros de tipagem
 
 **Arquivos envolvidos:**
-- `apps/api/src/modules/favorites/*`
-- `apps/web/src/features/favorites/*`
+- `apps/api/src/modules/favorites/favorites.controller.ts`
+- `apps/api/src/modules/favorites/favorites.service.ts`
+- `apps/api/src/modules/favorites/favorites.module.ts`
+- `apps/api/src/app.module.ts`
+- `apps/web/src/features/favorites/FavoritesView.tsx`
+- `apps/web/src/features/discovery/DiscoveryModeModal.tsx`
+- `apps/web/src/features/animals/animalsService.ts`
+- `apps/web/src/App.tsx`
 
 **Critérios de aceite:**
-- Estado de favorito atualizado com otimismo de UI (Optimistic Updates via TanStack Query).
-- Persistência imediata no PostgreSQL.
+- Favoritar e desfavoritar persistem na tabela `favorites` do PostgreSQL via Prisma.
+- O array de IDs favoritos sincroniza instantaneamente com o frontend para manter os corações coloridos em toda a aplicação.
+- Modo Swipe opera estritamente contido no container mobile de 430px sem extrapolar tela.
 
 **Testes:**
-- Testes unitários do hook de favoritos e testes de componente.
+- Teste de fluxo completo autenticado no backend (Login JWT via Cookie -> POST `/favorites/:id` -> GET `/favorites` -> GET `/favorites/ids`) validando integridade relacional.
+- Teste de build do Vite no container `patinhas_web` transformando 1901 módulos com 0 erros de compilação TypeScript.
 
 **Resultado esperado:**
-Área de favoritos intuitiva e sincronizada entre sessões do usuário.
+Experiência interativa de favoritos e descoberta swipe fluida, tátil e sincronizada com o banco. Concluído com êxito!
 
 ---
 

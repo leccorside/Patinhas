@@ -39,8 +39,8 @@ A documentação e todo o planejamento adotaram integralmente a identidade visua
 | **06** | Cadastro de Animais | 🟢 Concluída | CRUD de animais, Stepper mobile em 6 etapas, PetDetailView e PostGIS |
 | **07** | Home, Busca e Filtros | 🟢 Concluída | Home Bento, Explorar em grid 2 colunas, filtros avançados e finais felizes |
 | **08** | Mapa e Geolocalização | 🟢 Concluída | MapLibre GL JS, GeoJSON PostGIS ST_DWithin, markers DOM e Bottom Sheet |
-| **09** | Favoritos e Modo Descoberta | ⏳ Aguardando autorização | Curtidas, listas e animações |
-| **10** | Processo de Adoção | ⏳ Pendente | Questionário e máquina de estados |
+| **09** | Favoritos e Modo Descoberta | 🟢 Concluída | Swipe tátil Tinder-style, persistência Postgres e tela de favoritos |
+| **10** | Processo de Adoção | ⏳ Aguardando autorização | Questionário de 10 passos e máquina de estados |
 | **11** | Chat em Tempo Real | ⏳ Pendente | Socket.IO, salas privadas e anexos |
 | **12** | Notificações Push | ⏳ Pendente | Web Push API, VAPID e BullMQ |
 | **13** | Match Inteligente | ⏳ Pendente | Compatibilidade ponderada tutor-pet |
@@ -94,7 +94,7 @@ A documentação e todo o planejamento adotaram integralmente a identidade visua
 
 ## 🔴 Pendências que Precisam de Aprovação do Usuário
 
-1. **Autorização para a ETAPA 09:** Permissão explícita para iniciar a ETAPA 09 — Favoritos e Modo Descoberta (Tinder-style swipe cards com Framer Motion, persistência de curtidas no banco de dados, feedback tátil/sonoro visual e lista de pets salvos).
+1. **Autorização para a ETAPA 10:** Permissão explícita para iniciar a ETAPA 10 — Processo Completo de Adoção e Questionários (Máquina de estados de candidatura `AdoptionApplication`: `SUBMITTED` → `UNDER_REVIEW` → `INTERVIEW_SCHEDULED` → `APPROVED`/`REJECTED` → `COMPLETED`, questionário de triagem com moradia/telas/tempo livre, concorrência transacional no Prisma e interfaces baseadas em `uxui/processo_de_ado_o_chat_patinhas` e `uxui/ado_es_em_andamento_patinhas`).
 
 ---
 

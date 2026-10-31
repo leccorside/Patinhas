@@ -32,6 +32,8 @@ import { HomeView } from './features/home/HomeView';
 import { ExploreView } from './features/explore/ExploreView';
 import { FilterState, AdvancedFilterSheet } from './features/explore/AdvancedFilterSheet';
 import { MapView } from './features/map/MapView';
+import { FavoritesView } from './features/favorites/FavoritesView';
+import { DiscoveryModeModal } from './features/discovery/DiscoveryModeModal';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<NavTabId>('home');
@@ -49,6 +51,7 @@ export function App() {
 
   // Favoritos
   const [favoritedIds, setFavoritedIds] = useState<Set<string>>(new Set());
+  const [isDiscoveryModeOpen, setIsDiscoveryModeOpen] = useState(false);
 
   // Visualização Detalhada do Pet (Fidelidade UX/UI)
   const [detailedPet, setDetailedPet] = useState<Animal | null>(null);
@@ -129,19 +132,46 @@ export function App() {
     fetchAuxiliaryData();
   }, []);
 
-  const handleToggleFavorite = (id: string, e: React.MouseEvent) => {
+  // Carrega IDs favoritos do usuário se estiver logado
+  useEffect(() => {
+    if (isAuthenticated) {
+      animalsService
+        .getFavoriteIds()
+        .then((ids) => {
+          if (Array.isArray(ids)) {
+            setFavoritedIds(new Set(ids));
+          }
+        })
+        .catch(() => {});
+    }
+  }, [isAuthenticated]);
+
+  const handleToggleFavorite = async (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
+    const isCurrentlyFav = favoritedIds.has(id);
+
+    // Atualização otimista
     setFavoritedIds((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) {
+      if (isCurrentlyFav) {
         next.delete(id);
-        showToast('Removido dos favoritos', 'info');
       } else {
         next.add(id);
-        showToast('Adicionado aos favoritos com carinho! 🐾', 'success');
       }
       return next;
     });
+
+    if (isCurrentlyFav) {
+      showToast('Removido dos favoritos', 'info');
+      if (isAuthenticated) {
+        animalsService.removeFavorite(id).catch(() => {});
+      }
+    } else {
+      showToast('Adicionado aos favoritos com carinho! 🐾', 'success');
+      if (isAuthenticated) {
+        animalsService.addFavorite(id).catch(() => {});
+      }
+    }
   };
 
   const showToast = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
@@ -310,51 +340,18 @@ export function App() {
 
         {/* ABA: FAVORITOS */}
         {activeTab === 'favorites' && (
-          <div className="pt-2">
-            <h2 className="text-lg font-extrabold text-charcoal mb-1">Meus Favoritos</h2>
-            <p className="text-xs text-charcoal-muted mb-4">Pets que conquistaram seu coração</p>
-
-            {animals.filter((p) => favoritedIds.has(p.id)).length === 0 ? (
-              <EmptyState
-                title="Nenhum amiguinho favoritado"
-                description="Toque no ícone de coração nos cards dos pets para salvá-los aqui."
-                actionText="Explorar Pets"
-                onAction={() => setActiveTab('explore')}
-              />
-            ) : (
-              <div className="space-y-4">
-                {animals
-                  .filter((p) => favoritedIds.has(p.id))
-                  .map((pet) => (
-                    <PetCard
-                      key={pet.id}
-                      pet={{
-                        id: pet.id,
-                        name: pet.name,
-                        species: pet.species,
-                        breed: pet.breed || 'SRD',
-                        ageApproximate: pet.ageApproximate,
-                        ageUnit: pet.ageUnit,
-                        sex: pet.sex,
-                        city: pet.city,
-                        state: pet.state,
-                        distanceKm: pet.distanceKm || 3.5,
-                        photoUrl:
-                          pet.photos[0]?.url ||
-                          'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=400&q=80',
-                        matchScore: 95,
-                        organizationName: pet.organization?.name || 'Protetor Independente',
-                        traits: pet.traits.map((t) => t.name),
-                        isSpecialNeeds: pet.isSpecialNeeds,
-                        isFavorited: true,
-                      }}
-                      onFavoriteToggle={handleToggleFavorite}
-                      onClick={() => setDetailedPet(pet)}
-                    />
-                  ))}
-              </div>
-            )}
-          </div>
+          <FavoritesView
+            favorites={animals.filter((p) => favoritedIds.has(p.id))}
+            loading={loading}
+            onSelectAnimal={setDetailedPet}
+            onRemoveFavorite={(id, e) => handleToggleFavorite(id, e)}
+            onOpenDiscoveryMode={() => setIsDiscoveryModeOpen(true)}
+            onAdoptClick={(animal) => {
+              setSelectedPet(animal);
+              setIsAdoptDialogOpen(true);
+            }}
+            showToast={showToast}
+          />
         )}
 
         {/* ABA: PERFIL */}
@@ -553,6 +550,25 @@ export function App() {
           showToast('Pet cadastrado com sucesso no Patinhas! 🐾', 'success');
         }}
         userOrganizations={shelters.map((s) => ({ id: s.id, name: s.name }))}
+      />
+
+      {/* Modo Descoberta (Tinder-style Swipe - Etapa 09) */}
+      <DiscoveryModeModal
+        isOpen={isDiscoveryModeOpen}
+        onClose={() => setIsDiscoveryModeOpen(false)}
+        animals={animals}
+        onLike={(animal) => {
+          setFavoritedIds((prev) => new Set([...prev, animal.id]));
+          if (isAuthenticated) {
+            animalsService.addFavorite(animal.id).catch(() => {});
+          }
+        }}
+        onDislike={() => {}}
+        onSelectAnimal={(animal) => {
+          setIsDiscoveryModeOpen(false);
+          setDetailedPet(animal);
+        }}
+        showToast={showToast}
       />
     </MobileAppShell>
   );

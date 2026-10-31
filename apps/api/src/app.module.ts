@@ -8,6 +8,7 @@ import { UsersModule } from './modules/users/users.module';
 import { OrganizationsModule } from './modules/organizations/organizations.module';
 import { AnimalsModule } from './modules/animals/animals.module';
 import { GeoModule } from './modules/geo/geo.module';
+import { FavoritesModule } from './modules/favorites/favorites.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { GeoModule } from './modules/geo/geo.module';
     OrganizationsModule,
     AnimalsModule,
     GeoModule,
+    FavoritesModule,
   ],
   controllers: [AppController],
   providers: [],
