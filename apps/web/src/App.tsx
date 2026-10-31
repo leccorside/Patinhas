@@ -44,6 +44,8 @@ import { AdoptionApplication } from './features/adoption/adoptionService';
 import { ChatViewModal } from './features/chat/ChatViewModal';
 import { ConversationsListViewModal } from './features/chat/ConversationsListViewModal';
 import { chatService } from './features/chat/chatService';
+import { NotificationsViewModal } from './features/notifications/NotificationsViewModal';
+import { notificationsService } from './features/notifications/notificationsService';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<NavTabId>('home');
@@ -83,12 +85,33 @@ export function App() {
   const [activeChatConversationId, setActiveChatConversationId] = useState<string | null>(null);
   const [isConversationsListOpen, setIsConversationsListOpen] = useState(false);
 
+  // Notificações e Web Push (Etapa 12)
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [unreadNotificationsCount, setUnreadNotificationsCount] = useState(0);
+
   // Toast
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('success');
 
   // Zustand Auth Store
   const { user, isAuthenticated, checkAuth, logout } = useAuthStore();
+
+  const fetchUnreadNotifications = useCallback(async () => {
+    if (!isAuthenticated) return;
+    try {
+      const notifs = await notificationsService.getNotifications();
+      const unread = notifs.filter((n) => !n.isRead).length;
+      setUnreadNotificationsCount(unread);
+    } catch {
+      // Ignora erro
+    }
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchUnreadNotifications();
+    }
+  }, [isAuthenticated, fetchUnreadNotifications]);
 
   const handleOpenChatForAnimal = async (animalId: string) => {
     if (!isAuthenticated) {
@@ -327,8 +350,15 @@ export function App() {
         userName={user?.fullName || 'Adotante'}
         locationCity="São Paulo"
         locationState="SP"
-        notificationCount={isAuthenticated ? 2 : 0}
-        onOpenNotifications={() => showToast('Você tem 2 notificações não lidas', 'info')}
+        notificationCount={unreadNotificationsCount}
+        onOpenNotifications={() => {
+          if (!isAuthenticated) {
+            setActiveTab('profile');
+            showToast('Faça login para ver suas notificações! 🐾', 'info');
+            return;
+          }
+          setIsNotificationsOpen(true);
+        }}
         onSelectLocation={() => setIsFilterSheetOpen(true)}
       />
 
@@ -735,6 +765,25 @@ export function App() {
           showToast={showToast}
         />
       )}
+
+      {/* Central de Notificações e Web Push (Etapa 12) */}
+      <NotificationsViewModal
+        isOpen={isNotificationsOpen}
+        onClose={() => {
+          setIsNotificationsOpen(false);
+          fetchUnreadNotifications();
+        }}
+        onActionClick={(url) => {
+          setIsNotificationsOpen(false);
+          if (url.includes('adoptions') || url.includes('solicitacoes')) {
+            setIsMyAdoptionsOpen(true);
+            setActiveTab('profile');
+          } else if (url.includes('chat') || url.includes('conversas')) {
+            setIsConversationsListOpen(true);
+          }
+        }}
+        showToast={showToast}
+      />
     </MobileAppShell>
   );
 }

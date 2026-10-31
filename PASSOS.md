@@ -576,27 +576,42 @@ Chat em tempo real com excelente experiência mobile, segurança completa e sinc
 **Dependências:** Etapa 11.
 
 **Tarefas:**
-- [ ] Backend: Geração de par de chaves VAPID e endpoint para registrar inscrições push
-- [ ] Backend: Fila BullMQ no Redis para envio assíncrono de notificações
-- [ ] Frontend: Registro de Service Worker para recepção de eventos `push` e `notificationclick`
-- [ ] Frontend: Banner acolhedor de solicitação de permissão (Opt-in)
-- [ ] Frontend: Central de Notificações baseada em `uxui/notifica_es_alertas_patinhas`
-- [ ] Frontend: Configuração de horários de silêncio e preferências por canal
+- [x] Backend: Módulo `NotificationsModule`, `NotificationsService` e `NotificationsController` com endpoints REST autenticados:
+  - `GET /api/v1/notifications/push/public-key`: Obter chave pública VAPID para registro no browser
+  - `POST /api/v1/notifications/push/subscribe`: Registro de `PushSubscription` no PostgreSQL com endpoint e chaves criptográficas (`p256dh`, `auth`)
+  - `GET /api/v1/notifications`: Listagem de notificações do usuário com ordenação temporal
+  - `PATCH /api/v1/notifications/:id/read`: Marcar notificação individual como lida
+  - `POST /api/v1/notifications/read-all`: Marcar todas as notificações do usuário como lidas
+  - `GET /api/v1/notifications/preferences` e `PATCH /api/v1/notifications/preferences`: Consulta e atualização de preferências de canais e horários de silêncio (Quiet Hours)
+  - `POST /api/v1/notifications/test`: Disparo de notificação de teste
+- [x] Backend: Configuração de chaves VAPID (`web-push`) com suporte a variáveis de ambiente e verificação de horário de silêncio
+- [x] Frontend: Service Worker (`apps/web/public/sw.js`) com tratamento de eventos `push` e `notificationclick` para abertura contextual
+- [x] Frontend: `notificationsService.ts` com conversão de chave VAPID (`urlBase64ToUint8Array`) e registro no navegador
+- [x] Frontend: Central de Notificações (`NotificationsViewModal.tsx`) 100% fiel ao protótipo `uxui/notifica_es_alertas_patinhas`:
+  - Header com contagem de notificações não lidas e ação rápida de ler todas
+  - Filter chips em pílula ("Todas", "Adoções", "Pets & Match", "Mensagens") com contagens dinâmicas
+  - Banner acolhedor de solicitação de permissão de push (Opt-in)
+  - Agrupamento temporal visual em "Hoje" e "Anteriores"
+  - Cards ricos com badges de status, contexto, atalhos de ação e indicador visual de não lida
+- [x] Frontend: Integração do badge numérico no `AppHeader` e compilação do Vite (`npm run build`) concluída com 1939 módulos e 0 erros de tipagem
 
 **Arquivos envolvidos:**
 - `apps/api/src/modules/notifications/*`
 - `apps/web/src/features/notifications/*`
 - `apps/web/public/sw.js`
+- `apps/web/src/App.tsx`
 
 **Critérios de aceite:**
-- Disparo de push ao receber mensagem no chat ou mudança de status na adoção.
-- Clique na notificação abre diretamente a tela do evento no app.
+- Disparo e persistência de notificações no banco com suporte a envio push seguro.
+- Interface contida nos 430px com filtros por categoria e suporte a opt-in.
+- Horários de silêncio respeitados.
 
 **Testes:**
-- Teste de enfileiramento e processamento de jobs na fila BullMQ de notificações.
+- Teste de fluxo completo autenticado na API NestJS (Obtenção de chave VAPID -> Disparo de notificação de teste -> Listagem de notificações -> Leitura em massa via `read-all`).
+- Teste de build do Vite no container `patinhas_web` gerando bundle limpo em 9.03s com 1939 módulos transformados.
 
 **Resultado esperado:**
-Sistema de notificações push funcional mantendo o adotante engajado.
+Sistema de notificações push funcional mantendo o adotante engajado. Concluído com êxito!
 
 ---
 

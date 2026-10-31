@@ -11,6 +11,7 @@ import { GeoModule } from './modules/geo/geo.module';
 import { FavoritesModule } from './modules/favorites/favorites.module';
 import { AdoptionsModule } from './modules/adoptions/adoptions.module';
 import { ChatModule } from './modules/chat/chat.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ChatModule } from './modules/chat/chat.module';
     FavoritesModule,
     AdoptionsModule,
     ChatModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [],
