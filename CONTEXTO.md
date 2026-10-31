@@ -4,8 +4,8 @@
 
 ## 📅 Última Atualização
 - **Data:** 31/10/2026
-- **Etapa atual:** ETAPA 04 — Autenticação e Segurança (Concluída com sucesso!)
-- **Status geral:** 🟢 ETAPAS 00, 01, 02, 03 e 04 Concluídas. Autenticação JWT, Argon2id, Cookies HttpOnly e telas de Login/Cadastro operacionais. Aguardando autorização para ETAPA 05.
+- **Etapa atual:** ETAPA 14 — Dashboard Mobile para ONGs e Protetores (Em andamento)
+- **Status geral:** 🟢 ETAPAS 00 a 13 Concluídas com sucesso e commitadas. Execução contínua e autônoma das etapas até a entrega final (Etapa 26).
 
 ---
 
@@ -43,8 +43,8 @@ A documentação e todo o planejamento adotaram integralmente a identidade visua
 | **10** | Processo de Adoção | 🟢 Concluída | Questionário em 3 passos, máquina de estados e conclusão atômica Prisma |
 | **11** | Chat em Tempo Real | 🟢 Concluída | Gateway Socket.IO /ws, salas privadas e interface de chat mobile |
 | **12** | Notificações Push | 🟢 Concluída | Web Push API, chaves VAPID, Service Worker e central de alertas |
-| **13** | Match Inteligente | 🔄 Em andamento | Compatibilidade ponderada tutor-pet |
-| **14** | Dashboard de ONGs | ⏳ Pendente | Métricas e gestão de solicitações mobile |
+| **13** | Match Inteligente | 🟢 Concluída | Compatibilidade ponderada tutor-pet em 4 dimensões (Espaço, Rotina, Sociabilidade, Orçamento) |
+| **14** | Dashboard de ONGs | 🔄 Em andamento | Métricas, solicitações de adoção e gestão da equipe mobile |
 | **15** | Admin Master | ⏳ Pendente | Moderação global e auditoria |
 | **16** | Moderação e Antifraude | ⏳ Pendente | Denúncias e suspensão de contas |
 | **17** | Animais Perdidos e Achados | ⏳ Pendente | Módulo comunitário de busca |

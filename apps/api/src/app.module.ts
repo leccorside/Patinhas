@@ -12,6 +12,7 @@ import { FavoritesModule } from './modules/favorites/favorites.module';
 import { AdoptionsModule } from './modules/adoptions/adoptions.module';
 import { ChatModule } from './modules/chat/chat.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
+import { MatchingModule } from './modules/matching/matching.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
     AdoptionsModule,
     ChatModule,
     NotificationsModule,
+    MatchingModule,
   ],
   controllers: [AppController],
   providers: [],

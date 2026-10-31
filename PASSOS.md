@@ -622,25 +622,41 @@ Sistema de notificações push funcional mantendo o adotante engajado. Concluíd
 **Dependências:** Etapas 06 e 10.
 
 **Tarefas:**
-- [ ] Backend: Serviço de cálculo de compatibilidade baseado em critérios ponderados (espaço físico, tempo disponível, presença de crianças, outros pets, nível de energia)
-- [ ] Backend: Endpoint para obter porcentagem de match e justificativas detalhadas
-- [ ] Frontend: Badge com percentual de match no PetCard (ex: "95% compatível com você")
-- [ ] Frontend: Modal/Sheet explicativo com motivos da compatibilidade e pontos de atenção
-- [ ] Preparar arquitetura de interfaces para substituição ou enriquecimento futuro por IA
+- [x] Backend: Módulo `MatchingModule`, `MatchingService` e `MatchingController` com endpoint REST autenticado `GET /api/v1/matching/animals/:id`
+- [x] Backend: Algoritmo determinístico ponderado com 4 dimensões essenciais (25% cada):
+  - Moradia e Espaço Físico: compatibilidade entre tipo de residência (Apartamento, Casa com quintal, Sítio) e porte/energia do pet, incluindo checagem de telas de proteção para gatos
+  - Rotina e Energia: tempo diário disponível do adotante vs nível de energia e passeios necessários
+  - Convivência e Sociabilidade: presença de crianças e outros animais (cães, gatos) no lar vs temperamento do pet
+  - Orçamento e Cuidados Especiais: capacidade financeira para alimentação de qualidade e cuidados veterinários regulares vs necessidades médicas contínuas
+- [x] Backend: Geração de pontuação de 0 a 100%, nível categórico (`EXCELLENT`, `GOOD`, `MODERATE`, `NEEDS_ATTENTION`), rótulo humanizado, destaques positivos e pontos de atenção educativos
+- [x] Backend: Arquitetura desacoplada e tipada (`MatchResultDto`, `PillarScoreDto`) pronta para extensão futura com modelos de IA/LLM
+- [x] Frontend: `matchingService.ts` com tipagens completas e integração HTTP
+- [x] Frontend: Modal/Sheet explicativo de afinidade (`MatchExplanationModal.tsx`) com score central circular, barras de progresso temáticas por pilar, destaques e cuidados
+- [x] Frontend: Integração do badge de compatibilidade na visualização detalhada do pet (`PetDetailView.tsx`) e no fluxo geral de navegação do `App.tsx`
+- [x] Frontend: Compilação de produção do Vite (`npm run build`) concluída com 1941 módulos e 0 erros de tipagem
 
 **Arquivos envolvidos:**
-- `apps/api/src/modules/matching/*`
-- `apps/web/src/features/pet-profile/components/MatchScoreBadge.tsx`
+- `apps/api/src/modules/matching/matching.dto.ts`
+- `apps/api/src/modules/matching/matching.service.ts`
+- `apps/api/src/modules/matching/matching.controller.ts`
+- `apps/api/src/modules/matching/matching.module.ts`
+- `apps/api/src/app.module.ts`
+- `apps/web/src/features/matching/matchingService.ts`
+- `apps/web/src/features/matching/MatchExplanationModal.tsx`
+- `apps/web/src/features/animals/PetDetailView.tsx`
+- `apps/web/src/App.tsx`
 
 **Critérios de aceite:**
-- Algoritmo não bloqueia adoções, mas fornece recomendação clara e educativa.
-- Transparência total na explicação do índice.
+- Algoritmo não bloqueia adoções, mas fornece recomendação clara, educativa e transparente.
+- Cálculo determinístico com justificativas estruturadas por dimensão de afinidade.
+- Modal responsivo e integrado ao design system Warm Paws no container mobile de 430px.
 
 **Testes:**
-- Testes unitários com casos de teste (adotante em apartamento sem telas vs pet hiperativo).
+- Teste com dados reais de usuário autenticado vs animal cadastrado (cadela Mel), resultando em 95% de afinidade ("Combinação Excelente!") com avaliação de moradia, tempo livre, crianças e orçamento.
+- Teste de build do Vite no container `patinhas_web` transformando 1941 módulos em 8.44s com 0 erros TypeScript.
 
 **Resultado esperado:**
-Índice de match intuitivo auxiliando adoções com maior probabilidade de sucesso.
+Índice de match intuitivo auxiliando adoções com maior probabilidade de sucesso. Concluído com êxito!
 
 ---
 

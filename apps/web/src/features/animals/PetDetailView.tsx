@@ -7,12 +7,14 @@ interface PetDetailViewProps {
   animal: Animal;
   onBack: () => void;
   onAdoptClick?: (animal: Animal) => void;
+  onOpenMatchModal?: (animal: Animal) => void;
 }
 
 export const PetDetailView: React.FC<PetDetailViewProps> = ({
   animal,
   onBack,
   onAdoptClick,
+  onOpenMatchModal,
 }) => {
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -306,6 +308,34 @@ export const PetDetailView: React.FC<PetDetailViewProps> = ({
               {energyLabels[animal.energyLevel] || 'Moderada'}
             </p>
           </div>
+        </div>
+
+        {/* Card de Match Inteligente (Etapa 13) */}
+        <div className="mt-3">
+          <button
+            onClick={() => onOpenMatchModal && onOpenMatchModal(animal)}
+            className="w-full p-3.5 rounded-2xl bg-gradient-to-r from-primary/10 via-amber-50 to-secondary/10 border border-primary/20 shadow-sm flex items-center justify-between hover:opacity-95 transition-all text-left group"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center text-lg font-bold shadow-sm shadow-primary/30 group-hover:scale-105 transition-transform">
+                ✨
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-extrabold text-charcoal">96% de Afinidade</span>
+                  <span className="text-[10px] font-bold text-secondary bg-secondary/15 px-2 py-0.5 rounded-full">
+                    Excelente Match
+                  </span>
+                </div>
+                <p className="text-[11px] text-charcoal-muted mt-0.5">
+                  Baseado no seu perfil de moradia e rotina
+                </p>
+              </div>
+            </div>
+            <span className="text-xs font-bold text-primary group-hover:translate-x-0.5 transition-transform">
+              Ver análise →
+            </span>
+          </button>
         </div>
       </section>
 

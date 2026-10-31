@@ -46,6 +46,7 @@ import { ConversationsListViewModal } from './features/chat/ConversationsListVie
 import { chatService } from './features/chat/chatService';
 import { NotificationsViewModal } from './features/notifications/NotificationsViewModal';
 import { notificationsService } from './features/notifications/notificationsService';
+import { MatchExplanationModal } from './features/matching/MatchExplanationModal';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<NavTabId>('home');
@@ -88,6 +89,9 @@ export function App() {
   // Notificações e Web Push (Etapa 12)
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [unreadNotificationsCount, setUnreadNotificationsCount] = useState(0);
+
+  // Match Inteligente (Etapa 13)
+  const [matchExplanationPet, setMatchExplanationPet] = useState<Animal | null>(null);
 
   // Toast
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -252,6 +256,7 @@ export function App() {
         <PetDetailView
           animal={detailedPet}
           onBack={() => setDetailedPet(null)}
+          onOpenMatchModal={(animal) => setMatchExplanationPet(animal)}
           onAdoptClick={(animal) => {
             if (!isAuthenticated) {
               setDetailedPet(null);
@@ -780,6 +785,22 @@ export function App() {
             setActiveTab('profile');
           } else if (url.includes('chat') || url.includes('conversas')) {
             setIsConversationsListOpen(true);
+          }
+        }}
+        showToast={showToast}
+      />
+
+      {/* Modal Explicativo de Match Inteligente (Etapa 13) */}
+      <MatchExplanationModal
+        isOpen={Boolean(matchExplanationPet)}
+        animalId={matchExplanationPet?.id || null}
+        animalName={matchExplanationPet?.name}
+        onClose={() => setMatchExplanationPet(null)}
+        onAdoptClick={() => {
+          if (matchExplanationPet) {
+            setSelectedPet(matchExplanationPet);
+            setMatchExplanationPet(null);
+            setIsAdoptionQuestionnaireOpen(true);
           }
         }}
         showToast={showToast}
