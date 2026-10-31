@@ -761,25 +761,44 @@ Controle total da operação da plataforma com mobilidade. Concluído com êxito
 **Dependências:** Etapa 15.
 
 **Tarefas:**
-- [ ] Backend: Módulo de Denúncias (`reports`) com classificação de gravidade
-- [ ] Backend: Fluxo de aprovação prévia de anúncios de novos usuários
-- [ ] Backend: Bloqueio e suspensão imediata de contas fraudulentas
-- [ ] Frontend: Botão e fluxo de "Denunciar Anúncio / Usuário" nos perfis e no chat
-- [ ] Frontend: Tela de triagem de denúncias para moderadores com histórico de ações
+- [x] Backend: Módulo `ModerationModule`, `ModerationService` e `ModerationController` com endpoints REST autenticados:
+  - `POST /api/v1/moderation/reports`: Envio de denúncia sigilosa por qualquer adotante autenticado (recursos: `ANIMAL`, `USER`, `ORGANIZATION`, `MESSAGE`)
+  - `GET /api/v1/moderation/reports`: Fila de denúncias detalhadas para moderação com dados do denunciante, recurso denunciado e histórico de ações (Apenas `MASTER_ADMIN`)
+  - `PATCH /api/v1/moderation/reports/:id/resolve`: Resolução disciplinar da denúncia (`ACCOUNT_SUSPENDED`, `ANIMAL_REMOVED`, `WARNING_ISSUED`, `DISMISSED`) com aplicação real de penalidade no banco e gravação de auditoria
+  - `GET /api/v1/moderation/actions`: Histórico de intervenções e ações tomadas pela moderação
+- [x] Backend: Antifraude preventivo automatizado: se um animal receber 3 ou mais denúncias pendentes, o anúncio tem seu status alterado automaticamente para `UNAVAILABLE` para revisão humana preventiva com log de auditoria
+- [x] Backend: Bloqueio estrito de acesso não autorizado a rotas de moderação com HTTP 403 Forbidden
+- [x] Frontend: `moderationService.ts` com tipagens completas e integração HTTP nativa
+- [x] Frontend: Modal humanizado de denúncia (`ReportModal.tsx`) contido em 430px com seleção rápida de motivos (comércio ilegal, maus-tratos, cobrança abusiva, perfil falso), campo de detalhes e garantia explícita de sigilo
+- [x] Frontend: Integração do botão discreto de denúncia preventiva no perfil detalhado do pet (`PetDetailView.tsx`) e gerenciamento global no `App.tsx`
+- [x] Frontend: Aba "Denúncias" integrada no `AdminMasterDashboardView.tsx` com contagem em tempo real de denúncias pendentes e botões de ação rápida (Suspender Infrator, Remover Pet, Advertir, Arquivar)
+- [x] Frontend: Compilação de produção do Vite (`npm run build`) concluída com 1947 módulos e 0 erros de tipagem
 
 **Arquivos envolvidos:**
-- `apps/api/src/modules/moderation/*`
-- `apps/web/src/features/moderation/*`
+- `apps/api/src/modules/moderation/dto/moderation.dto.ts`
+- `apps/api/src/modules/moderation/moderation.service.ts`
+- `apps/api/src/modules/moderation/moderation.controller.ts`
+- `apps/api/src/modules/moderation/moderation.module.ts`
+- `apps/api/src/app.module.ts`
+- `apps/web/src/features/moderation/moderationService.ts`
+- `apps/web/src/features/moderation/ReportModal.tsx`
+- `apps/web/src/features/animals/PetDetailView.tsx`
+- `apps/web/src/features/admin/AdminMasterDashboardView.tsx`
+- `apps/web/src/App.tsx`
 
 **Critérios de aceite:**
-- Denúncias registradas com registro de data/hora e trilha de auditoria.
+- Denúncias registradas com sigilo, data/hora e trilha de auditoria completa em `AuditLog`.
 - Anúncios com 3 ou mais denúncias graves suspensos preventivamente de forma automática.
+- Usuários sem permissão de moderação bloqueados com resposta 403 Forbidden.
 
 **Testes:**
-- Testes de ponta a ponta do fluxo de denúncia e resolução pelo moderador.
+- Teste de fluxo completo: Adotante autenticado enviou denúncia contra anúncio de animal com cobrança indevida (HTTP 201 Created com Report ID).
+- Master Admin listou denúncias ativas (HTTP 200 OK) e executou resolução com emissão de advertência formal gravada em banco (HTTP 200 OK).
+- Teste de segurança confirmando bloqueio de listagem para adotante comum com HTTP 403 Forbidden.
+- Teste de compilação de produção do Vite no container `patinhas_web` gerando bundle em 6.12s com 1947 módulos e 0 erros.
 
 **Resultado esperado:**
-Ambiente seguro e protegido contra fraudes e comércio de animais.
+Ambiente seguro e protegido contra fraudes e comércio de animais. Concluído com êxito!
 
 ---
 

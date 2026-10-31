@@ -8,6 +8,7 @@ interface PetDetailViewProps {
   onBack: () => void;
   onAdoptClick?: (animal: Animal) => void;
   onOpenMatchModal?: (animal: Animal) => void;
+  onReportClick?: (animal: Animal) => void;
 }
 
 export const PetDetailView: React.FC<PetDetailViewProps> = ({
@@ -15,6 +16,7 @@ export const PetDetailView: React.FC<PetDetailViewProps> = ({
   onBack,
   onAdoptClick,
   onOpenMatchModal,
+  onReportClick,
 }) => {
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -516,6 +518,19 @@ export const PetDetailView: React.FC<PetDetailViewProps> = ({
           </div>
         </div>
       </section>
+
+      {/* Botão de Denúncia Preventiva */}
+      {onReportClick && (
+        <div className="px-4 pt-4 pb-20 text-center">
+          <button
+            onClick={() => onReportClick(animal)}
+            className="text-[11px] font-semibold text-neutral-400 hover:text-red-500 transition-colors inline-flex items-center gap-1.5"
+          >
+            <span>🚩</span>
+            <span>Denunciar suspeita de fraude ou irregularidade</span>
+          </button>
+        </div>
+      )}
 
       {/* Sticky Bottom Floating Action Bar */}
       <div className="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-xl shadow-[0_-8px_24px_rgba(38,50,56,0.08)] px-4 py-3 pb-safe max-w-[430px] mx-auto border-t border-neutral-100">

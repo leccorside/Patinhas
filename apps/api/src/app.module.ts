@@ -14,6 +14,7 @@ import { ChatModule } from './modules/chat/chat.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { MatchingModule } from './modules/matching/matching.module';
 import { AdminModule } from './modules/admin/admin.module';
+import { ModerationModule } from './modules/moderation/moderation.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { AdminModule } from './modules/admin/admin.module';
     NotificationsModule,
     MatchingModule,
     AdminModule,
+    ModerationModule,
   ],
   controllers: [AppController],
   providers: [],

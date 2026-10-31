@@ -49,6 +49,7 @@ import { notificationsService } from './features/notifications/notificationsServ
 import { MatchExplanationModal } from './features/matching/MatchExplanationModal';
 import { ShelterDashboardView } from './features/shelter/ShelterDashboardView';
 import { AdminMasterDashboardView } from './features/admin/AdminMasterDashboardView';
+import { ReportModal } from './features/moderation/ReportModal';
 import { Building2 } from 'lucide-react';
 
 export function App() {
@@ -101,6 +102,10 @@ export function App() {
 
   // Painel Admin Master (Etapa 15)
   const [isAdminDashboardOpen, setIsAdminDashboardOpen] = useState(false);
+
+  // Moderação e Denúncias (Etapa 16)
+  const [reportingPet, setReportingPet] = useState<Animal | null>(null);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
   // Toast
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -266,6 +271,10 @@ export function App() {
           animal={detailedPet}
           onBack={() => setDetailedPet(null)}
           onOpenMatchModal={(animal) => setMatchExplanationPet(animal)}
+          onReportClick={(animal) => {
+            setReportingPet(animal);
+            setIsReportModalOpen(true);
+          }}
           onAdoptClick={(animal) => {
             if (!isAuthenticated) {
               setDetailedPet(null);
@@ -345,6 +354,22 @@ export function App() {
             </div>
           )}
         </Dialog>
+        {/* Modal de Denúncia e Antifraude (Etapa 16) */}
+        {reportingPet && (
+          <ReportModal
+            isOpen={isReportModalOpen}
+            onClose={() => {
+              setIsReportModalOpen(false);
+              setReportingPet(null);
+            }}
+            targetType="ANIMAL"
+            targetId={reportingPet.id}
+            targetName={reportingPet.name}
+            onSuccess={() => {
+              showToast('Denúncia recebida com sucesso! Analisaremos com sigilo.', 'success');
+            }}
+          />
+        )}
       </MobileAppShell>
     );
   }
@@ -889,6 +914,22 @@ export function App() {
         }}
         showToast={showToast}
       />
+      {/* Modal de Denúncia e Antifraude (Etapa 16) */}
+      {reportingPet && (
+        <ReportModal
+          isOpen={isReportModalOpen}
+          onClose={() => {
+            setIsReportModalOpen(false);
+            setReportingPet(null);
+          }}
+          targetType="ANIMAL"
+          targetId={reportingPet.id}
+          targetName={reportingPet.name}
+          onSuccess={() => {
+            showToast('Denúncia recebida com sucesso! Analisaremos com sigilo.', 'success');
+          }}
+        />
+      )}
     </MobileAppShell>
   );
 }

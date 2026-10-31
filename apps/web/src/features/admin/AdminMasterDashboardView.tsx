@@ -26,6 +26,7 @@ import {
   AdminUser,
   AuditLogItem,
 } from './adminService';
+import { moderationService, ReportItem } from '../moderation/moderationService';
 
 interface AdminMasterDashboardViewProps {
   onBack: () => void;
@@ -36,8 +37,9 @@ export const AdminMasterDashboardView: React.FC<AdminMasterDashboardViewProps> =
   const [organizations, setOrganizations] = useState<AdminOrganization[]>([]);
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [auditLogs, setAuditLogs] = useState<AuditLogItem[]>([]);
+  const [reports, setReports] = useState<ReportItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'orgs' | 'users' | 'audit'>('orgs');
+  const [activeTab, setActiveTab] = useState<'orgs' | 'users' | 'reports' | 'audit'>('orgs');
   const [searchQuery, setSearchQuery] = useState('');
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
@@ -49,16 +51,18 @@ export const AdminMasterDashboardView: React.FC<AdminMasterDashboardViewProps> =
   const loadAllData = async () => {
     try {
       setIsLoading(true);
-      const [ovData, orgsData, usersData, logsData] = await Promise.all([
+      const [ovData, orgsData, usersData, logsData, repData] = await Promise.all([
         adminService.getOverview(),
         adminService.getOrganizations(),
         adminService.getUsers(),
         adminService.getAuditLogs(30),
+        moderationService.getReports(),
       ]);
       setOverview(ovData);
       setOrganizations(orgsData);
       setUsers(usersData);
       setAuditLogs(logsData);
+      setReports(repData);
     } catch (err) {
       console.error('Erro ao carregar dados do admin:', err);
     } finally {
@@ -69,6 +73,27 @@ export const AdminMasterDashboardView: React.FC<AdminMasterDashboardViewProps> =
   const showFeedback = (msg: string) => {
     setFeedbackMessage(msg);
     setTimeout(() => setFeedbackMessage(null), 4000);
+  };
+
+  const handleResolveReport = async (
+    reportId: string,
+    action: 'ACCOUNT_SUSPENDED' | 'ANIMAL_REMOVED' | 'WARNING_ISSUED' | 'DISMISSED',
+    notes?: string
+  ) => {
+    try {
+      setActionLoadingId(reportId);
+      await moderationService.resolveReport(reportId, {
+        action,
+        status: action === 'DISMISSED' ? 'DISMISSED' : 'RESOLVED',
+        notes: notes || undefined,
+      });
+      showFeedback('Ação disciplinar executada com sucesso!');
+      loadAllData();
+    } catch (err: any) {
+      alert(err.message || 'Erro ao resolver denúncia.');
+    } finally {
+      setActionLoadingId(null);
+    }
   };
 
   // Moderação de ONGs
@@ -288,6 +313,22 @@ export const AdminMasterDashboardView: React.FC<AdminMasterDashboardViewProps> =
             </button>
 
             <button
+              onClick={() => setActiveTab('reports')}
+              className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all relative ${
+                activeTab === 'reports'
+                  ? 'bg-purple-600 text-white shadow-sm'
+                  : 'text-[#78909C] hover:text-[#263238]'
+              }`}
+            >
+              Denúncias
+              {reports.filter((r) => r.status === 'PENDING').length > 0 && (
+                <span className="ml-1 px-1.5 py-0.5 bg-red-500 text-white text-[9px] rounded-full font-black">
+                  {reports.filter((r) => r.status === 'PENDING').length}
+                </span>
+              )}
+            </button>
+
+            <button
               onClick={() => setActiveTab('audit')}
               className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all ${
                 activeTab === 'audit'
@@ -439,7 +480,107 @@ export const AdminMasterDashboardView: React.FC<AdminMasterDashboardViewProps> =
             </div>
           )}
 
-          {/* TAB 3: AUDITORIA & LOGS */}
+          {/* TAB 3: DENÚNCIAS & ANTIFRAUDE */}
+          {activeTab === 'reports' && (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between px-1">
+                <h3 className="text-xs font-bold text-[#78909C] uppercase tracking-wider">
+                  Fila de Denúncias
+                </h3>
+                <span className="text-xs text-red-600 font-bold">
+                  {reports.filter((r) => r.status === 'PENDING').length} pendentes
+                </span>
+              </div>
+
+              {reports.length === 0 ? (
+                <div className="bg-white rounded-3xl p-6 text-center border border-gray-100">
+                  <div className="w-12 h-12 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600 mx-auto mb-2">
+                    <CheckCircle2 className="w-6 h-6" />
+                  </div>
+                  <h4 className="text-sm font-bold text-[#263238]">Nenhuma denúncia ativa</h4>
+                  <p className="text-xs text-[#78909C] mt-1">A comunidade está segura e em conformidade.</p>
+                </div>
+              ) : (
+                reports.map((rep) => (
+                  <div
+                    key={rep.id}
+                    className="bg-white rounded-3xl p-4 border border-gray-100 shadow-sm space-y-3"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-800">
+                        {rep.targetType}
+                      </span>
+                      <span
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                          rep.status === 'PENDING'
+                            ? 'bg-amber-100 text-amber-800'
+                            : rep.status === 'RESOLVED'
+                            ? 'bg-emerald-100 text-emerald-800'
+                            : 'bg-gray-100 text-[#78909C]'
+                        }`}
+                      >
+                        {rep.status === 'PENDING'
+                          ? 'Pendente'
+                          : rep.status === 'RESOLVED'
+                          ? 'Resolvida'
+                          : 'Arquivada'}
+                      </span>
+                    </div>
+
+                    <div>
+                      <h4 className="text-xs font-bold text-[#263238]">Motivo: {rep.reason}</h4>
+                      {rep.details && (
+                        <p className="text-[11px] text-[#78909C] mt-1 bg-gray-50 p-2 rounded-xl">
+                          "{rep.details}"
+                        </p>
+                      )}
+                      <p className="text-[10px] text-[#78909C] mt-1.5">
+                        Denunciante: {rep.reporter.name} • Alvo: <strong>{rep.targetSummary?.name || rep.targetId}</strong>
+                      </p>
+                    </div>
+
+                    {rep.status === 'PENDING' && (
+                      <div className="flex items-center gap-1.5 pt-1 overflow-x-auto scrollbar-none">
+                        <button
+                          disabled={actionLoadingId === rep.id}
+                          onClick={() => handleResolveReport(rep.id, 'ACCOUNT_SUSPENDED', 'Conta suspensa por violação')}
+                          className="px-2.5 py-1 bg-red-50 text-red-600 hover:bg-red-100 rounded-xl text-[11px] font-bold active:scale-95 transition-all whitespace-nowrap"
+                        >
+                          Suspender Infrator
+                        </button>
+
+                        <button
+                          disabled={actionLoadingId === rep.id}
+                          onClick={() => handleResolveReport(rep.id, 'ANIMAL_REMOVED', 'Anúncio removido por fraude')}
+                          className="px-2.5 py-1 bg-amber-50 text-amber-700 hover:bg-amber-100 rounded-xl text-[11px] font-bold active:scale-95 transition-all whitespace-nowrap"
+                        >
+                          Remover Pet
+                        </button>
+
+                        <button
+                          disabled={actionLoadingId === rep.id}
+                          onClick={() => handleResolveReport(rep.id, 'WARNING_ISSUED', 'Advertência emitida')}
+                          className="px-2.5 py-1 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-xl text-[11px] font-bold active:scale-95 transition-all whitespace-nowrap"
+                        >
+                          Advertir
+                        </button>
+
+                        <button
+                          disabled={actionLoadingId === rep.id}
+                          onClick={() => handleResolveReport(rep.id, 'DISMISSED', 'Denúncia improcedente')}
+                          className="px-2.5 py-1 bg-gray-100 text-[#78909C] hover:bg-gray-200 rounded-xl text-[11px] font-bold active:scale-95 transition-all whitespace-nowrap"
+                        >
+                          Arquivar
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+
+          {/* TAB 4: AUDITORIA & LOGS */}
           {activeTab === 'audit' && (
             <div className="space-y-3">
               <div className="flex items-center justify-between px-1">
