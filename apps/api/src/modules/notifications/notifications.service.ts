@@ -21,21 +21,26 @@ export class NotificationsService implements OnModuleInit {
   constructor(private readonly prisma: PrismaService) {}
 
   onModuleInit() {
-    this.vapidPublicKey =
-      process.env.VAPID_PUBLIC_KEY ||
-      'BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U';
-    this.vapidPrivateKey =
-      process.env.VAPID_PRIVATE_KEY || 'UUxI4O8vX0jM3rYm9bQ2PjBqUjYw8_k9n6m4j7p2w1A';
+    this.vapidPublicKey = process.env.VAPID_PUBLIC_KEY || '';
+    this.vapidPrivateKey = process.env.VAPID_PRIVATE_KEY || '';
+    const vapidSubject = process.env.VAPID_SUBJECT || 'mailto:suporte@patinhas.org';
+
+    if (!this.vapidPublicKey || !this.vapidPrivateKey) {
+      this.logger.warn(
+        'VAPID_PUBLIC_KEY e VAPID_PRIVATE_KEY não foram informadas no .env. Notificações Web Push não serão disparadas.',
+      );
+      return;
+    }
 
     try {
       webpush.setVapidDetails(
-        process.env.VAPID_SUBJECT || 'mailto:suporte@patinhas.org',
+        vapidSubject,
         this.vapidPublicKey,
         this.vapidPrivateKey,
       );
-      this.logger.log('VAPID configurado com sucesso para Web Push.');
+      this.logger.log('VAPID configurado com sucesso para Web Push a partir do .env.');
     } catch (err: any) {
-      this.logger.warn(`Configuração de chaves VAPID fallback: ${err.message}`);
+      this.logger.error(`Falha ao configurar VAPID Web Push com as credenciais do .env: ${err.message}`);
     }
   }
 
